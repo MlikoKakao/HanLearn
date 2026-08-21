@@ -1,0 +1,62 @@
+<div class="zhuyin-keyboard" aria-label="Zhuyin keyboard layout">
+	@for (var rowIndex = 0; rowIndex < KeyboardRows.Length; rowIndex++)
+	{
+		var row = KeyboardRows[rowIndex];
+		<div class="key-row row-@(rowIndex + 1)">
+			@foreach (var key in row)
+			{
+				@if (key.AudioName is not null)
+				{
+					<audio id="@($"sound-zhuyin{key.AudioName}")" src="@($"/audio/zhuyin{key.AudioName}.mp3")"></audio>
+				}
+
+				@if (key.AudioName is null)
+				{
+					<button type="button" class="zhuyin tone" aria-label="@key.Symbol">@key.Symbol</button>
+				}
+				else
+				{
+					<button type="button" class="zhuyin" aria-label="Play @key.Symbol"
+						onclick="@($"document.getElementById('sound-zhuyin{key.AudioName}').play()")">@key.Symbol</button>
+				}
+			}
+		</div>
+	}
+</div>
+
+<p>Current input: @currentInput</p>
+
+@code {
+	private readonly Key[][] KeyboardRows =
+	[
+		[new("ㄅ", "b"), new("ㄉ", "d"), new("ˇ", null), new("ˋ", null), new("ㄓ", "zh"), new("ˊ", null), new("˙", null), new("ㄚ",
+"a"), new("ㄞ", "ai"), new("ㄢ", "an"), new("ㄦ", "er")],
+		[new("ㄆ", "p"), new("ㄊ", "t"), new("ㄍ", "g"), new("ㄐ", "j"), new("ㄔ", "ch"), new("ㄗ", "z"), new("ㄧ", "i"), new("ㄛ",
+"o"), new("ㄟ", "ei"), new("ㄣ", "en")],
+		[new("ㄇ", "m"), new("ㄋ", "n"), new("ㄎ", "k"), new("ㄑ", "q"), new("ㄕ", "sh"), new("ㄘ", "c"), new("ㄨ", "u"), new("ㄜ",
+"e"), new("ㄠ", "ao"), new("ㄤ", "ang")],
+		[new("ㄈ", "f"), new("ㄌ", "l"), new("ㄏ", "h"), new("ㄒ", "x"), new("ㄖ", "r"), new("ㄙ", "s"), new("ㄩ", "yu"), new("ㄝ",
+"ye"), new("ㄡ", "ou"), new("ㄥ", "eng")]
+	];
+
+	private sealed record Key(string Symbol, string? AudioName);
+
+	private string currentInput = "";
+
+	private void AddSymbol(string symbol)
+	{
+		currentInput += symbol;
+	}
+
+	@inject IJSRuntime JS
+
+	private async Task PressKeyAsync(Key key)
+	{
+		AddSymbol(key.Symbol);
+
+		if (key.AudioName is not null)
+		{
+			await JS.InvokeVoidAsync("playZhuyinAudio", $"sound-zhuyin{key.AudioName}");
+		}
+	}
+}

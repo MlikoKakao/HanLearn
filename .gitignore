@@ -1,0 +1,40 @@
+# Build output
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+TestResults/
+artifacts/
+
+# .NET user and local-tool files
+*.user
+*.userosscache
+*.suo
+*.rsuser
+*.sln.docstates
+.vs/
+.dotnet/
+
+# Rider and other editors
+.idea/
+*.sln.iml
+
+# Node tooling, if introduced for front-end tooling
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+secrets.json
+
+# Personal project handoff notes
+PROJECT-CONTEXT.md
+src/HanLearn.Web/wwwroot/lib/bootstrap/
+
+# OS-generated files
+.DS_Store
+Thumbs.db

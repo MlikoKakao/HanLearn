@@ -1,0 +1,28 @@
+.zhuyin {
+	font-size: 2.5rem;
+	inline-size: 4rem;
+	aspect-ratio: 1;
+}
+
+.zhuyin-keyboard {
+	display: flex;
+	flex-direction: column;
+	row-gap: 0.5rem;
+}
+
+.key-row {
+	display: flex;
+	gap: .4rem;
+}
+
+.row-2 {
+	padding-inline-start: 1rem;
+}
+
+.row-3 {
+	padding-inline-start: 2rem;
+}
+
+.row-4 {
+	padding-inline-start: 3rem;
+}
