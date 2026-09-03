@@ -12,12 +12,15 @@
 
 				@if (key.AudioName is null)
 				{
-					<button type="button" class="zhuyin tone" aria-label="@key.Symbol">@key.Symbol</button>
+					<button type="button" class="zhuyin tone" onclick="() => AddSymbol(key.Symbol)">
+						@key.Symbol
+					</button>
 				}
 				else
 				{
-					<button type="button" class="zhuyin" aria-label="Play @key.Symbol"
-						onclick="@($"document.getElementById('sound-zhuyin{key.AudioName}').play()")">@key.Symbol</button>
+					<button type="button" class="zhuyin" aria-label="Play @key.Symbol" @onclick="() => PressKeyAsync(key)">
+						@key.Symbol
+					</button>
 				}
 			}
 		</div>
