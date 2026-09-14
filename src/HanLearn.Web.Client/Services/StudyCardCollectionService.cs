@@ -13,7 +13,7 @@ class StudyCardCollectionService
 	public void AddCard(CardFront cardFront, CardBack cardBack)
 	{
 		_nextId += 1;
-		StudyCard newStudyCard = new StudyCard
+		StudyCard newStudyCard = new()
 		{
 			Id = _nextId,
 			CardFront = cardFront,

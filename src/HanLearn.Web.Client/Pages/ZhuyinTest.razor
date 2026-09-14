@@ -1,8 +1,23 @@
 @page "/zhuyinTest"
+@using HanLearn.Web.Client.Services
+@using HanLearn.Web.Client.Data
+@inject ZhuyinCardCatalog CardCatalog
 
-<div class="card bg-light mt-3">
-	Hello
-</div>
+@if (cards.Count > 0)
+{
+	<div class="card bg-light mt-3">
+		@CurrentCard.Symbol
+	</div>
+}
 
 @code {
+	private IReadOnlyList<ZhuyinCard> cards = [];
+	private int currentCardIndex;
+
+	private ZhuyinCard CurrentCard => cards[currentCardIndex];
+
+	protected override void OnInitialized()
+	{
+		cards = CardCatalog.Cards;
+	}
 }
