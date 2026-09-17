@@ -8,6 +8,9 @@
 	<div class="card bg-light mt-3">
 		@CurrentCard.Symbol
 	</div>
+	<button @onclick="IncreaseIndex">
+		Next
+	</button>
 }
 
 @code {
@@ -19,5 +22,16 @@
 	protected override void OnInitialized()
 	{
 		cards = CardCatalog.Cards;
+	}
+	private void IncreaseIndex()
+	{
+		if (currentCardIndex < cards.Count() - 1)
+		{
+			currentCardIndex++;
+		}
+		else
+		{
+			currentCardIndex = 0;
+		}
 	}
 }
