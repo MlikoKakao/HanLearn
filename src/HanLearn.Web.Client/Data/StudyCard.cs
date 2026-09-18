@@ -7,7 +7,7 @@ public record CardFront
 
 public record CardBack
 {
-	public required string Pronunciation { get; init; }
+	public required List<string> Pronunciation { get; init; }
 	public string? Example { get; init; }
 	public string? Voice { get; init; }
 }

@@ -1,0 +1,64 @@
+@using HanLearn.Web.Client.Data
+<div class="border border-primary rounded p-3 shadow-sm">
+	@Card?.CardFront.Character
+	@if (_showAnswer)
+	{
+		<p>@Card?.CardBack.Example</p>
+		<p>
+			@foreach (string pronounciation in Card.CardBack.Pronunciation)
+			{
+				@pronounciation
+			}
+		</p>
+		<button>Again</button>
+		<button>Hard</button>
+		<button>Good</button>
+		<button>Easy</button>
+	}
+
+
+
+	<button @onclick="showAnswer"> Show answer </button>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@code
+{
+	[Parameter]
+	public StudyCard? Card { get; set; }
+	enum Rating
+	{
+		Again,
+		Hard,
+		Good,
+		Easy
+	}
+	[Parameter]
+	bool _showAnswer = false;
+	private int? _previousCardId;
+	private void showAnswer() { _showAnswer = !_showAnswer; }
+
+	protected override void OnParametersSet()
+	{
+		if (Card?.Id != _previousCardId)
+		{
+			_showAnswer = false;
+			_previousCardId = Card?.Id;
+		}
+	}
+}

@@ -4,7 +4,7 @@ using HanLearn.Web.Client.Data;
 namespace HanLearn.Web.Client.Services;
 
 
-class StudyCardCollectionService
+public class StudyCardCollectionService
 {
 	private readonly List<StudyCard> _cards = [];
 	private int _nextId = 0;

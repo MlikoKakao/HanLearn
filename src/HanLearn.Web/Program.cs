@@ -4,6 +4,7 @@ using HanLearn.Web.Client.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSingleton<ZhuyinCardCatalog>();
+builder.Services.AddSingleton<StudyCardCollectionService>();
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
