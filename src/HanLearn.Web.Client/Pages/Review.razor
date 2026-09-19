@@ -7,28 +7,43 @@
 <PageTitle>Review</PageTitle>
 
 <h1>Review</h1>
-<StudyCardUI Card="@currentCard" />
+<StudyCardUI 
+	Card="@currentCard"
+	OnRatingSelected="@RatingSelected" 
+	/>
+
+
+
 
 @code {
-	StudyCard currentCard;
+	StudyCard? currentCard;
+	int cardIndex;
+
 	protected override void OnInitialized()
 	{
-		CardFront cardFront = new()
+		string[] characters = ["你好", "好味", "沒錯"];
+		List<string>[] pronunciations = [["ㄋㄧˇ ㄏㄠˇ"], ["ㄏㄠˇ ㄨㄟˋ"],["ㄇㄟ ㄘㄨㄛ"]];
+		string[] examples = ["老師你好", "這個好味", "我沒錯了"];
+		string[] voices = ["nihao.mp3", "haowei.mp3", "meicuo.mp3"];
+
+		for (int i = 0; i < 3; i++)
 		{
-			Character = "你好"
-		};
+			StudyCards.AddCard(
+				new CardFront {Character = characters[i]},
+				new CardBack
+				{
+					Pronunciation = pronunciations[i],
+					Example = examples[i],
+					Voice = voices[i]
+				});
+		}
+		cardIndex = 0;
+		currentCard = StudyCards.Cards[cardIndex];
+	}
 
-		CardBack cardBack = new()
-		{
-			Pronunciation = ["ㄋ"],
-			Example = "你好",
-			Voice = "nihao.mp3"
-
-		};
-
-
-		StudyCards.AddCard(cardFront, cardBack);
-
-		currentCard = StudyCards.Cards[0];
+	public void RatingSelected(Rating rating)
+	{
+		cardIndex = (cardIndex+1) % StudyCards.Cards.Count;
+		currentCard = StudyCards.Cards[cardIndex];
 	}
 }
