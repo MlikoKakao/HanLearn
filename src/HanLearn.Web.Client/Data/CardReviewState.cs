@@ -8,5 +8,5 @@ public record CardReviewState
     public required int StudyCardId { get; init; }
     public DateTimeOffset AddedAt { get; init; }
     public Rating? LastRating { get; set; }
-    public int ReviewCount { get; set; }
+    public int? ReviewCount { get; set; }
 }
