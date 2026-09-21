@@ -24,4 +24,8 @@
 		cardIndex = (cardIndex+1) % StudyCards.Cards.Count;
 		currentCard = StudyCards.Cards[cardIndex];
 	}
+	protected override void OnInitialized()
+	{
+		currentCard=StudyCards.Cards[0];
+	}
 }
