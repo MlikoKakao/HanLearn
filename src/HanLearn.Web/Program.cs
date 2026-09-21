@@ -5,6 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSingleton<ZhuyinCardCatalog>();
 builder.Services.AddSingleton<StudyCardCollectionService>();
+builder.Services.AddScoped<DialogueDbService>();
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
