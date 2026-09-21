@@ -3,7 +3,6 @@
 @using HanLearn.Web.Client.Services
 @using HanLearn.Web.Client.Data
 @inject StudyCardCollectionService StudyCards
-@inject AutomatedStudyCardAddition 
 
 <PageTitle>Review</PageTitle>
 
@@ -18,29 +17,7 @@
 
 @code {
 	StudyCard? currentCard;
-	int cardIndex;
-
-	protected override void OnInitialized()
-	{
-		string[] characters = ["你好", "好味", "沒錯"];
-		List<string>[] pronunciations = [["ㄋㄧˇ ㄏㄠˇ"], ["ㄏㄠˇ ㄨㄟˋ"],["ㄇㄟ ㄘㄨㄛ"]];
-		string[] examples = ["老師你好", "這個好味", "我沒錯了"];
-		string[] voices = ["nihao.mp3", "haowei.mp3", "meicuo.mp3"];
-
-		for (int i = 0; i < 3; i++)
-		{
-			StudyCards.AddCard(
-				new CardFront {Character = characters[i]},
-				new CardBack
-				{
-					Pronunciation = pronunciations[i],
-					Example = examples[i],
-					Voice = voices[i]
-				});
-		}
-		cardIndex = 0;
-		currentCard = StudyCards.Cards[cardIndex];
-	}
+	int cardIndex = 0;
 
 	public void RatingSelected(Rating rating)
 	{

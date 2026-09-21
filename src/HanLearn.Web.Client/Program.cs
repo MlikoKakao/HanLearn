@@ -7,5 +7,8 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.Services.AddSingleton<ZhuyinCardCatalog>();
 builder.Services.AddSingleton<StudyCardCollectionService>();
 builder.Services.AddScoped<DialogueDbService>();
+builder.Services.AddTransient<AutomatedStudyCardAddition>();
 
-await builder.Build().RunAsync();
+var host = builder.Build();
+host.Services.GetRequiredService<AutomatedStudyCardAddition>().AddExampleCards();
+await host.RunAsync();

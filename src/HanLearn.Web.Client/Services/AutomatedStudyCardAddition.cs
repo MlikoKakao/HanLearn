@@ -19,7 +19,7 @@ public class AutomatedStudyCardAddition
 
 		for (int i = 0; i < 3; i++)
 		{
-			StudyCards.AddCard(
+			_studyCards.AddCard(
 				new CardFront {Character = characters[i]},
 				new CardBack
 				{
