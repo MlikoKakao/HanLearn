@@ -1,55 +1,21 @@
-@using HanLearn.Web.Client.Components
-@using HanLearn.Web.Client.Data
-@using HanLearn.Web.Client.Services
-@inject DialogueDbService DialogueDbService
-@inject StudyCardCollectionService StudyCardCollectionService
+
 @page "/dialogues"
 
 <PageTitle>Dialogues</PageTitle>
 
 <h1>Dialogues</h1>
 
-@if (selectedCard != null)
-{
-	<CharacterInfo
-		selectedCard=@selectedCard 
-		/>
-}
-@foreach (string character in DialogueDbService.separatedDialogue1)
-{
-	<span @onclick="() => displayCharacterInfo(character)">@character</span>	
-}
 
-<p a href="/dialogues/">First story</p>
+<a href="/dialogues/1">First story</a>
+
+<a href="/dialogues/2">Second story</a>
 
 
 @code {
-	string selectedCharacter="";
-	StudyCard? selectedCard;
-	public void displayCharacterInfo(string currentSelectedCharacter)
-	{
-		selectedCharacter = currentSelectedCharacter;
-		selectedCard = StudyCardCollectionService.Cards.FirstOrDefault(
-			card => card.CardFront.Character == selectedCharacter
-			);
-	}
+	
 
 	protected override void OnInitialized()
 	{
-		DialogueDbService Dialogue1 = new ()
-		{
-			Id=1,
-			Dialogue="你好好味",
-			SeparatedDialogue=["你好", "好味"]
-		};
-		DialogueDbService Dialogue2 = new ()
-		{
-			Id=2,
-			Dialogue="好味你好",
-			SeparatedDialogue=["好味", "你好"]
-		};
+
 	}
-
-
-
 }

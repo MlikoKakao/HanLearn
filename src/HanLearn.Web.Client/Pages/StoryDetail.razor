@@ -1,14 +1,51 @@
 @page "/dialogues/{Id:int}"
+@using HanLearn.Web.Client.Data
+@using HanLearn.Web.Client.Services
+@using HanLearn.Web.Client.Components
+@inject StoryCollectionService storyCollectionService
+@inject StudyCardCollectionService StudyCardCollectionService
 
 
 <p>Story Id: @Id</p>
 
+@if (selectedCard != null)
+{
+	<CharacterInfo
+		selectedCard=@selectedCard 
+		/>
+}
 
 
 
+@if (selectedStory != null)
+{
+    @foreach (string character in selectedStory.SeparatedContent)
+    {
+        <span @onclick="() => displayCharacterInfo(character)">@character</span>	
+    }
+}
 
 @code
 {
     [Parameter]
     public required int Id { get; set; }
+
+    Story? selectedStory;
+
+    protected override void OnParametersSet()
+    {
+        selectedStory = storyCollectionService.Stories.FirstOrDefault(
+        story => story.Id == Id);
+    }
+
+    string selectedCharacter="";
+	StudyCard? selectedCard;
+	public void displayCharacterInfo(string currentSelectedCharacter)
+	{
+		selectedCharacter = currentSelectedCharacter;
+		selectedCard = StudyCardCollectionService.Cards.FirstOrDefault(
+			card => card.CardFront.Character == selectedCharacter
+			);
+	}
+    
 }
