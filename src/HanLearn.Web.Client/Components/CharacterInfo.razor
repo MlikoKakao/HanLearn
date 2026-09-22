@@ -1,7 +1,11 @@
+@using HanLearn.Web.Client.Data
+
 <div class="col-lg-5 mt-4 mt-lg-0">
     <div class="card shadow-sm">
         <div class="card-body">
-            <h3>@Character</h3>
+            <h3>@selectedCard.CardFront.Character</h3>
+                <span>@string.Join("、", selectedCard.CardBack.Pronunciation)</span>           
+                <span>@selectedCard.CardBack.Example</span>
 
         </div>
     </div>
@@ -11,5 +15,5 @@
 @code
 {
     [Parameter]
-    public required string Character { get; set; }
+    public required StudyCard selectedCard { get; set; }
 }

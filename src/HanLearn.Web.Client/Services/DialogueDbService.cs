@@ -16,6 +16,11 @@
 
 public class DialogueDbService
 {
+    public required int Id { get; set; }
+    public required string Dialogue { get; set; }
+    public required string[] SeparatedDialogue { get; set; }
+
+
     public string dialogue1 = "你好好味";
     public string[] separatedDialogue1 = ["你好", "好味"];
 }

@@ -1,0 +1,14 @@
+@page "/dialogues/{Id:int}"
+
+
+<p>Story Id: @Id</p>
+
+
+
+
+
+@code
+{
+    [Parameter]
+    public required int Id { get; set; }
+}
