@@ -1,5 +1,5 @@
 namespace HanLearn.Web.Client.Data;
-public enum Rating
+public enum ReviewRating
 {
     Again,
     Hard,

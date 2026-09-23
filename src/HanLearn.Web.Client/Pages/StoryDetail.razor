@@ -2,26 +2,24 @@
 @using HanLearn.Web.Client.Data
 @using HanLearn.Web.Client.Services
 @using HanLearn.Web.Client.Components
-@inject StoryCollectionService storyCollectionService
-@inject StudyCardCollectionService StudyCardCollectionService
+@inject StoryCatalog StoryCatalog
+@inject VocabularyCatalog VocabularyCatalog
 
 
 <p>Story Id: @Id</p>
 
-@if (selectedCard != null)
+@if (_selectedEntry != null)
 {
-	<CharacterInfo
-		selectedCard=@selectedCard 
-		/>
+	<VocabularyDetails Entry="_selectedEntry" />
 }
 
 
 
-@if (selectedStory != null)
+@if (_story != null)
 {
-    @foreach (string character in selectedStory.SeparatedContent)
+    @foreach (string segment in _story.Segments)
     {
-        <span @onclick="() => displayCharacterInfo(character)">@character</span>	
+        <span @onclick="() => SelectVocabularyEntry(segment)">@segment</span>
     }
 }
 
@@ -30,22 +28,17 @@
     [Parameter]
     public required int Id { get; set; }
 
-    Story? selectedStory;
+    private Story? _story;
+    private VocabularyEntry? _selectedEntry;
 
     protected override void OnParametersSet()
     {
-        selectedStory = storyCollectionService.Stories.FirstOrDefault(
-        story => story.Id == Id);
+        _story = StoryCatalog.Stories.FirstOrDefault(story => story.Id == Id);
     }
 
-    string selectedCharacter="";
-	StudyCard? selectedCard;
-	public void displayCharacterInfo(string currentSelectedCharacter)
+	private void SelectVocabularyEntry(string writtenForm)
 	{
-		selectedCharacter = currentSelectedCharacter;
-		selectedCard = StudyCardCollectionService.Cards.FirstOrDefault(
-			card => card.CardFront.Character == selectedCharacter
-			);
+		_selectedEntry = VocabularyCatalog.Entries.FirstOrDefault(
+			entry => entry.WrittenForm == writtenForm);
 	}
-    
 }

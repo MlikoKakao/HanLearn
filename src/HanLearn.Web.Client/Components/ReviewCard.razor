@@ -1,0 +1,62 @@
+@using HanLearn.Web.Client.Data
+<div class="border border-primary rounded p-3 shadow-sm">
+	@Entry?.WrittenForm
+	@if (_showAnswer)
+	{
+		<p>@Entry?.Example</p>
+		<p>
+			@if(Entry != null)
+			{
+				@foreach (string pronunciation in Entry.Pronunciations)
+				{
+					@pronunciation
+				}
+			}
+		</p>
+		<button @onclick="() => OnRatingSelected.InvokeAsync(ReviewRating.Again)">Again</button>
+		<button @onclick="() => OnRatingSelected.InvokeAsync(ReviewRating.Hard)">Hard</button	>
+		<button @onclick="() => OnRatingSelected.InvokeAsync(ReviewRating.Good)">Good</button>
+		<button @onclick="() => OnRatingSelected.InvokeAsync(ReviewRating.Easy)">Easy</button>
+	}
+
+
+
+	<button @onclick="ToggleAnswer">Show answer</button>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@code
+{
+	[Parameter]
+	public VocabularyEntry? Entry { get; set; }
+	[Parameter]
+	public EventCallback<ReviewRating> OnRatingSelected { get; set; }
+
+	private bool _showAnswer;
+	private int? _previousEntryId;
+	private void ToggleAnswer() => _showAnswer = !_showAnswer;
+
+	protected override void OnParametersSet()
+	{
+		if (Entry?.Id != _previousEntryId)
+		{
+			_showAnswer = false;
+			_previousEntryId = Entry?.Id;
+		}
+	}
+}

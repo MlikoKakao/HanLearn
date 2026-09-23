@@ -4,14 +4,14 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
 
-builder.Services.AddSingleton<ZhuyinCardCatalog>();
-builder.Services.AddSingleton<StudyCardCollectionService>();
-builder.Services.AddScoped<StoryCollectionService>();
-builder.Services.AddTransient<AutomatedStudyCardAddition>();
-builder.Services.AddTransient<AutomatedStoryAddition>();
+builder.Services.AddSingleton<ZhuyinSymbolCatalog>();
+builder.Services.AddSingleton<VocabularyCatalog>();
+builder.Services.AddScoped<StoryCatalog>();
+builder.Services.AddTransient<ExampleVocabularySeeder>();
+builder.Services.AddTransient<ExampleStorySeeder>();
 
 var host = builder.Build();
-host.Services.GetRequiredService<AutomatedStudyCardAddition>().AddExampleCards();
-host.Services.GetRequiredService<AutomatedStoryAddition>().AddExampleStories();
+host.Services.GetRequiredService<ExampleVocabularySeeder>().Seed();
+host.Services.GetRequiredService<ExampleStorySeeder>().Seed();
 
 await host.RunAsync();

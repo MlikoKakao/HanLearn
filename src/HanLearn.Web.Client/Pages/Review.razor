@@ -2,13 +2,13 @@
 @using HanLearn.Web.Client.Components
 @using HanLearn.Web.Client.Services
 @using HanLearn.Web.Client.Data
-@inject StudyCardCollectionService StudyCards
+@inject VocabularyCatalog VocabularyCatalog
 
 <PageTitle>Review</PageTitle>
 
 <h1>Review</h1>
-<StudyCardUI 
-	Card="@currentCard"
+<ReviewCard
+	Entry="@_currentEntry"
 	OnRatingSelected="@RatingSelected" 
 	/>
 
@@ -16,16 +16,17 @@
 
 
 @code {
-	StudyCard? currentCard;
-	int cardIndex = 0;
+	private VocabularyEntry? _currentEntry;
+	private int _entryIndex;
 
-	public void RatingSelected(Rating rating)
+	private void RatingSelected(ReviewRating rating)
 	{
-		cardIndex = (cardIndex+1) % StudyCards.Cards.Count;
-		currentCard = StudyCards.Cards[cardIndex];
+		_entryIndex = (_entryIndex + 1) % VocabularyCatalog.Entries.Count;
+		_currentEntry = VocabularyCatalog.Entries[_entryIndex];
 	}
+
 	protected override void OnInitialized()
 	{
-		currentCard=StudyCards.Cards[0];
+		_currentEntry = VocabularyCatalog.Entries[0];
 	}
 }

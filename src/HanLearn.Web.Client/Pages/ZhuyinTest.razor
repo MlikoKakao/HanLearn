@@ -1,37 +1,38 @@
 @page "/zhuyinTest"
 @using HanLearn.Web.Client.Services
 @using HanLearn.Web.Client.Data
-@inject ZhuyinCardCatalog CardCatalog
+@inject ZhuyinSymbolCatalog SymbolCatalog
 
-@if (cards.Count > 0)
+@if (_symbols.Count > 0)
 {
 	<div class="card bg-light mt-3">
-		@CurrentCard.Symbol
+		@CurrentSymbol.WrittenForm
 	</div>
-	<button @onclick="IncreaseIndex">
+	<button @onclick="ShowNextSymbol">
 		Next
 	</button>
 }
 
 @code {
-	private IReadOnlyList<ZhuyinCard> cards = [];
-	private int currentCardIndex;
+	private IReadOnlyList<ZhuyinSymbol> _symbols = [];
+	private int _symbolIndex;
 
-	private ZhuyinCard CurrentCard => cards[currentCardIndex];
+	private ZhuyinSymbol CurrentSymbol => _symbols[_symbolIndex];
 
 	protected override void OnInitialized()
 	{
-		cards = CardCatalog.Cards;
+		_symbols = SymbolCatalog.Symbols;
 	}
-	private void IncreaseIndex()
+
+	private void ShowNextSymbol()
 	{
-		if (currentCardIndex < cards.Count() - 1)
+		if (_symbolIndex < _symbols.Count - 1)
 		{
-			currentCardIndex++;
+			_symbolIndex++;
 		}
 		else
 		{
-			currentCardIndex = 0;
+			_symbolIndex = 0;
 		}
 	}
 }

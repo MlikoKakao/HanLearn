@@ -2,9 +2,9 @@ using HanLearn.Web.Client.Data;
 
 namespace HanLearn.Web.Client.Services;
 
-public sealed class ZhuyinCardCatalog
+public sealed class ZhuyinSymbolCatalog
 {
-	public IReadOnlyList<ZhuyinCard> Cards { get; } =
+	public IReadOnlyList<ZhuyinSymbol> Symbols { get; } =
 	    [
 	      new("ㄅ", "b"),
       new("ㄆ", "p"),

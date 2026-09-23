@@ -1,0 +1,19 @@
+@using HanLearn.Web.Client.Data
+
+<div class="col-lg-5 mt-4 mt-lg-0">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h3>@Entry.WrittenForm</h3>
+            <span>@string.Join("、", Entry.Pronunciations)</span>
+            <span>@Entry.Example</span>
+
+        </div>
+    </div>
+</div>
+
+
+@code
+{
+    [Parameter]
+    public required VocabularyEntry Entry { get; set; }
+}
