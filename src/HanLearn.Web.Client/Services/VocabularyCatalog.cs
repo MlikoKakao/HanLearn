@@ -13,6 +13,7 @@ public class VocabularyCatalog
 	public void AddEntry(
 		VocabularyEntryKind kind,
 		string writtenForm,
+		string meaning,
 		List<string> pronunciations,
 		string? example,
 		string? audioFileName)
@@ -23,6 +24,7 @@ public class VocabularyCatalog
 			Id = _nextId,
 			Kind = kind,
 			WrittenForm = writtenForm,
+			Meaning=meaning,
 			Pronunciations = pronunciations,
 			Example = example,
 			AudioFileName = audioFileName

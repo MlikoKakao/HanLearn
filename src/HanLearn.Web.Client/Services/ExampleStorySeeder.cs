@@ -17,11 +17,31 @@ public class ExampleStorySeeder
     {
         _stories.AddStory(
                 "你好好味",
-                ["你好", "好味"]
+                [new StorySegment{
+                    Id=1,
+                    Text="你好",
+                    VocabularyEntryId=1
+                },
+                new StorySegment{
+                    Id=2,
+                    Text="好味",
+                    VocabularyEntryId=2
+                }
+                ]
         );
         _stories.AddStory(
                 "好味你好",
-                ["好味", "你好"]
+                [new StorySegment{
+                    Id=1,
+                    Text="好味",
+                    VocabularyEntryId=2
+                },
+                new StorySegment{
+                    Id=2,
+                    Text="你好",
+                    VocabularyEntryId=1
+                }
+                ]
         );
     }
 }

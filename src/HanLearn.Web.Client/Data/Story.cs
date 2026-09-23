@@ -4,5 +4,5 @@ public record Story
 {
     public required int Id { get; init; }
     public required string Text { get; set; }
-    public required string[] Segments { get; set; }
+    public required StorySegment[] Segments { get; set; }
 }

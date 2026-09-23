@@ -1,4 +1,4 @@
-@page "/dialogues/{Id:int}"
+@page "/dialogues/{StoryId:int}"
 @using HanLearn.Web.Client.Data
 @using HanLearn.Web.Client.Services
 @using HanLearn.Web.Client.Components
@@ -6,7 +6,7 @@
 @inject VocabularyCatalog VocabularyCatalog
 
 
-<p>Story Id: @Id</p>
+<p>Story Id: @StoryId</p>
 
 @if (_selectedEntry != null)
 {
@@ -17,28 +17,31 @@
 
 @if (_story != null)
 {
-    @foreach (string segment in _story.Segments)
+    @foreach (StorySegment segment in _story.Segments)
     {
-        <span @onclick="() => SelectVocabularyEntry(segment)">@segment</span>
+        <span @onclick="() => SelectVocabularyEntry(segment.VocabularyEntryId)">@segment.Text</span>
     }
 }
 
 @code
 {
     [Parameter]
-    public required int Id { get; set; }
+    public required int StoryId { get; set; }
 
     private Story? _story;
     private VocabularyEntry? _selectedEntry;
 
     protected override void OnParametersSet()
     {
-        _story = StoryCatalog.Stories.FirstOrDefault(story => story.Id == Id);
+        _story = StoryCatalog.Stories.FirstOrDefault(story => story.Id == StoryId);
     }
 
-	private void SelectVocabularyEntry(string writtenForm)
+	private void SelectVocabularyEntry(int? id)
 	{
-		_selectedEntry = VocabularyCatalog.Entries.FirstOrDefault(
-			entry => entry.WrittenForm == writtenForm);
-	}
+        if (id != null)
+        {
+		    _selectedEntry = VocabularyCatalog.Entries.FirstOrDefault(
+			entry => entry.Id == id);
+        }
+    }
 }

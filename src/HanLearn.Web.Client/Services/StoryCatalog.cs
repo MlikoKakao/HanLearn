@@ -9,7 +9,7 @@ public class StoryCatalog
 
     public IReadOnlyList<Story> Stories => _stories;
 
-    public void AddStory(string text, string[] segments)
+    public void AddStory(string text, StorySegment[] segments)
     {
         _nextId +=1;
         Story newStory = new ()
