@@ -9,12 +9,13 @@ public class StoryCatalog
 
     public IReadOnlyList<Story> Stories => _stories;
 
-    public void AddStory(string text, StorySegment[] segments)
+    public void AddStory(string title, string text, StorySegment[] segments)
     {
         _nextId +=1;
         Story newStory = new ()
         {
             Id = _nextId,
+            Title = title,
             Text = text,
             Segments = segments
         };

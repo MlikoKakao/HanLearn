@@ -1,17 +1,21 @@
 
 @page "/dialogues"
+@using System.Collections.Immutable
+@using HanLearn.Web.Client.Data
+@using HanLearn.Web.Client.Services
+@inject StoryCatalog StoryCatalog
 
 <PageTitle>Dialogues</PageTitle>
 
 <h1>Dialogues</h1>
 
-
-<a href="/dialogues/1">First story</a>
-<br />
-<a href="/dialogues/2">Second story</a>
+@foreach (Story story in StoryCatalog.Stories)
+{
+    <a href=@($"/dialogues/{story.Id}")"">@story.Title</a>
+    <br />
+}
 
 
 @code {
-	
 
 }

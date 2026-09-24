@@ -16,6 +16,7 @@ public class ExampleStorySeeder
     public void Seed()
     {
         _stories.AddStory(
+                "First story",
                 "你好好味",
                 [new StorySegment{
                     Id=1,
@@ -30,6 +31,7 @@ public class ExampleStorySeeder
                 ]
         );
         _stories.AddStory(
+                "Second story",
                 "好味你好",
                 [new StorySegment{
                     Id=1,
