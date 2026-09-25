@@ -1,0 +1,9 @@
+span.story-text
+{
+    text-decoration: underline dotted;
+}
+
+.selected-word {
+    background-color: #ffe08a;
+    border-radius: 0.2rem;
+}

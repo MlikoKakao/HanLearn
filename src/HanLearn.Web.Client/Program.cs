@@ -9,6 +9,7 @@ builder.Services.AddSingleton<VocabularyCatalog>();
 builder.Services.AddScoped<StoryCatalog>();
 builder.Services.AddTransient<ExampleVocabularySeeder>();
 builder.Services.AddTransient<ExampleStorySeeder>();
+builder.Services.AddScoped<VocabularyReviewStateService>();
 
 var host = builder.Build();
 host.Services.GetRequiredService<ExampleVocabularySeeder>().Seed();

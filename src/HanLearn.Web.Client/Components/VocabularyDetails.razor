@@ -1,4 +1,6 @@
 @using HanLearn.Web.Client.Data
+@using HanLearn.Web.Client.Services
+@inject VocabularyReviewStateService ReviewStateService
 
 <div class="col-lg-5 mt-4 mt-lg-0">
     <div class="card shadow-sm">
@@ -7,6 +9,7 @@
             <span>@Entry.Meaning</span>
             <span>@string.Join("、", Entry.Pronunciations)</span>
             <span>@Entry.Example</span>
+            <button @onclick="addToReview">Add to Review</button>
 
         </div>
     </div>
@@ -17,4 +20,9 @@
 {
     [Parameter]
     public required VocabularyEntry Entry { get; set; }
+
+    private void addToReview()
+    {
+        ReviewStateService.AddToReview(Entry.Id);
+    }
 }

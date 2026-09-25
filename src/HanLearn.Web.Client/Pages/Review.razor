@@ -3,15 +3,22 @@
 @using HanLearn.Web.Client.Services
 @using HanLearn.Web.Client.Data
 @inject VocabularyCatalog VocabularyCatalog
+@inject VocabularyReviewStateService ReviewStateService
 
 <PageTitle>Review</PageTitle>
 
 <h1>Review</h1>
+@if (ReviewStateService.ReviewStates.Count == 0)
+{
+	<span>You have no cards to review!</span>
+}
+else
+{
 <ReviewCard
 	Entry="@_currentEntry"
 	OnRatingSelected="@RatingSelected" 
 	/>
-
+}
 
 
 
@@ -25,7 +32,7 @@
 		_currentEntry = VocabularyCatalog.Entries[_entryIndex];
 	}
 
-	protected override void OnInitialized()
+	protected override void OnParametersSet()
 	{
 		_currentEntry = VocabularyCatalog.Entries[0];
 	}
