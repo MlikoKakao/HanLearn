@@ -6,12 +6,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<ZhuyinSymbolCatalog>();
 builder.Services.AddSingleton<VocabularyCatalog>();
 builder.Services.AddScoped<StoryCatalog>();
+builder.Services.AddScoped<VocabularyReviewStateService>();
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
+
+
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

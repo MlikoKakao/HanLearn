@@ -23,17 +23,28 @@ else
 
 
 @code {
-	private VocabularyEntry? _currentEntry;
-	private int _entryIndex;
+    private VocabularyEntry? _currentEntry;
+    private int _entryIndex;
+    IReadOnlyList<VocabularyEntry> vocabularyEntries = [];
 
-	private void RatingSelected(ReviewRating rating)
-	{
-		_entryIndex = (_entryIndex + 1) % VocabularyCatalog.Entries.Count;
-		_currentEntry = VocabularyCatalog.Entries[_entryIndex];
-	}
+    private void RatingSelected(ReviewRating rating)
+    {
+        _entryIndex = (_entryIndex + 1) % vocabularyEntries.Count;
+        _currentEntry = vocabularyEntries[_entryIndex];
+    }
 
-	protected override void OnParametersSet()
-	{
-		_currentEntry = VocabularyCatalog.Entries[0];
-	}
+    protected override void OnInitialized()
+    {
+        HashSet<int> savedIds = ReviewStateService.ReviewStates
+            .Select(state => state.VocabularyEntryId)
+            .ToHashSet();
+        vocabularyEntries = VocabularyCatalog.Entries
+        .Where(entry => savedIds.Contains(entry.Id))
+        .ToList();
+
+        if (vocabularyEntries.Count > 0)
+        {
+            _currentEntry = vocabularyEntries[0];
+        }
+    }
 }
