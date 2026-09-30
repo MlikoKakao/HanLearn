@@ -8,7 +8,7 @@ public class VocabularyReviewStateService
 
     public IReadOnlyList<VocabularyReviewState> ReviewStates => _reviewStates;
 
-    public void AddToReview(int vocabularyEntryId)
+    public void AddToReview(string vocabularyEntryId)
     {
         VocabularyReviewState reviewState = new()
         {

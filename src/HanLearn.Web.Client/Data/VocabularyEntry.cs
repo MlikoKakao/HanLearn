@@ -8,7 +8,7 @@ public enum VocabularyEntryKind
 
 public record VocabularyEntry
 {
-	public required int Id { get; init; }
+	public required string Id { get; init; }
 	public required VocabularyEntryKind Kind { get; init; }
 	public required string WrittenForm { get; init; }
 	public required string Meaning { get; init; }

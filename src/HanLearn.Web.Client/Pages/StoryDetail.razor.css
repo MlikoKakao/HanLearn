@@ -1,6 +1,13 @@
-span.story-text
-{
+.story-body {
+    font-size: 1.35rem;
+    line-height: 2;
+    margin-top: 1.5rem;
+}
+
+span.story-text {
+    cursor: pointer;
     text-decoration: underline dotted;
+    text-underline-offset: 0.2rem;
 }
 
 .selected-word {

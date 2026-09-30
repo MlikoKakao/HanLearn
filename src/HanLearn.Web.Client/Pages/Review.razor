@@ -35,7 +35,7 @@ else
 
     protected override void OnInitialized()
     {
-        HashSet<int> savedIds = ReviewStateService.ReviewStates
+        HashSet<string> savedIds = ReviewStateService.ReviewStates
             .Select(state => state.VocabularyEntryId)
             .ToHashSet();
         vocabularyEntries = VocabularyCatalog.Entries

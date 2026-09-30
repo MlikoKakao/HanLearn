@@ -1,4 +1,4 @@
-@page "/dialogues/{StoryId:int}"
+@page "/dialogues/{StoryId}"
 @using HanLearn.Web.Client.Components
 @using HanLearn.Web.Client.Data
 @using HanLearn.Web.Client.Services
@@ -6,45 +6,57 @@
 @inject VocabularyCatalog VocabularyCatalog
 
 
-<p>Story Id: @StoryId</p>
-
-@if (_selectedEntry != null)
-{
-	<VocabularyDetails Entry="_selectedEntry" />
-}
-
-
-
-
 @if (_story != null)
 {
+    <PageTitle>@_story.Title</PageTitle>
+    <h1>@_story.Title</h1>
+
+    @if (_selectedEntry != null)
+    {
+        <VocabularyDetails Entry="_selectedEntry" />
+    }
+
+    <article class="story-body" aria-label="Story text">
     @foreach (StorySegment segment in _story.Segments)
     {
-        <span
-            class="story-text @(segment.Id == _selectedSegmentId ? "selected-word" : null)"
-            @onmouseenter="() => SelectVocabularyEntry(segment.VocabularyEntryId)"
-            @onclick="() => SelectSegment(segment)"
-            @onfocus="() => SelectVocabularyEntry(segment.VocabularyEntryId)"
-            tabindex="0">
+        @if (segment.Text == "\n\n")
+        {
+            <br />
+            <br />
+        }
+        else if (segment.VocabularyEntryId is not null)
+        {
+            <span
+                class="story-text @(segment.Id == _selectedSegmentId ? "selected-word" : null)"
+                @onmouseenter="() => SelectVocabularyEntry(segment.VocabularyEntryId)"
+                @onclick="() => SelectSegment(segment)"
+                @onfocus="() => SelectVocabularyEntry(segment.VocabularyEntryId)"
+                tabindex="0">
+                @segment.Text
+            </span>
+        }
+        else
+        {
             @segment.Text
-        </span>
+        }
     }
+    </article>
 }
 
 @code
 {
     [Parameter]
-    public required int StoryId { get; set; }
+    public required string StoryId { get; set; }
 
     private Story? _story;
     private VocabularyEntry? _selectedEntry;
-    private int? _selectedSegmentId;
+    private string? _selectedSegmentId;
     protected override void OnParametersSet()
     {
         _story = StoryCatalog.Stories.FirstOrDefault(story => story.Id == StoryId);
     }
 
-    private void SelectVocabularyEntry(int? id)
+    private void SelectVocabularyEntry(string? id)
     {
         if (id != null)
         {

@@ -48,7 +48,7 @@
 	public EventCallback<ReviewRating> OnRatingSelected { get; set; }
 
 	private bool _showAnswer;
-	private int? _previousEntryId;
+	private string? _previousEntryId;
 	private void ToggleAnswer() => _showAnswer = !_showAnswer;
 
 	protected override void OnParametersSet()
