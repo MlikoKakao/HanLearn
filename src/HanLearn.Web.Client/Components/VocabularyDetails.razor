@@ -6,9 +6,13 @@
     <div class="card shadow-sm">
         <div class="card-body">
             <h3>@Entry.WrittenForm</h3>
+            <br />
             <span>@Entry.Meaning</span>
+            <br />
             <span>@string.Join("、", Entry.Pronunciations)</span>
+            <br />
             <span>@Entry.Example</span>
+            <br />
             <button @onclick="addToReview">Add to Review</button>
 
         </div>

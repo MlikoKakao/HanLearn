@@ -15,4 +15,5 @@ public record VocabularyEntry
 	public required List<string> Pronunciations { get; init; }
 	public string? Example { get; init; }
 	public string? AudioFileName { get; init; }
+	public required List<string> CharacterIds { get; init; }
 }
