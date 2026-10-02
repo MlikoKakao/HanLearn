@@ -24,11 +24,11 @@ The same lookup and review flow will also support private pasted plain text as a
 6. As a learner, I want an optional lightweight self-check when choosing a path, so that I can confirm my own starting point without taking a formal placement test.
 7. As a learner, I want short everyday dialogues, so that I can study useful Taiwan Mandarin in focused sessions.
 8. As a learner, I want the first module to cover connected daily-life situations, so that vocabulary and grammar build into practical reading ability.
-9. As a learner, I want a word-level gloss when I hover or select text, so that I can keep reading without opening a separate dictionary tab.
+9. As a learner, I want a word-level gloss when I hover, focus, or select text, and I want to move into that gloss without closing it, so that I can inspect the word while keeping my place in the dialogue.
 10. As a learner, I want each gloss to show a concise contextual meaning and Zhuyin, so that I understand the word used in that exact dialogue.
 11. As a learner, I want access to audio for story and key-vocabulary material, so that I can connect written Taiwan Mandarin with pronunciation.
 12. As a learner, I want to see concise notes on high-value grammar, register, and Taiwan usage, so that I do not need to infer important patterns alone.
-13. As a learner, I want to inspect characters within a word, so that I can learn individual character meanings, readings, and later writing information without receiving misleading character-by-character word definitions.
+13. As a learner, I want to hover, focus, or select a character inside a word gloss to open a nested character gloss, so that I can inspect its meanings and readings without confusing them with the contextual definition of the complete word.
 14. As a learner, I want to add an unfamiliar word or selected character to review from the reader, so that useful discoveries immediately enter my study workflow.
 15. As a learner finishing a dialogue, I want HanLearn to recommend its essential vocabulary for review, so that I do not miss the intended learning targets.
 16. As a learner, I want to edit the recommended review set, so that my SRS workload remains mine to control.
@@ -61,7 +61,8 @@ The same lookup and review flow will also support private pasted plain text as a
 - The initial product is English-interface only. Interface copy and lesson metadata must be structured so future localization remains possible.
 - Curated learning material is version-controlled structured content. A content-management system is not part of the MVP.
 - The first publishable module contains 6–10 connected short daily-life dialogues, with a smaller first vertical slice consisting of one Zhuyin mini-lesson, one dialogue, vocabulary selection, scheduled review, and progress export/import.
-- Dialogues use word-first segmentation. A word card is the primary lookup unit; a user can then open character details from that card.
+- Dialogues use word-first segmentation. A word gloss is the primary lookup unit; a user can then open character details from that gloss.
+- A word gloss is an interactive popover rather than a pointer-only tooltip. It remains open while the learner moves from the story text into it. Its constituent characters can open nested character popovers. The same information must be reachable with keyboard focus and selection on devices without hover.
 - Curated dialogue vocabulary includes human-authored Taiwan-aware glosses, Zhuyin, contextual examples or notes, and development audio. General automatic lookup is reserved for pasted personal text.
 - Development audio may be synthetic. Human-recorded Taiwan Mandarin audio is a later quality upgrade and must not be presented as an equivalent authority.
 - Zhuyin is shown by default throughout guided learning. Pinyin is an explicit future opt-in setting.

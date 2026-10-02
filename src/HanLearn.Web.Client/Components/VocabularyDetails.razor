@@ -2,20 +2,18 @@
 @using HanLearn.Web.Client.Services
 @inject VocabularyReviewStateService ReviewStateService
 
-<div class="col-lg-5 mt-4 mt-lg-0">
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <h3>@Entry.WrittenForm</h3>
-            <br />
-            <span>@Entry.Meaning</span>
-            <br />
-            <span>@string.Join("、", Entry.Pronunciations)</span>
-            <br />
-            <span>@Entry.Example</span>
-            <br />
-            <button @onclick="addToReview">Add to Review</button>
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h3>@Entry.WrittenForm</h3>
+        <br />
+        <span>@Entry.Meaning</span>
+        <br />
+        <span>@string.Join("、", Entry.Pronunciations)</span>
+        <br />
+        <span>@Entry.Example</span>
+        <br />
+        <button @onclick="addToReview">Add to Review</button>
 
-        </div>
     </div>
 </div>
 

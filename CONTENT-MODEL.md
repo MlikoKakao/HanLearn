@@ -40,6 +40,26 @@ For example, a story segment containing `你好` should reference the relevant w
 
 Characters or words with multiple meanings require distinct meaning records. A story segment references the meaning intended in that particular context.
 
+## Reader interaction
+
+The reader uses word-first lookup:
+
+```text
+Story word
+  └─ Word popover
+       ├─ Contextual meaning and pronunciation
+       └─ Constituent characters
+            └─ Character popover
+                 ├─ Character readings
+                 └─ Character meanings
+```
+
+Hovering, focusing, or selecting a story word opens its word popover. The learner must be able to move the pointer from the word into the popover without closing it. Hovering, focusing, or selecting a character inside that popover opens a nested character popover.
+
+The word and character information remain separate: the character popover supplements the contextual word definition and must not imply that a multi-character word's meaning is the sum of its characters. Repeated characters retain their positions in the word but may reference the same reusable character record.
+
+Hover is an enhancement, not the only interaction. The same information must be usable with keyboard focus and on devices that require selection rather than hover.
+
 ## Reviewable items
 
 HanLearn must support reviewing both individual characters and words. Whether something is a character or a word is a semantic distinction and must not be inferred from the length of its written form.
@@ -49,10 +69,7 @@ For example, `好` can be studied either as:
 - A character, including its character-level readings and meanings.
 - A one-character word with a particular meaning in a sentence.
 
-A reviewable item therefore needs an explicit type, initially represented by an enum with values such as:
-
-- `Character`
-- `Word`
+A reviewable item must explicitly distinguish a character from a word. This distinction may be represented by separate types or by a type discriminator; it must not be inferred from the written form's length.
 
 A reviewable item needs the following concepts:
 
@@ -63,8 +80,6 @@ A reviewable item needs the following concepts:
 - Meaning.
 - A reference to the source story and segment where it was encountered.
 - Optional example and audio information.
-
-The authored content model uses `VocabularyEntry` with a neutral `WrittenForm` property because the value may be either a word or a character.
 
 The model should work for at least these examples:
 
@@ -84,26 +99,10 @@ Authored content describes the written form, pronunciation, contextual meaning, 
 - Last rating.
 - Future scheduling information.
 
-`VocabularyReviewState` should reference a vocabulary entry by ID rather than duplicate its authored educational content.
-
-An additional design decision remains: determine whether one vocabulary meaning may generate multiple study-card directions, such as Chinese-to-meaning and meaning-to-Chinese. If multiple card directions are required, vocabulary entries and study cards should be separate concepts. Otherwise, they may remain combined for the first vertical slice.
+Learner review state should reference the ID and type of its authored word or character rather than duplicate the authored educational content.
 
 ## Authoring workflow
 
 The eventual authoring workflow should provide a user-friendly way for story writers to create stories, segment their text, select the intended meanings, and add new meanings where required.
 
 Building that UI should wait until the content schema has been exercised with at least two or three real stories. For the initial vertical slice, content can be authored manually as structured, version-controlled data, such as JSON. This follows the MVP decision that a content-management system is outside the initial scope.
-
-## Next modeling exercise
-
-Before implementing an authoring UI or database, model one realistic story in memory:
-
-1. Choose a short story containing at least one multi-character word.
-2. Include a character or word that has multiple possible meanings.
-3. Identify every entity and stable ID involved.
-4. Ensure every selectable story segment references exactly one contextual meaning.
-5. Ensure character information can be opened without presenting it as the definition of the complete word.
-6. Decide how a reviewable item links back to the story segment where the learner encountered it.
-7. Decide whether vocabulary entries and generated study cards need to be separate concepts.
-
-Recommended vocabulary selection for a lesson has not yet been designed.
