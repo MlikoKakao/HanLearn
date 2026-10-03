@@ -10,6 +10,52 @@ span.story-text {
     text-underline-offset: 0.2rem;
 }
 
+.story-word-anchor {
+    position: relative;
+    display: inline-block;
+}
+
+.word-popover {
+    position: absolute;
+    top: calc(100% + 0.65rem);
+    left: 50%;
+    z-index: 20;
+    display: block;
+    width: min(22rem, 85vw);
+    border: 1px solid #ced4da;
+    border-radius: 0.5rem;
+    background: white;
+    box-shadow: 0 0.5rem 1.25rem rgb(0 0 0 / 20%);
+    color: #212529;
+    font-size: 1rem;
+    line-height: 1.5;
+    transform: translateX(-50%);
+}
+
+.word-popover::before {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    border: 0.5rem solid transparent;
+    border-bottom-color: #ced4da;
+    content: "";
+    transform: translateX(-50%);
+}
+
+.word-popover::after {
+    position: absolute;
+    bottom: calc(100% - 1px);
+    left: 50%;
+    border: 0.43rem solid transparent;
+    border-bottom-color: white;
+    content: "";
+    transform: translateX(-50%);
+}
+
+.word-popover ::deep .vocabulary-details {
+    margin-bottom: 0;
+}
+
 .selected-word {
     background-color: #ffe08a;
     border-radius: 0.2rem;

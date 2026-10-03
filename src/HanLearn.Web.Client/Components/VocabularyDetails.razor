@@ -1,30 +1,125 @@
 @using HanLearn.Web.Client.Data
 @using HanLearn.Web.Client.Services
+@inject VocabularyCatalog VocabularyCatalog
 @inject VocabularyReviewStateService ReviewStateService
 
-<div class="card shadow-sm">
+<div class="vocabulary-details">
     <div class="card-body">
-        <h3>@Entry.WrittenForm</h3>
-        <br />
-        <span>@Entry.Meaning</span>
-        <br />
-        <span>@string.Join("、", Entry.Pronunciations)</span>
-        <br />
-        <span>@Entry.Example</span>
-        <br />
-        <button @onclick="addToReview">Add to Review</button>
+        <div class="written-form" aria-label="@Entry.WrittenForm">
+            @for (int index = 0; index < Entry.CharacterIds.Count; index++)
+            {
+                int characterIndex = index;
+                CharacterEntry? character = FindCharacter(Entry.CharacterIds[index]);
 
+                @if (character is null)
+                {
+                    <span>@Entry.CharacterIds[index]</span>
+                }
+                else
+                {
+                    string? popoverId = $"character-{Entry.Id}-{characterIndex}";
+
+                    <span class="character-anchor"
+                          @onmouseenter="() => ShowCharacter(characterIndex)"
+                          @onmouseleave="() => HideCharacter(characterIndex)"
+                          @onfocusin="() => ShowCharacter(characterIndex)">
+                        <button type="button"
+                                class="character-trigger @(_activeCharacterIndex == characterIndex ? "selected-character" : null)"
+                                aria-expanded="@(_activeCharacterIndex == characterIndex)"
+                                aria-controls="@popoverId"
+                                @onclick="() => ToggleCharacter(characterIndex)">
+                            @character.WrittenForm
+                        </button>
+
+                        @if (_activeCharacterIndex == characterIndex)
+                        {
+                            <span id="@popoverId" class="character-popover">
+                                <strong class="character-popover-title">@character.WrittenForm</strong>
+                                @foreach (CharacterReading reading in character.Readings)
+                                {
+                                    <span class="character-reading">
+                                        <span>@reading.Pronunciations</span>
+                                        <span>@string.Join("; ", reading.Meanings)</span>
+                                    </span>
+                                }
+                                <button type="button"
+                                        class="btn btn-sm btn-primary character-review-button"
+                                        @onclick="() => AddCharacterToReview(character.Id)">
+                                    Add character to review
+                                </button>
+                            </span>
+                        }
+                    </span>
+                }
+            }
+        </div>
+
+        <p class="vocabulary-pronunciation">@string.Join("、", Entry.Pronunciations)</p>
+        <p>@Entry.Meaning</p>
+
+        @if (!string.IsNullOrWhiteSpace(Entry.Example))
+        {
+            <p class="vocabulary-example">@Entry.Example</p>
+        }
+
+        <button type="button" class="btn btn-primary" @onclick="AddToReview">
+            Add to Review
+        </button>
     </div>
 </div>
-
 
 @code
 {
     [Parameter]
     public required VocabularyEntry Entry { get; set; }
 
-    private void addToReview()
+    private int? _activeCharacterIndex;
+    private int? _pinnedCharacterIndex;
+    private string? _previousEntryId;
+
+    protected override void OnParametersSet()
+    {
+        if (_previousEntryId == Entry.Id)
+        {
+            return;
+        }
+
+        _previousEntryId = Entry.Id;
+        _activeCharacterIndex = null;
+        _pinnedCharacterIndex = null;
+    }
+
+    private CharacterEntry? FindCharacter(string id)
+    {
+        return VocabularyCatalog.CharacterEntries.FirstOrDefault(character => character.Id == id);
+    }
+
+    private void ShowCharacter(int index)
+    {
+        _activeCharacterIndex = index;
+    }
+
+    private void HideCharacter(int index)
+    {
+        if (_pinnedCharacterIndex != index)
+        {
+            _activeCharacterIndex = _pinnedCharacterIndex;
+        }
+    }
+
+    private void ToggleCharacter(int index)
+    {
+        _pinnedCharacterIndex = _pinnedCharacterIndex == index ? null : index;
+        _activeCharacterIndex = _pinnedCharacterIndex ?? index;
+    }
+
+    private void AddToReview()
     {
         ReviewStateService.AddToReview(Entry.Id);
+    }
+
+    private void AddCharacterToReview(string characterId)
+    {
+        ReviewStateService.AddCharacterToReview(characterId);
     }
 }

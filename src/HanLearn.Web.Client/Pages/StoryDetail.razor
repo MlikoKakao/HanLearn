@@ -11,11 +11,6 @@
     <PageTitle>@_story.Title</PageTitle>
     <h1>@_story.Title</h1>
 
-    @if (_selectedEntry != null)
-    {
-        <VocabularyDetails Entry="_selectedEntry" />
-    }
-
     <article class="story-body" aria-label="Story text">
     @foreach (StorySegment segment in _story.Segments)
     {
@@ -26,14 +21,24 @@
         }
         else if (segment.VocabularyEntryId is not null)
         {
-            <span
-                class="story-text @(segment.Id == _selectedSegmentId ? "selected-word" : null)"
-                @onmouseenter="() => SelectVocabularyEntry(segment.VocabularyEntryId)"
-                @onclick="() => SelectSegment(segment)"
-                @onfocus="() => SelectVocabularyEntry(segment.VocabularyEntryId)"
-                tabindex="0">
-                @segment.Text
-            </span>
+            <div class="story-word-anchor"
+                 @onmouseenter="() => ShowVocabularyEntry(segment)"
+                 @onmouseleave="() => HideVocabularyEntry(segment)">
+                <span
+                    class="story-text @(segment.Id == _selectedSegmentId ? "selected-word" : null)"
+                    @onclick="() => SelectSegment(segment)"
+                    @onfocus="() => ShowVocabularyEntry(segment)"
+                    tabindex="0">
+                    @segment.Text
+                </span>
+
+                @if (_activeSegmentId == segment.Id && _selectedEntry is not null)
+                {
+                    <div class="word-popover">
+                        <VocabularyDetails Entry="_selectedEntry" />
+                    </div>
+                }
+            </div>
         }
         else
         {
@@ -50,24 +55,43 @@
 
     private Story? _story;
     private VocabularyEntry? _selectedEntry;
+    private string? _activeSegmentId;
     private string? _selectedSegmentId;
     protected override void OnParametersSet()
     {
         _story = StoryCatalog.Stories.FirstOrDefault(story => story.Id == StoryId);
     }
 
-    private void SelectVocabularyEntry(string? id)
+    private void ShowVocabularyEntry(StorySegment segment)
     {
-        if (id != null)
+        _activeSegmentId = segment.Id;
+        _selectedEntry = VocabularyCatalog.Entries.FirstOrDefault(
+            entry => entry.Id == segment.VocabularyEntryId);
+    }
+
+    private void HideVocabularyEntry(StorySegment segment)
+    {
+        if (_selectedSegmentId != segment.Id)
         {
-            _selectedEntry = VocabularyCatalog.Entries.FirstOrDefault(
-            entry => entry.Id == id);
+            _activeSegmentId = _selectedSegmentId;
+            _selectedEntry = FindSelectedEntry();
         }
     }
 
     private void SelectSegment(StorySegment segment)
     {
-        _selectedSegmentId = segment.Id;
-        SelectVocabularyEntry(segment.VocabularyEntryId);
+        _selectedSegmentId = _selectedSegmentId == segment.Id ? null : segment.Id;
+        _activeSegmentId = _selectedSegmentId ?? segment.Id;
+        _selectedEntry = VocabularyCatalog.Entries.FirstOrDefault(
+            entry => entry.Id == segment.VocabularyEntryId);
+    }
+
+    private VocabularyEntry? FindSelectedEntry()
+    {
+        return _story?.Segments
+            .FirstOrDefault(segment => segment.Id == _selectedSegmentId)
+            ?.VocabularyEntryId is string entryId
+                ? VocabularyCatalog.Entries.FirstOrDefault(entry => entry.Id == entryId)
+                : null;
     }
 }

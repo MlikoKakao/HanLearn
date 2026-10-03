@@ -10,9 +10,20 @@ public class VocabularyReviewStateService
 
     public void AddToReview(string vocabularyEntryId)
     {
+        AddToReview(vocabularyEntryId, ReviewItemKind.Vocabulary);
+    }
+
+    public void AddCharacterToReview(string characterEntryId)
+    {
+        AddToReview(characterEntryId, ReviewItemKind.Character);
+    }
+
+    private void AddToReview(string entryId, ReviewItemKind kind)
+    {
         VocabularyReviewState reviewState = new()
         {
-            VocabularyEntryId = vocabularyEntryId,
+            EntryId = entryId,
+            Kind = kind,
             AddedAt = DateTime.UtcNow
         };
         _reviewStates.Add(reviewState);

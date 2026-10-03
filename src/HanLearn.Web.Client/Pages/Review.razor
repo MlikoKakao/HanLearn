@@ -15,36 +15,42 @@
 else
 {
 <ReviewCard
-	Entry="@_currentEntry"
-	OnRatingSelected="@RatingSelected" 
-	/>
+		VocabularyEntry="@CurrentVocabularyEntry"
+		CharacterEntry="@CurrentCharacterEntry"
+		OnRatingSelected="@RatingSelected"
+		/>
 }
 
 
 
 @code {
-    private VocabularyEntry? _currentEntry;
+    private VocabularyReviewState? _currentReviewState;
     private int _entryIndex;
-    IReadOnlyList<VocabularyEntry> vocabularyEntries = [];
+    private IReadOnlyList<VocabularyReviewState> _reviewStates = [];
+
+    private VocabularyEntry? CurrentVocabularyEntry =>
+        _currentReviewState?.Kind == ReviewItemKind.Vocabulary
+            ? VocabularyCatalog.Entries.FirstOrDefault(entry => entry.Id == _currentReviewState.EntryId)
+            : null;
+
+    private CharacterEntry? CurrentCharacterEntry =>
+        _currentReviewState?.Kind == ReviewItemKind.Character
+            ? VocabularyCatalog.CharacterEntries.FirstOrDefault(entry => entry.Id == _currentReviewState.EntryId)
+            : null;
 
     private void RatingSelected(ReviewRating rating)
     {
-        _entryIndex = (_entryIndex + 1) % vocabularyEntries.Count;
-        _currentEntry = vocabularyEntries[_entryIndex];
+        _entryIndex = (_entryIndex + 1) % _reviewStates.Count;
+        _currentReviewState = _reviewStates[_entryIndex];
     }
 
     protected override void OnInitialized()
     {
-        HashSet<string> savedIds = ReviewStateService.ReviewStates
-            .Select(state => state.VocabularyEntryId)
-            .ToHashSet();
-        vocabularyEntries = VocabularyCatalog.Entries
-        .Where(entry => savedIds.Contains(entry.Id))
-        .ToList();
+        _reviewStates = ReviewStateService.ReviewStates;
 
-        if (vocabularyEntries.Count > 0)
+        if (_reviewStates.Count > 0)
         {
-            _currentEntry = vocabularyEntries[0];
+            _currentReviewState = _reviewStates[0];
         }
     }
 }

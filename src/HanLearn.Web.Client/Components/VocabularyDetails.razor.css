@@ -1,0 +1,104 @@
+.vocabulary-details {
+    margin-bottom: 1.5rem;
+}
+
+.written-form {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    font-size: 1.75rem;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 0.5rem;
+}
+
+.character-anchor {
+    position: relative;
+    display: inline-block;
+}
+
+.character-trigger {
+    appearance: none;
+    border: 0;
+    border-radius: 0.2rem;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+    line-height: inherit;
+    padding: 0 0.05em;
+    text-decoration: underline dotted;
+    text-underline-offset: 0.2rem;
+}
+
+.character-trigger:hover,
+.character-trigger:focus-visible,
+.selected-character {
+    background-color: #ffe08a;
+    outline-offset: 0.15rem;
+}
+
+.character-popover {
+    position: absolute;
+    bottom: calc(100% + 0.6rem);
+    left: 50%;
+    z-index: 10;
+    display: block;
+    width: max-content;
+    max-width: min(18rem, 80vw);
+    padding: 0.75rem;
+    border: 1px solid #ced4da;
+    border-radius: 0.4rem;
+    background: white;
+    box-shadow: 0 0.35rem 1rem rgb(0 0 0 / 18%);
+    color: #212529;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.4;
+    text-align: left;
+    transform: translateX(-50%);
+}
+
+.character-popover::after {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    border: 0.45rem solid transparent;
+    border-top-color: white;
+    content: "";
+    transform: translateX(-50%);
+}
+
+.character-popover::before {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    height: 0.6rem;
+    content: "";
+}
+
+.character-popover-title,
+.character-reading,
+.character-reading span {
+    display: block;
+}
+
+.character-popover-title {
+    margin-bottom: 0.35rem;
+    font-size: 1.25rem;
+}
+
+.character-reading + .character-reading {
+    margin-top: 0.5rem;
+}
+
+.character-review-button {
+    margin-top: 0.65rem;
+    white-space: nowrap;
+}
+
+.vocabulary-pronunciation,
+.vocabulary-example {
+    color: #495057;
+}

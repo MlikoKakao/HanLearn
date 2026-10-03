@@ -1,19 +1,23 @@
 @using HanLearn.Web.Client.Data
 <div class="border border-primary rounded p-3 shadow-sm">
-	@Entry?.WrittenForm
-	@if (_showAnswer)
-	{
-		<p>@Entry?.Example</p>
-		<p>
-			@if(Entry != null)
+		@(VocabularyEntry?.WrittenForm ?? CharacterEntry?.WrittenForm)
+		@if (_showAnswer)
+		{
+			@if (VocabularyEntry is not null)
 			{
-				@foreach (string pronunciation in Entry.Pronunciations)
+				<p>@VocabularyEntry.Example</p>
+				<p>@string.Join("、", VocabularyEntry.Pronunciations)</p>
+				<p>@VocabularyEntry.Meaning</p>
+			}
+			else if (CharacterEntry is not null)
+			{
+				@foreach (CharacterReading reading in CharacterEntry.Readings)
 				{
-					@pronunciation
+					<p>@reading.Pronunciations</p>
+					<p>@string.Join("; ", reading.Meanings)</p>
 				}
 			}
-		</p>
-		<button @onclick="() => OnRatingSelected.InvokeAsync(ReviewRating.Again)">Again</button>
+			<button @onclick="() => OnRatingSelected.InvokeAsync(ReviewRating.Again)">Again</button>
 		<button @onclick="() => OnRatingSelected.InvokeAsync(ReviewRating.Hard)">Hard</button	>
 		<button @onclick="() => OnRatingSelected.InvokeAsync(ReviewRating.Good)">Good</button>
 		<button @onclick="() => OnRatingSelected.InvokeAsync(ReviewRating.Easy)">Easy</button>
@@ -43,7 +47,9 @@
 @code
 {
 	[Parameter]
-	public VocabularyEntry? Entry { get; set; }
+	public VocabularyEntry? VocabularyEntry { get; set; }
+	[Parameter]
+	public CharacterEntry? CharacterEntry { get; set; }
 	[Parameter]
 	public EventCallback<ReviewRating> OnRatingSelected { get; set; }
 
@@ -53,10 +59,15 @@
 
 	protected override void OnParametersSet()
 	{
-		if (Entry?.Id != _previousEntryId)
-		{
-			_showAnswer = false;
-			_previousEntryId = Entry?.Id;
+			string? entryId = VocabularyEntry is not null
+				? $"vocabulary:{VocabularyEntry.Id}"
+				: CharacterEntry is not null
+					? $"character:{CharacterEntry.Id}"
+					: null;
+			if (entryId != _previousEntryId)
+			{
+				_showAnswer = false;
+				_previousEntryId = entryId;
 		}
 	}
 }
