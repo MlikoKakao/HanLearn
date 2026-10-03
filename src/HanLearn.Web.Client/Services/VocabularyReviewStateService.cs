@@ -1,9 +1,14 @@
+using FSRS.Core.Models;
+using FSRS.Core.Services;
+
 using HanLearn.Web.Client.Data;
+
 
 namespace HanLearn.Web.Client.Services;
 
 public class VocabularyReviewStateService
 {
+
     private readonly List<VocabularyReviewState> _reviewStates = [];
 
     public IReadOnlyList<VocabularyReviewState> ReviewStates => _reviewStates;
@@ -24,7 +29,7 @@ public class VocabularyReviewStateService
         {
             EntryId = entryId,
             Kind = kind,
-            AddedAt = DateTime.UtcNow
+            Card = new(){}
         };
         _reviewStates.Add(reviewState);
     }

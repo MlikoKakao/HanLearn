@@ -34,7 +34,7 @@
                         @if (_activeCharacterIndex == characterIndex)
                         {
                             <span id="@popoverId" class="character-popover">
-                                <strong class="character-popover-title">@character.WrittenForm</strong>
+                                <span class="character-popover-title">@character.WrittenForm</span>
                                 @foreach (CharacterReading reading in character.Readings)
                                 {
                                     <span class="character-reading">
