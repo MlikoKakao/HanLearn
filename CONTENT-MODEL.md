@@ -92,14 +92,14 @@ The model should work for at least these examples:
 
 Authored educational content and learner-specific state have different responsibilities.
 
-Authored content describes the written form, pronunciation, contextual meaning, examples, and source context. `VocabularyReviewState` describes the learner's relationship with a reviewable item, such as:
+Authored content describes the written form, pronunciation, contextual meaning, examples, and source context. `VocabularyReviewState` describes the learner's relationship with a reviewable vocabulary entry, such as:
 
 - When the learner added it.
 - Review count.
 - Last rating.
 - Future scheduling information.
 
-Learner review state should reference the ID and type of its authored word or character rather than duplicate the authored educational content.
+Learner review state should reference the ID of its authored vocabulary entry rather than duplicate the authored educational content.
 
 ## Authoring workflow
 

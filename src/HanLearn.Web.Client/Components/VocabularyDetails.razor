@@ -42,11 +42,6 @@
                                         <span>@string.Join("; ", reading.Meanings)</span>
                                     </span>
                                 }
-                                <button type="button"
-                                        class="btn btn-sm btn-primary character-review-button"
-                                        @onclick="() => AddCharacterToReview(character.Id)">
-                                    Add character to review
-                                </button>
                             </span>
                         }
                     </span>
@@ -116,10 +111,5 @@
     private void AddToReview()
     {
         ReviewStateService.AddToReview(Entry.Id);
-    }
-
-    private void AddCharacterToReview(string characterId)
-    {
-        ReviewStateService.AddCharacterToReview(characterId);
     }
 }

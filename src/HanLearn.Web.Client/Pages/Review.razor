@@ -2,6 +2,7 @@
 @using HanLearn.Web.Client.Components
 @using HanLearn.Web.Client.Services
 @using HanLearn.Web.Client.Data
+@using FSRS.Core.Enums
 @inject VocabularyCatalog VocabularyCatalog
 @inject VocabularyReviewStateService ReviewStateService
 
@@ -14,11 +15,14 @@
 }
 else
 {
-<ReviewCard
-		VocabularyEntry="@CurrentVocabularyEntry"
-		CharacterEntry="@CurrentCharacterEntry"
-		OnRatingSelected="@RatingSelected"
-		/>
+	@if (CurrentVocabularyEntry is VocabularyEntry entry)
+	{
+		<ReviewCard Entry="@entry" OnRatingSelected="@RatingSelected" />
+	}
+	else
+	{
+		<p>The vocabulary entry for this review card could not be found.</p>
+	}
 }
 
 
@@ -29,19 +33,20 @@ else
     private IReadOnlyList<VocabularyReviewState> _reviewStates = [];
 
     private VocabularyEntry? CurrentVocabularyEntry =>
-        _currentReviewState?.Kind == ReviewItemKind.Vocabulary
-            ? VocabularyCatalog.Entries.FirstOrDefault(entry => entry.Id == _currentReviewState.EntryId)
-            : null;
+        _currentReviewState is null
+            ? null
+            : VocabularyCatalog.Entries.FirstOrDefault(
+                entry => entry.Id == _currentReviewState.VocabularyEntryId);
 
-    private CharacterEntry? CurrentCharacterEntry =>
-        _currentReviewState?.Kind == ReviewItemKind.Character
-            ? VocabularyCatalog.CharacterEntries.FirstOrDefault(entry => entry.Id == _currentReviewState.EntryId)
-            : null;
-
-    private void RatingSelected(ReviewRating rating)
+    private void RatingSelected(Rating rating)
     {
-        _entryIndex = (_entryIndex + 1) % _reviewStates.Count;
-        _currentReviewState = _reviewStates[_entryIndex];
+        if (_currentReviewState is not null)
+        {
+            ReviewStateService.Review(
+                CurrentVocabularyEntry.Id,
+                rating,
+                DateTime.UtcNow);
+        }
     }
 
     protected override void OnInitialized()
