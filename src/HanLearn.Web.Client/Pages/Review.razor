@@ -1,35 +1,31 @@
 @page "/review"
-@using HanLearn.Web.Client.Components
-@using HanLearn.Web.Client.Services
-@using HanLearn.Web.Client.Data
 @using FSRS.Core.Enums
+@using HanLearn.Web.Client.Components
+@using HanLearn.Web.Client.Data
+@using HanLearn.Web.Client.Services
 @inject VocabularyCatalog VocabularyCatalog
 @inject VocabularyReviewStateService ReviewStateService
 
 <PageTitle>Review</PageTitle>
 
 <h1>Review</h1>
-@if (ReviewStateService.ReviewStates.Count == 0)
+@if (_currentReviewState is null)
 {
 	<span>You have no cards to review!</span>
 }
+else if (CurrentVocabularyEntry is VocabularyEntry entry)
+{
+    <ReviewCard Entry="@entry" OnRatingSelected="@RatingSelected" />
+}
 else
 {
-	@if (CurrentVocabularyEntry is VocabularyEntry entry)
-	{
-		<ReviewCard Entry="@entry" OnRatingSelected="@RatingSelected" />
-	}
-	else
-	{
-		<p>The vocabulary entry for this review card could not be found.</p>
-	}
+    <p>The vocabulary entry for this review card could not be found.</p>
 }
 
 
 
 @code {
     private VocabularyReviewState? _currentReviewState;
-    private int _entryIndex;
     private IReadOnlyList<VocabularyReviewState> _reviewStates = [];
 
     private VocabularyEntry? CurrentVocabularyEntry =>
@@ -43,15 +39,24 @@ else
         if (_currentReviewState is not null)
         {
             ReviewStateService.Review(
-                CurrentVocabularyEntry.Id,
+                _currentReviewState.VocabularyEntryId,
                 rating,
                 DateTime.UtcNow);
+            _reviewStates = ReviewStateService.GetDueCards();
+            if (_reviewStates.Count > 0)
+            {
+                _currentReviewState = _reviewStates[0];
+            }
+            else
+            {
+                _currentReviewState = null;
+            }
         }
     }
 
     protected override void OnInitialized()
     {
-        _reviewStates = ReviewStateService.ReviewStates;
+        _reviewStates = ReviewStateService.GetDueCards();
 
         if (_reviewStates.Count > 0)
         {

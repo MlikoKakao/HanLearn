@@ -41,4 +41,12 @@ public class VocabularyReviewStateService
             reviewedState.Card = updatedCard.UpdatedCard;
         }
     }
+
+    public List<VocabularyReviewState> GetDueCards()
+    {
+        var now = DateTime.UtcNow;
+        List<VocabularyReviewState> dueCards;
+        dueCards = _reviewStates.Where(entry => entry.Card.Due <= now).OrderBy(entry => entry.Card.Due).ToList();
+        return dueCards;
+    }
 }

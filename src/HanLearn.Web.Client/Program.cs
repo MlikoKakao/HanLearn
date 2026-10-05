@@ -10,12 +10,12 @@ builder.Services.AddSingleton<VocabularyCatalog>();
 builder.Services.AddScoped<StoryCatalog>();
 builder.Services.AddTransient<ExampleVocabularySeeder>();
 builder.Services.AddTransient<ExampleStorySeeder>();
-builder.Services.AddScoped<VocabularyReviewStateService>();
 builder.Services.AddFSRS(options =>
 {
     options.DesiredRetention = 0.9;
     options.MaximumInterval = 365;
 });
+builder.Services.AddScoped<VocabularyReviewStateService>();
 
 var host = builder.Build();
 host.Services.GetRequiredService<ExampleVocabularySeeder>().Seed();
