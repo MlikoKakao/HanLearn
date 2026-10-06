@@ -5,6 +5,7 @@
 @using HanLearn.Web.Client.Services
 @inject VocabularyCatalog VocabularyCatalog
 @inject VocabularyReviewStateService ReviewStateService
+@inject JSRuntime JS
 
 <PageTitle>Review</PageTitle>
 
@@ -54,8 +55,9 @@ else
         }
     }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
+        await ReviewStateService.LoadAsync();
         _reviewStates = ReviewStateService.GetDueCards();
 
         if (_reviewStates.Count > 0)
@@ -63,4 +65,5 @@ else
             _currentReviewState = _reviewStates[0];
         }
     }
+
 }

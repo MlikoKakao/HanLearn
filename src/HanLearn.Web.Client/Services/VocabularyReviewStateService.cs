@@ -3,8 +3,10 @@ using FSRS.Core.Interfaces;
 
 using HanLearn.Web.Client.Data;
 using FSRS.Core.Enums;
+using System.Text.Json;
 
 namespace HanLearn.Web.Client.Services;
+
 
 public class VocabularyReviewStateService
 {
@@ -48,5 +50,19 @@ public class VocabularyReviewStateService
         List<VocabularyReviewState> dueCards;
         dueCards = _reviewStates.Where(entry => entry.Card.Due <= now).OrderBy(entry => entry.Card.Due).ToList();
         return dueCards;
+    }
+
+    public string Serialize(VocabularyReviewState reviewState)
+    {
+        return JsonSerializer.Serialize(reviewState);
+    }
+    public List<VocabularyReviewState> Deserialize(string reviewState)
+    {
+        var json = JsonSerializer.Deserialize<List<VocabularyReviewState>>(reviewState);
+        if (json is null)
+        {
+            return json = [];
+        }
+        return json;
     }
 }
