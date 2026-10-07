@@ -40,11 +40,11 @@ else
                 entry => entry.Id == _currentReviewState.VocabularyEntryId);
 
     private bool _isLoading = true;
-    private void RatingSelected(Rating rating)
+    private async Task RatingSelected(Rating rating)
     {
         if (_currentReviewState is not null)
         {
-            ReviewStateService.Review(
+            await ReviewStateService.ReviewAsync(
                 _currentReviewState.VocabularyEntryId,
                 rating,
                 DateTime.UtcNow);

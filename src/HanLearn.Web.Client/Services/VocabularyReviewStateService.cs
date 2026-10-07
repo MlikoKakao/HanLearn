@@ -40,8 +40,9 @@ public class VocabularyReviewStateService
         await SaveAsync();
     }
 
-    public void Review(string vocabularyEntryId, Rating rating, DateTime reviewDateTime)
+    public async Task ReviewAsync(string vocabularyEntryId, Rating rating, DateTime reviewDateTime)
     {
+        await LoadAsync();
         VocabularyReviewState? reviewedState = _reviewStates.FirstOrDefault(entry => entry.VocabularyEntryId == vocabularyEntryId);
         if (reviewedState is null)
         {
@@ -52,6 +53,7 @@ public class VocabularyReviewStateService
             var updatedCard = _scheduler.ReviewCard(reviewedState.Card, rating, reviewDateTime);
             reviewedState.Card = updatedCard.UpdatedCard;
         }
+        await SaveAsync();
     }
 
     public List<VocabularyReviewState> GetDueCards()
@@ -62,7 +64,7 @@ public class VocabularyReviewStateService
         return dueCards;
     }
 
-    public string Serialize()
+    private string Serialize()
     {
         List<StoredVocabularyReviewState> storedStates = _reviewStates
             .Select(reviewState => new StoredVocabularyReviewState
@@ -83,27 +85,27 @@ public class VocabularyReviewStateService
 
         return JsonSerializer.Serialize(storedStates);
     }
-    public List<VocabularyReviewState> Deserialize(string reviewState)
+    private List<VocabularyReviewState> Deserialize(string reviewState)
     {
-        var json = JsonSerializer.Deserialize<List<StoredVocabularyReviewState>>(reviewState);
+        var storedStates = JsonSerializer.Deserialize<List<StoredVocabularyReviewState>>(reviewState);
         List<VocabularyReviewState> translatedList;
-        if (json is null)
+        if (storedStates is null)
         {
-            return translatedList = [];
+            return [];
         }
-        translatedList = json
-        .Select(json => new VocabularyReviewState
+        translatedList = storedStates
+        .Select(storedStates => new VocabularyReviewState
         {
-            VocabularyEntryId = json.VocabularyEntryId,
+            VocabularyEntryId = storedStates.VocabularyEntryId,
                 Card = new Card
                 {
-                    CardId = json.Card.CardId,
-                    State = json.Card.State,
-                    Step = json.Card.Step,
-                    Stability = json.Card.Stability,
-                    Difficulty = json.Card.Difficulty,
-                    Due = json.Card.Due,
-                    LastReview = json.Card.LastReview
+                    CardId = storedStates.Card.CardId,
+                    State = storedStates.Card.State,
+                    Step = storedStates.Card.Step,
+                    Stability = storedStates.Card.Stability,
+                    Difficulty = storedStates.Card.Difficulty,
+                    Due = storedStates.Card.Due,
+                    LastReview = storedStates.Card.LastReview
                 }
             })
             .ToList();
