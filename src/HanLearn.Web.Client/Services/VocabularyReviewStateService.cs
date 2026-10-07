@@ -64,7 +64,7 @@ public class VocabularyReviewStateService
         return dueCards;
     }
 
-    private string Serialize()
+    public string Serialize()
     {
         List<StoredVocabularyReviewState> storedStates = _reviewStates
             .Select(reviewState => new StoredVocabularyReviewState
@@ -140,4 +140,6 @@ public class VocabularyReviewStateService
             json
         );
     }
+
+
 }

@@ -5,10 +5,13 @@
 @using HanLearn.Web.Client.Services
 @inject VocabularyCatalog VocabularyCatalog
 @inject VocabularyReviewStateService ReviewStateService
+@inject IJSRuntime JS
 
 <PageTitle>Review</PageTitle>
 
 <h1>Review</h1>
+
+<button @onclick="ExportAsync">Export</button>
 
 @if (_isLoading)
 {
@@ -72,6 +75,21 @@ else
         }
         _isLoading = false;
         StateHasChanged();
+    }
+
+    private async Task ExportAsync()
+    {
+        await ReviewStateService.LoadAsync();
+
+        string json = ReviewStateService.Serialize();
+        byte[] bytes = System.Text.Encoding.UTF8.GetBytes(json);
+
+        using var fileStream = new MemoryStream(bytes);
+        using var streamReference = new DotNetStreamReference(fileStream);
+        
+        await JS.InvokeVoidAsync("downloadFileFromStream",
+        "hanlearn-review-data.json",
+        streamReference);
     }
 
 }
