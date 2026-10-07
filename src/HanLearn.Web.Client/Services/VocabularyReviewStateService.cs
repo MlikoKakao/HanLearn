@@ -1,5 +1,6 @@
 using FSRS.Core.Models;
 using FSRS.Core.Interfaces;
+using Microsoft.JSInterop;
 
 using HanLearn.Web.Client.Data;
 using FSRS.Core.Enums;
@@ -14,13 +15,21 @@ public class VocabularyReviewStateService
 
     public IReadOnlyList<VocabularyReviewState> ReviewStates => _reviewStates;
     private readonly IScheduler _scheduler;
+    private readonly IJSRuntime _jsRuntime;
+    private bool _isLoaded;
 
-    public VocabularyReviewStateService(IScheduler scheduler)
+    public VocabularyReviewStateService(IScheduler scheduler, IJSRuntime js)
     {
         _scheduler = scheduler;
+        _jsRuntime = js;
     }
-    public void AddToReview(string vocabularyEntryId)
+    public async Task AddToReviewAsync(string vocabularyEntryId)
     {
+        await LoadAsync();
+        if (_reviewStates.Any(r => r.VocabularyEntryId == vocabularyEntryId))
+        {
+            return;
+        }
         VocabularyReviewState reviewState = new()
         {
             VocabularyEntryId = vocabularyEntryId,
@@ -28,6 +37,7 @@ public class VocabularyReviewStateService
         };
 
         _reviewStates.Add(reviewState);
+        await SaveAsync();
     }
 
     public void Review(string vocabularyEntryId, Rating rating, DateTime reviewDateTime)
@@ -52,17 +62,80 @@ public class VocabularyReviewStateService
         return dueCards;
     }
 
-    public string Serialize(VocabularyReviewState reviewState)
+    public string Serialize()
     {
-        return JsonSerializer.Serialize(reviewState);
+        List<StoredVocabularyReviewState> storedStates = _reviewStates
+            .Select(reviewState => new StoredVocabularyReviewState
+            {
+                VocabularyEntryId = reviewState.VocabularyEntryId,
+                Card = new StoredCard
+                {
+                    CardId = reviewState.Card.CardId,
+                    State = reviewState.Card.State,
+                    Step = reviewState.Card.Step,
+                    Stability = reviewState.Card.Stability,
+                    Difficulty = reviewState.Card.Difficulty,
+                    Due = reviewState.Card.Due,
+                    LastReview = reviewState.Card.LastReview
+                }
+            })
+            .ToList();
+
+        return JsonSerializer.Serialize(storedStates);
     }
     public List<VocabularyReviewState> Deserialize(string reviewState)
     {
-        var json = JsonSerializer.Deserialize<List<VocabularyReviewState>>(reviewState);
+        var json = JsonSerializer.Deserialize<List<StoredVocabularyReviewState>>(reviewState);
+        List<VocabularyReviewState> translatedList;
         if (json is null)
         {
-            return json = [];
+            return translatedList = [];
         }
-        return json;
+        translatedList = json
+        .Select(json => new VocabularyReviewState
+        {
+            VocabularyEntryId = json.VocabularyEntryId,
+                Card = new Card
+                {
+                    CardId = json.Card.CardId,
+                    State = json.Card.State,
+                    Step = json.Card.Step,
+                    Stability = json.Card.Stability,
+                    Difficulty = json.Card.Difficulty,
+                    Due = json.Card.Due,
+                    LastReview = json.Card.LastReview
+                }
+            })
+            .ToList();
+        return translatedList;
+    }
+    
+    public async Task LoadAsync()
+    {
+        if (_isLoaded) { return; }
+        string? storedJson = await _jsRuntime.InvokeAsync<string?>(
+            "localStorage.getItem",
+            "hanlearn.vocabulary-review-states"
+        );
+        if (string.IsNullOrWhiteSpace(storedJson))
+        {
+            _isLoaded = true;
+            return;
+        }
+        List<VocabularyReviewState> restoredStates = Deserialize(storedJson);
+        _reviewStates.Clear();
+        _reviewStates.AddRange(restoredStates);
+        _isLoaded = true;
+
+    }
+
+    public async Task SaveAsync()
+    {
+        string json = Serialize();
+        await _jsRuntime.InvokeVoidAsync(
+            "localStorage.setItem",
+            "hanlearn.vocabulary-review-states",
+            json
+        );
     }
 }

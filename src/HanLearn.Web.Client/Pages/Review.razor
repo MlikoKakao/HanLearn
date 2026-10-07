@@ -5,12 +5,16 @@
 @using HanLearn.Web.Client.Services
 @inject VocabularyCatalog VocabularyCatalog
 @inject VocabularyReviewStateService ReviewStateService
-@inject JSRuntime JS
 
 <PageTitle>Review</PageTitle>
 
 <h1>Review</h1>
-@if (_currentReviewState is null)
+
+@if (_isLoading)
+{
+    <p>Loading reviews...</p>
+}
+else if (_currentReviewState is null)
 {
 	<span>You have no cards to review!</span>
 }
@@ -35,6 +39,7 @@ else
             : VocabularyCatalog.Entries.FirstOrDefault(
                 entry => entry.Id == _currentReviewState.VocabularyEntryId);
 
+    private bool _isLoading = true;
     private void RatingSelected(Rating rating)
     {
         if (_currentReviewState is not null)
@@ -55,8 +60,9 @@ else
         }
     }
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if (!firstRender) { return; }
         await ReviewStateService.LoadAsync();
         _reviewStates = ReviewStateService.GetDueCards();
 
@@ -64,6 +70,8 @@ else
         {
             _currentReviewState = _reviewStates[0];
         }
+        _isLoading = false;
+        StateHasChanged();
     }
 
 }

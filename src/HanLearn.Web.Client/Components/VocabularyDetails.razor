@@ -108,8 +108,8 @@
         _activeCharacterIndex = _pinnedCharacterIndex ?? index;
     }
 
-    private void AddToReview()
+    private async Task AddToReview()
     {
-        ReviewStateService.AddToReview(Entry.Id);
+        await ReviewStateService.AddToReviewAsync(Entry.Id);
     }
 }
