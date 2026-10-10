@@ -3,6 +3,7 @@
 @using HanLearn.Web.Client.Components
 @using HanLearn.Web.Client.Data
 @using HanLearn.Web.Client.Services
+@using System.Text.Json
 @inject VocabularyCatalog VocabularyCatalog
 @inject VocabularyReviewStateService ReviewStateService
 @inject IJSRuntime JS
@@ -12,6 +13,20 @@
 <h1>Review</h1>
 
 <button @onclick="ExportAsync">Export</button>
+
+<label for="review-backup-file" class="btn btn-primary">
+    Restore backup
+</label>
+
+<InputFile id="review-backup-file"
+           class="visually-hidden"
+           accept=".json,application/json"
+           OnChange="ImportAsync" />
+
+@if (_importError is not null)
+{
+    <p class="text-danger" role="alert">@_importError</p>
+}
 
 @if (_isLoading)
 {
@@ -35,6 +50,9 @@ else
 @code {
     private VocabularyReviewState? _currentReviewState;
     private IReadOnlyList<VocabularyReviewState> _reviewStates = [];
+    private string? _importError;
+
+    private const long MaxImportFileSize = 500_000;
 
     private VocabularyEntry? CurrentVocabularyEntry =>
         _currentReviewState is null
@@ -86,10 +104,41 @@ else
 
         using var fileStream = new MemoryStream(bytes);
         using var streamReference = new DotNetStreamReference(fileStream);
-        
+
         await JS.InvokeVoidAsync("downloadFileFromStream",
         "hanlearn-review-data.json",
         streamReference);
+    }
+
+
+    private async Task ImportAsync(InputFileChangeEventArgs e)
+    {
+        IBrowserFile file = e.File;
+        _importError = null;
+
+        if (file.Size > MaxImportFileSize)
+        {
+            _importError = "The selected file is too large. Review backups must be smaller than 500 KB.";
+            return;
+        }
+
+        try
+        {
+            await using Stream stream = file.OpenReadStream(MaxImportFileSize);
+            await ReviewStateService.ImportAsync(stream);
+
+            _reviewStates = ReviewStateService.GetDueCards();
+            _currentReviewState = _reviewStates.FirstOrDefault();
+        }
+        catch (JsonException)
+        {
+            _importError = "The selected file isn't a valid HanLearn review backup.";
+        }
+        catch (IOException)
+        {
+            _importError = "HanLearn couldn't read the selected file.";
+        }
+
     }
 
 }

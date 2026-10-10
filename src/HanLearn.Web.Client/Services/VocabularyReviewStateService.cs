@@ -91,7 +91,14 @@ public class VocabularyReviewStateService
         List<VocabularyReviewState> translatedList;
         if (storedStates is null)
         {
-            return [];
+            throw new JsonException("Expected an array of review states.");
+        }
+        if (storedStates.Any(state =>
+            state is null ||
+            string.IsNullOrWhiteSpace(state.VocabularyEntryId) ||
+            state.Card is null))
+        {
+            throw new JsonException("A review state is missing required data.");
         }
         translatedList = storedStates
         .Select(storedStates => new VocabularyReviewState
@@ -139,6 +146,19 @@ public class VocabularyReviewStateService
             "hanlearn.vocabulary-review-states",
             json
         );
+    }
+
+    public async Task ImportAsync(Stream stream)
+    {
+        using StreamReader reader = new(stream);
+        string json = await reader.ReadToEndAsync();
+        List<VocabularyReviewState> importedStates = Deserialize(json);
+
+        _reviewStates.Clear();
+        _reviewStates.AddRange(importedStates);
+        _isLoaded = true;
+
+        await SaveAsync();
     }
 
 
