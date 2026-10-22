@@ -4,8 +4,8 @@
 @using HanLearn.Web.Client.Data
 @using HanLearn.Web.Client.Services
 @using System.Text.Json
-@inject VocabularyCatalog VocabularyCatalog
-@inject VocabularyReviewStateService ReviewStateService
+@inject Lexicon Lexicon
+@inject LexicalSenseReviewStateService ReviewStateService
 @inject IJSRuntime JS
 
 <PageTitle>Review</PageTitle>
@@ -36,29 +36,29 @@ else if (_currentReviewState is null)
 {
 	<span>You have no cards to review!</span>
 }
-else if (CurrentVocabularyEntry is VocabularyEntry entry)
+else if (CurrentLexicalSense is LexicalSense sense)
 {
-    <ReviewCard Entry="@entry" OnRatingSelected="@RatingSelected" />
+    <ReviewCard Sense="@sense" OnRatingSelected="@RatingSelected" />
 }
 else
 {
-    <p>The vocabulary entry for this review card could not be found.</p>
+    <p>The lexical sense for this review card could not be found.</p>
 }
 
 
 
 @code {
-    private VocabularyReviewState? _currentReviewState;
-    private IReadOnlyList<VocabularyReviewState> _reviewStates = [];
+    private LexicalSenseReviewState? _currentReviewState;
+    private IReadOnlyList<LexicalSenseReviewState> _reviewStates = [];
     private string? _importError;
 
     private const long MaxImportFileSize = 500_000;
 
-    private VocabularyEntry? CurrentVocabularyEntry =>
+    private LexicalSense? CurrentLexicalSense =>
         _currentReviewState is null
             ? null
-            : VocabularyCatalog.Entries.FirstOrDefault(
-                entry => entry.Id == _currentReviewState.VocabularyEntryId);
+            : Lexicon.Senses.FirstOrDefault(
+                sense => sense.Id == _currentReviewState.LexicalSenseId);
 
     private bool _isLoading = true;
     private async Task RatingSelected(Rating rating)
@@ -66,7 +66,7 @@ else
         if (_currentReviewState is not null)
         {
             await ReviewStateService.ReviewAsync(
-                _currentReviewState.VocabularyEntryId,
+                _currentReviewState.LexicalSenseId,
                 rating,
                 DateTime.UtcNow);
             _reviewStates = ReviewStateService.GetDueCards();

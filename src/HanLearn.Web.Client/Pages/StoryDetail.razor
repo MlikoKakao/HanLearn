@@ -2,8 +2,10 @@
 @using HanLearn.Web.Client.Components
 @using HanLearn.Web.Client.Data
 @using HanLearn.Web.Client.Services
+@using System.Text.Json
 @inject StoryCatalog StoryCatalog
-@inject VocabularyCatalog VocabularyCatalog
+@inject Lexicon Lexicon
+@inject IJSRuntime JS
 
 
 @if (_story != null)
@@ -12,40 +14,41 @@
     <h1>@_story.Title</h1>
 
     <article class="story-body" aria-label="Story text">
-    @foreach (StorySegment segment in _story.Segments)
+    @foreach (StoryOccurrence occurrence in _story.Occurrences)
     {
-        @if (segment.Text == "\n\n")
+        @if (occurrence.Text == "\n\n")
         {
             <br />
             <br />
         }
-        else if (segment.VocabularyEntryId is not null)
+        else if (occurrence.LexicalSenseId is not null)
         {
             <div class="story-word-anchor"
-                 @onmouseenter="() => ShowVocabularyEntry(segment)"
-                 @onmouseleave="() => HideVocabularyEntry(segment)">
+                 @onmouseenter="() => ShowLexicalSense(occurrence)"
+                 @onmouseleave="() => HideLexicalSense(occurrence)">
                 <span
-                    class="story-text @(segment.Id == _selectedSegmentId ? "selected-word" : null)"
-                    @onclick="() => SelectSegment(segment)"
-                    @onfocus="() => ShowVocabularyEntry(segment)"
+                    class="story-text @(occurrence.Id == _selectedOccurrenceId ? "selected-word" : null)"
+                    @onclick="() => SelectOccurrence(occurrence)"
+                    @onfocus="() => ShowLexicalSense(occurrence)"
                     tabindex="0">
-                    @segment.Text
+                    @occurrence.Text
                 </span>
 
-                @if (_activeSegmentId == segment.Id && _selectedEntry is not null)
+                @if (_activeOccurrenceId == occurrence.Id && _selectedSense is not null)
                 {
                     <div class="word-popover">
-                        <VocabularyDetails Entry="_selectedEntry" />
+                        <LexicalSenseDetails Sense="_selectedSense" />
                     </div>
                 }
             </div>
         }
         else
         {
-            @segment.Text
+            @occurrence.Text
         }
     }
     </article>
+    <button @onclick="ExportAsync">Export story</button>
 }
 
 @code
@@ -54,44 +57,59 @@
     public required string StoryId { get; set; }
 
     private Story? _story;
-    private VocabularyEntry? _selectedEntry;
-    private string? _activeSegmentId;
-    private string? _selectedSegmentId;
+    private LexicalSense? _selectedSense;
+    private string? _activeOccurrenceId;
+    private string? _selectedOccurrenceId;
     protected override void OnParametersSet()
     {
         _story = StoryCatalog.Stories.FirstOrDefault(story => story.Id == StoryId);
     }
 
-    private void ShowVocabularyEntry(StorySegment segment)
+    private void ShowLexicalSense(StoryOccurrence occurrence)
     {
-        _activeSegmentId = segment.Id;
-        _selectedEntry = VocabularyCatalog.Entries.FirstOrDefault(
-            entry => entry.Id == segment.VocabularyEntryId);
+        _activeOccurrenceId = occurrence.Id;
+        _selectedSense = Lexicon.Senses.FirstOrDefault(
+            sense => sense.Id == occurrence.LexicalSenseId);
     }
 
-    private void HideVocabularyEntry(StorySegment segment)
+    private void HideLexicalSense(StoryOccurrence occurrence)
     {
-        if (_selectedSegmentId != segment.Id)
+        if (_selectedOccurrenceId != occurrence.Id)
         {
-            _activeSegmentId = _selectedSegmentId;
-            _selectedEntry = FindSelectedEntry();
+            _activeOccurrenceId = _selectedOccurrenceId;
+            _selectedSense = FindSelectedSense();
         }
     }
 
-    private void SelectSegment(StorySegment segment)
+    private void SelectOccurrence(StoryOccurrence occurrence)
     {
-        _selectedSegmentId = _selectedSegmentId == segment.Id ? null : segment.Id;
-        _activeSegmentId = _selectedSegmentId ?? segment.Id;
-        _selectedEntry = VocabularyCatalog.Entries.FirstOrDefault(
-            entry => entry.Id == segment.VocabularyEntryId);
+        _selectedOccurrenceId = _selectedOccurrenceId == occurrence.Id ? null : occurrence.Id;
+        _activeOccurrenceId = _selectedOccurrenceId ?? occurrence.Id;
+        _selectedSense = Lexicon.Senses.FirstOrDefault(
+            sense => sense.Id == occurrence.LexicalSenseId);
     }
 
-    private VocabularyEntry? FindSelectedEntry()
+    private LexicalSense? FindSelectedSense()
     {
-        return _story?.Segments
-            .FirstOrDefault(segment => segment.Id == _selectedSegmentId)
-            ?.VocabularyEntryId is string entryId
-                ? VocabularyCatalog.Entries.FirstOrDefault(entry => entry.Id == entryId)
+        return _story?.Occurrences
+            .FirstOrDefault(occurrence => occurrence.Id == _selectedOccurrenceId)
+            ?.LexicalSenseId is string entryId
+                ? Lexicon.Senses.FirstOrDefault(sense => sense.Id == entryId)
                 : null;
+    }
+
+    private async Task ExportAsync()
+    {
+        if (_story is null) { return; }
+        string jsonStory = JsonSerializer.Serialize(_story);
+        byte[] bytes = System.Text.Encoding.UTF8.GetBytes(jsonStory);
+
+        using var fileStream = new MemoryStream(bytes);
+        using var streamReference = new DotNetStreamReference(fileStream);
+
+        await JS.InvokeVoidAsync("downloadFileFromStream",
+        "hanlearn-story.json",
+        streamReference);
+
     }
 }

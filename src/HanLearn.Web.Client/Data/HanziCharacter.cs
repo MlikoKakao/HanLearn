@@ -6,7 +6,7 @@ public record CharacterReading
     public required List<string> Meanings { get; init; }
 }
 
-public record CharacterEntry
+public record HanziCharacter
 {
     public required string Id { get; init; }
     public required string WrittenForm { get; init; }

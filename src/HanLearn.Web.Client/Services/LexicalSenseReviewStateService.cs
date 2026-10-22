@@ -9,30 +9,30 @@ using System.Text.Json;
 namespace HanLearn.Web.Client.Services;
 
 
-public class VocabularyReviewStateService
+public class LexicalSenseReviewStateService
 {
-    private readonly List<VocabularyReviewState> _reviewStates = [];
+    private readonly List<LexicalSenseReviewState> _reviewStates = [];
 
-    public IReadOnlyList<VocabularyReviewState> ReviewStates => _reviewStates;
+    public IReadOnlyList<LexicalSenseReviewState> ReviewStates => _reviewStates;
     private readonly IScheduler _scheduler;
     private readonly IJSRuntime _jsRuntime;
     private bool _isLoaded;
 
-    public VocabularyReviewStateService(IScheduler scheduler, IJSRuntime js)
+    public LexicalSenseReviewStateService(IScheduler scheduler, IJSRuntime js)
     {
         _scheduler = scheduler;
         _jsRuntime = js;
     }
-    public async Task AddToReviewAsync(string vocabularyEntryId)
+    public async Task AddToReviewAsync(string lexicalSenseId)
     {
         await LoadAsync();
-        if (_reviewStates.Any(r => r.VocabularyEntryId == vocabularyEntryId))
+        if (_reviewStates.Any(state => state.LexicalSenseId == lexicalSenseId))
         {
             return;
         }
-        VocabularyReviewState reviewState = new()
+        LexicalSenseReviewState reviewState = new()
         {
-            VocabularyEntryId = vocabularyEntryId,
+            LexicalSenseId = lexicalSenseId,
             Card = new Card()
         };
 
@@ -40,10 +40,11 @@ public class VocabularyReviewStateService
         await SaveAsync();
     }
 
-    public async Task ReviewAsync(string vocabularyEntryId, Rating rating, DateTime reviewDateTime)
+    public async Task ReviewAsync(string lexicalSenseId, Rating rating, DateTime reviewDateTime)
     {
         await LoadAsync();
-        VocabularyReviewState? reviewedState = _reviewStates.FirstOrDefault(entry => entry.VocabularyEntryId == vocabularyEntryId);
+        LexicalSenseReviewState? reviewedState = _reviewStates.FirstOrDefault(
+            state => state.LexicalSenseId == lexicalSenseId);
         if (reviewedState is null)
         {
             return;
@@ -56,20 +57,20 @@ public class VocabularyReviewStateService
         await SaveAsync();
     }
 
-    public List<VocabularyReviewState> GetDueCards()
+    public List<LexicalSenseReviewState> GetDueCards()
     {
         var now = DateTime.UtcNow;
-        List<VocabularyReviewState> dueCards;
+        List<LexicalSenseReviewState> dueCards;
         dueCards = _reviewStates.Where(entry => entry.Card.Due <= now).OrderBy(entry => entry.Card.Due).ToList();
         return dueCards;
     }
 
     public string Serialize()
     {
-        List<StoredVocabularyReviewState> storedStates = _reviewStates
-            .Select(reviewState => new StoredVocabularyReviewState
+        List<StoredLexicalSenseReviewState> storedStates = _reviewStates
+            .Select(reviewState => new StoredLexicalSenseReviewState
             {
-                VocabularyEntryId = reviewState.VocabularyEntryId,
+                LexicalSenseId = reviewState.LexicalSenseId,
                 Card = new StoredCard
                 {
                     CardId = reviewState.Card.CardId,
@@ -85,25 +86,25 @@ public class VocabularyReviewStateService
 
         return JsonSerializer.Serialize(storedStates);
     }
-    private List<VocabularyReviewState> Deserialize(string reviewState)
+    private List<LexicalSenseReviewState> Deserialize(string reviewState)
     {
-        var storedStates = JsonSerializer.Deserialize<List<StoredVocabularyReviewState>>(reviewState);
-        List<VocabularyReviewState> translatedList;
+        var storedStates = JsonSerializer.Deserialize<List<StoredLexicalSenseReviewState>>(reviewState);
+        List<LexicalSenseReviewState> translatedList;
         if (storedStates is null)
         {
             throw new JsonException("Expected an array of review states.");
         }
         if (storedStates.Any(state =>
             state is null ||
-            string.IsNullOrWhiteSpace(state.VocabularyEntryId) ||
+            string.IsNullOrWhiteSpace(state.LexicalSenseId) ||
             state.Card is null))
         {
             throw new JsonException("A review state is missing required data.");
         }
         translatedList = storedStates
-        .Select(storedStates => new VocabularyReviewState
+        .Select(storedStates => new LexicalSenseReviewState
         {
-            VocabularyEntryId = storedStates.VocabularyEntryId,
+            LexicalSenseId = storedStates.LexicalSenseId,
                 Card = new Card
                 {
                     CardId = storedStates.Card.CardId,
@@ -131,7 +132,7 @@ public class VocabularyReviewStateService
             _isLoaded = true;
             return;
         }
-        List<VocabularyReviewState> restoredStates = Deserialize(storedJson);
+        List<LexicalSenseReviewState> restoredStates = Deserialize(storedJson);
         _reviewStates.Clear();
         _reviewStates.AddRange(restoredStates);
         _isLoaded = true;
@@ -152,7 +153,7 @@ public class VocabularyReviewStateService
     {
         using StreamReader reader = new(stream);
         string json = await reader.ReadToEndAsync();
-        List<VocabularyReviewState> importedStates = Deserialize(json);
+        List<LexicalSenseReviewState> importedStates = Deserialize(json);
 
         _reviewStates.Clear();
         _reviewStates.AddRange(importedStates);

@@ -8,7 +8,7 @@ public class StoryCatalog
 
     public IReadOnlyList<Story> Stories => _stories;
 
-    public void AddStory(string id, string title, string text, StorySegment[] segments)
+    public void AddStory(string id, string title, string text, StoryOccurrence[] occurrences)
     {
         if (_stories.Any(story => story.Id == id))
         {
@@ -20,7 +20,7 @@ public class StoryCatalog
             Id = id,
             Title = title,
             Text = text,
-            Segments = segments
+            Occurrences = occurrences
         };
         _stories.Add(newStory);
     }

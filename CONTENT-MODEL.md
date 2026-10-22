@@ -2,6 +2,13 @@
 
 This document records the current direction for representing stories, vocabulary, characters, and review items. It is a design note rather than a finalized schema.
 
+## Terminology
+
+- A `StoryOccurrence` is one particular piece of text in a story. It may point to a lexical sense.
+- A `LexicalSense` is one specific meaning and pronunciation of a written expression.
+- A `HanziCharacter` contains character-level reference information, not a word's contextual definition.
+- “Vocabulary” remains a learner-facing umbrella term rather than the name of a single data type.
+
 ## Story structure
 
 A story is a combination of dialogue or narrative lines, sentences, words, and characters. Story content should not be stored only as an unstructured string.
@@ -11,12 +18,12 @@ Conceptually, the structure is:
 ```text
 Story
   └─ Lines or sentences
-       └─ Segments
+       └─ Occurrences
             ├─ Displayed text
-            └─ Contextual vocabulary-meaning ID
+            └─ Lexical-sense ID
 ```
 
-When the learner selects a story, the client should load the meanings referenced by that story. Each selectable segment should reference a specific contextual meaning by a stable ID rather than finding content by matching its displayed text.
+When the learner selects a story, the client should load the senses referenced by that story. Each selectable occurrence should reference a specific lexical sense by a stable ID rather than finding content by matching its displayed text.
 
 ## Word and character information
 
@@ -25,7 +32,7 @@ Story writers should define the contextual meaning of each word used in a story.
 Character information should be a separate, reusable reference layer:
 
 ```text
-Vocabulary meaning
+Lexical sense
   ├─ Written form
   ├─ Contextual definition
   ├─ Pronunciation
@@ -36,9 +43,9 @@ Character
   └─ Possible readings and meanings
 ```
 
-For example, a story segment containing `你好` should reference the relevant word meaning for `你好`. The learner may then inspect `你` and `好` through their separate character records.
+For example, a story occurrence containing `你好` should reference the relevant lexical sense for `你好`. The learner may then inspect `你` and `好` through their separate character records.
 
-Characters or words with multiple meanings require distinct meaning records. A story segment references the meaning intended in that particular context.
+Written expressions with multiple meanings require distinct lexical-sense records. A story occurrence references the sense intended in that particular context.
 
 ## Reader interaction
 
@@ -78,7 +85,7 @@ A reviewable item needs the following concepts:
 - Its written form.
 - Pronunciation.
 - Meaning.
-- A reference to the source story and segment where it was encountered.
+- A reference to the source story and occurrence where it was encountered.
 - Optional example and audio information.
 
 The model should work for at least these examples:
@@ -92,14 +99,14 @@ The model should work for at least these examples:
 
 Authored educational content and learner-specific state have different responsibilities.
 
-Authored content describes the written form, pronunciation, contextual meaning, examples, and source context. `VocabularyReviewState` describes the learner's relationship with a reviewable vocabulary entry, such as:
+Authored content describes the written form, pronunciation, lexical sense, examples, and source context. `LexicalSenseReviewState` describes the learner's relationship with a reviewable lexical sense, such as:
 
 - When the learner added it.
 - Review count.
 - Last rating.
 - Future scheduling information.
 
-Learner review state should reference the ID of its authored vocabulary entry rather than duplicate the authored educational content.
+Learner review state should reference the ID of its authored lexical sense rather than duplicate the authored educational content.
 
 ## Authoring workflow
 

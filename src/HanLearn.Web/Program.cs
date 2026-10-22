@@ -5,7 +5,7 @@ using FSRS.Core.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSingleton<ZhuyinSymbolCatalog>();
-builder.Services.AddSingleton<VocabularyCatalog>();
+builder.Services.AddSingleton<Lexicon>();
 builder.Services.AddScoped<StoryCatalog>();
 builder.Services.AddFSRS(options =>
 {
@@ -13,7 +13,7 @@ builder.Services.AddFSRS(options =>
     options.MaximumInterval = 365;
 });
 
-builder.Services.AddScoped<VocabularyReviewStateService>();
+builder.Services.AddScoped<LexicalSenseReviewStateService>();
 
 // Add services to the container.
 builder.Services.AddRazorComponents()

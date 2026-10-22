@@ -1,21 +1,21 @@
-// Short-term file for seeding example vocabulary.
+// Short-term file for seeding the example lexicon.
 
 namespace HanLearn.Web.Client.Services;
 
 using HanLearn.Web.Client.Data;
 
-public class ExampleVocabularySeeder
+public class ExampleLexiconSeeder
 {
-    private readonly VocabularyCatalog _vocabulary;
+    private readonly Lexicon _lexicon;
 
-    public ExampleVocabularySeeder(VocabularyCatalog vocabulary)
+    public ExampleLexiconSeeder(Lexicon lexicon)
     {
-        _vocabulary = vocabulary;
+        _lexicon = lexicon;
     }
 
     public void Seed()
     {
-        (string Id, string WrittenForm, string Pronunciation, string[] Meanings)[] characterEntries =
+        (string Id, string WrittenForm, string Pronunciation, string[] Meanings)[] characters =
         [
             ("早", "早", "ㄗㄠˇ", ["early", "morning"]),
             ("上", "上", "ㄕㄤˋ", ["up", "on", "above"]),
@@ -74,19 +74,19 @@ public class ExampleVocabularySeeder
             ("小", "小", "ㄒㄧㄠˇ", ["small", "young"])
         ];
 
-        foreach (var characterEntry in characterEntries)
+        foreach (var character in characters)
         {
-            _vocabulary.AddCharacterEntry(
-                characterEntry.Id,
-                characterEntry.WrittenForm,
+            _lexicon.AddCharacter(
+                character.Id,
+                character.WrittenForm,
                 [new CharacterReading
                 {
-                    Pronunciations = characterEntry.Pronunciation,
-                    Meanings = [.. characterEntry.Meanings]
+                    Pronunciations = character.Pronunciation,
+                    Meanings = [.. character.Meanings]
                 }]);
         }
 
-        (string Id, string WrittenForm, string Meaning, string Pronunciation, string Example, List<string> CharacterIds)[] entries =
+        (string Id, string WrittenForm, string Definition, string Pronunciation, string Example, List<string> CharacterIds)[] senses =
         [
             ("morning", "早上", "morning; in the morning", "ㄗㄠˇ ㄕㄤˋ", "我早上七點起床。", ["早", "上"]),
             ("seven-oclock", "七點", "seven o'clock", "ㄑㄧ ㄉㄧㄢˇ", "我們七點見。", ["七", "點"]),
@@ -127,16 +127,16 @@ public class ExampleVocabularySeeder
             ("name-xiao-an", "小安", "Xiao-an (a person's name)", "ㄒㄧㄠˇ ㄢ", "小安每天早上去上班。", ["小", "安"])
         ];
 
-        foreach (var entry in entries)
+        foreach (var sense in senses)
         {
-            _vocabulary.AddEntry(
-                entry.Id,
-                entry.WrittenForm,
-                entry.Meaning,
-                [entry.Pronunciation],
-                entry.Example,
+            _lexicon.AddSense(
+                sense.Id,
+                sense.WrittenForm,
+                sense.Definition,
+                [sense.Pronunciation],
+                sense.Example,
                 null,
-                entry.CharacterIds);
+                sense.CharacterIds);
         }
     }
 }

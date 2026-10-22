@@ -3,12 +3,12 @@
 
 @using HanLearn.Web.Client.Data
 <div class="border border-primary rounded p-3 shadow-sm">
-    @Entry.WrittenForm
+    @Sense.WrittenForm
 		@if (_showAnswer)
 		{
-			<p>@Entry.Example</p>
-			<p>@string.Join("、", Entry.Pronunciations)</p>
-			<p>@Entry.Meaning</p>
+			<p>@Sense.Example</p>
+			<p>@string.Join("、", Sense.Pronunciations)</p>
+			<p>@Sense.Definition</p>
 			<button @onclick="() => OnRatingSelected.InvokeAsync(Rating.Again)">Again</button>
 		<button @onclick="() => OnRatingSelected.InvokeAsync(Rating.Hard)">Hard</button	>
 		<button @onclick="() => OnRatingSelected.InvokeAsync(Rating.Good)">Good</button>
@@ -27,20 +27,20 @@
 @code
 {
 	[Parameter]
-	public required VocabularyEntry Entry { get; set; }
+	public required LexicalSense Sense { get; set; }
 	[Parameter]
 	public EventCallback<Rating> OnRatingSelected { get; set; }
 
 	private bool _showAnswer;
-	private string? _previousEntryId;
+	private string? _previousSenseId;
 	private void ToggleAnswer() => _showAnswer = !_showAnswer;
 
 	protected override void OnParametersSet()
 	{
-		if (Entry.Id != _previousEntryId)
+		if (Sense.Id != _previousSenseId)
 		{
 			_showAnswer = false;
-			_previousEntryId = Entry.Id;
+			_previousSenseId = Sense.Id;
 		}
 	}
 }

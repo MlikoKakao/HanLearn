@@ -1,23 +1,23 @@
 @using HanLearn.Web.Client.Data
 @using HanLearn.Web.Client.Services
-@inject VocabularyCatalog VocabularyCatalog
-@inject VocabularyReviewStateService ReviewStateService
+@inject Lexicon Lexicon
+@inject LexicalSenseReviewStateService ReviewStateService
 
 <div class="vocabulary-details">
     <div class="card-body">
-        <div class="written-form" aria-label="@Entry.WrittenForm">
-            @for (int index = 0; index < Entry.CharacterIds.Count; index++)
+        <div class="written-form" aria-label="@Sense.WrittenForm">
+            @for (int index = 0; index < Sense.CharacterIds.Count; index++)
             {
                 int characterIndex = index;
-                CharacterEntry? character = FindCharacter(Entry.CharacterIds[index]);
+                HanziCharacter? character = FindCharacter(Sense.CharacterIds[index]);
 
                 @if (character is null)
                 {
-                    <span>@Entry.CharacterIds[index]</span>
+                    <span>@Sense.CharacterIds[index]</span>
                 }
                 else
                 {
-                    string? popoverId = $"character-{Entry.Id}-{characterIndex}";
+                    string? popoverId = $"character-{Sense.Id}-{characterIndex}";
 
                     <span class="character-anchor"
                           @onmouseenter="() => ShowCharacter(characterIndex)"
@@ -49,12 +49,12 @@
             }
         </div>
 
-        <p class="vocabulary-pronunciation">@string.Join("、", Entry.Pronunciations)</p>
-        <p>@Entry.Meaning</p>
+        <p class="vocabulary-pronunciation">@string.Join("、", Sense.Pronunciations)</p>
+        <p>@Sense.Definition</p>
 
-        @if (!string.IsNullOrWhiteSpace(Entry.Example))
+        @if (!string.IsNullOrWhiteSpace(Sense.Example))
         {
-            <p class="vocabulary-example">@Entry.Example</p>
+            <p class="vocabulary-example">@Sense.Example</p>
         }
 
         <button type="button" class="btn btn-primary" @onclick="AddToReview">
@@ -66,27 +66,27 @@
 @code
 {
     [Parameter]
-    public required VocabularyEntry Entry { get; set; }
+    public required LexicalSense Sense { get; set; }
 
     private int? _activeCharacterIndex;
     private int? _pinnedCharacterIndex;
-    private string? _previousEntryId;
+    private string? _previousSenseId;
 
     protected override void OnParametersSet()
     {
-        if (_previousEntryId == Entry.Id)
+        if (_previousSenseId == Sense.Id)
         {
             return;
         }
 
-        _previousEntryId = Entry.Id;
+        _previousSenseId = Sense.Id;
         _activeCharacterIndex = null;
         _pinnedCharacterIndex = null;
     }
 
-    private CharacterEntry? FindCharacter(string id)
+    private HanziCharacter? FindCharacter(string id)
     {
-        return VocabularyCatalog.CharacterEntries.FirstOrDefault(character => character.Id == id);
+        return Lexicon.Characters.FirstOrDefault(character => character.Id == id);
     }
 
     private void ShowCharacter(int index)
@@ -110,6 +110,6 @@
 
     private async Task AddToReview()
     {
-        await ReviewStateService.AddToReviewAsync(Entry.Id);
+        await ReviewStateService.AddToReviewAsync(Sense.Id);
     }
 }

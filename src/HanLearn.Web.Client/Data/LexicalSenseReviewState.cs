@@ -2,8 +2,8 @@ using FSRS.Core.Models;
 
 namespace HanLearn.Web.Client.Data;
 
-public record VocabularyReviewState
+public record LexicalSenseReviewState
 {
-    public required string VocabularyEntryId { get; init; }
+    public required string LexicalSenseId { get; init; }
     public required Card Card { get; set; }
 }
