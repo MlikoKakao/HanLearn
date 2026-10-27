@@ -1,0 +1,1548 @@
+{
+  "version": 1,
+  "story": {
+    "id": "breakfast-shop-morning",
+    "title": "早餐店的早晨",
+    "text": "早上七點，小安走進早餐店。老闆娘笑著說：「早安！今天想吃什麼？」小安說：「我要一個蛋餅和一杯冰豆漿，謝謝。」\n\n老闆娘問：「豆漿要加糖嗎？」小安回答：「不要糖。請問一共多少錢？」老闆娘說：「六十五元。」小安付了錢，拿著早餐去上班。",
+    "occurrences": [
+      {
+        "id": "p1-morning",
+        "text": "早上",
+        "lexicalSenseId": "morning"
+      },
+      {
+        "id": "p1-seven-oclock",
+        "text": "七點",
+        "lexicalSenseId": "seven-oclock"
+      },
+      {
+        "id": "p1-comma-1",
+        "text": "，",
+        "lexicalSenseId": null
+      },
+      {
+        "id": "p1-xiao-an-1",
+        "text": "小安",
+        "lexicalSenseId": "name-xiao-an"
+      },
+      {
+        "id": "p1-enter",
+        "text": "走進",
+        "lexicalSenseId": "enter-on-foot"
+      },
+      {
+        "id": "p1-breakfast-shop",
+        "text": "早餐店",
+        "lexicalSenseId": "breakfast-shop"
+      },
+      {
+        "id": "p1-period-1",
+        "text": "。",
+        "lexicalSenseId": null
+      },
+      {
+        "id": "p1-shop-owner",
+        "text": "老闆娘",
+        "lexicalSenseId": "female-shop-owner"
+      },
+      {
+        "id": "p1-smiling",
+        "text": "笑著",
+        "lexicalSenseId": "smiling"
+      },
+      {
+        "id": "p1-say-1",
+        "text": "說",
+        "lexicalSenseId": "say"
+      },
+      {
+        "id": "p1-opening-quote-1",
+        "text": "：「",
+        "lexicalSenseId": null
+      },
+      {
+        "id": "p1-good-morning",
+        "text": "早安",
+        "lexicalSenseId": "good-morning"
+      },
+      {
+        "id": "p1-exclamation",
+        "text": "！",
+        "lexicalSenseId": null
+      },
+      {
+        "id": "p1-today",
+        "text": "今天",
+        "lexicalSenseId": "today"
+      },
+      {
+        "id": "p1-want-to",
+        "text": "想",
+        "lexicalSenseId": "want-to"
+      },
+      {
+        "id": "p1-eat",
+        "text": "吃",
+        "lexicalSenseId": "eat"
+      },
+      {
+        "id": "p1-what",
+        "text": "什麼",
+        "lexicalSenseId": "what"
+      },
+      {
+        "id": "p1-question-close-1",
+        "text": "？」",
+        "lexicalSenseId": null
+      },
+      {
+        "id": "p1-xiao-an-2",
+        "text": "小安",
+        "lexicalSenseId": "name-xiao-an"
+      },
+      {
+        "id": "p1-say-2",
+        "text": "說",
+        "lexicalSenseId": "say"
+      },
+      {
+        "id": "p1-opening-quote-2",
+        "text": "：「",
+        "lexicalSenseId": null
+      },
+      {
+        "id": "p1-i",
+        "text": "我",
+        "lexicalSenseId": "i-me"
+      },
+      {
+        "id": "p1-want-order",
+        "text": "要",
+        "lexicalSenseId": "want-order"
+      },
+      {
+        "id": "p1-one-item",
+        "text": "一個",
+        "lexicalSenseId": "one-item"
+      },
+      {
+        "id": "p1-egg-crepe",
+        "text": "蛋餅",
+        "lexicalSenseId": "egg-crepe"
+      },
+      {
+        "id": "p1-and",
+        "text": "和",
+        "lexicalSenseId": "and-han4"
+      },
+      {
+        "id": "p1-one-cup",
+        "text": "一杯",
+        "lexicalSenseId": "one-cup"
+      },
+      {
+        "id": "p1-cold-soy-milk",
+        "text": "冰豆漿",
+        "lexicalSenseId": "cold-soy-milk"
+      },
+      {
+        "id": "p1-comma-2",
+        "text": "，",
+        "lexicalSenseId": null
+      },
+      {
+        "id": "p1-thank-you",
+        "text": "謝謝",
+        "lexicalSenseId": "thank-you"
+      },
+      {
+        "id": "p1-period-close",
+        "text": "。」",
+        "lexicalSenseId": null
+      },
+      {
+        "id": "paragraph-break",
+        "text": "\n\n",
+        "lexicalSenseId": null
+      },
+      {
+        "id": "p2-shop-owner-1",
+        "text": "老闆娘",
+        "lexicalSenseId": "female-shop-owner"
+      },
+      {
+        "id": "p2-ask",
+        "text": "問",
+        "lexicalSenseId": "ask"
+      },
+      {
+        "id": "p2-opening-quote-1",
+        "text": "：「",
+        "lexicalSenseId": null
+      },
+      {
+        "id": "p2-soy-milk",
+        "text": "豆漿",
+        "lexicalSenseId": "soy-milk"
+      },
+      {
+        "id": "p2-want-order",
+        "text": "要",
+        "lexicalSenseId": "want-order"
+      },
+      {
+        "id": "p2-add-sugar",
+        "text": "加糖",
+        "lexicalSenseId": "add-sugar"
+      },
+      {
+        "id": "p2-question-particle",
+        "text": "嗎",
+        "lexicalSenseId": "question-particle-ma"
+      },
+      {
+        "id": "p2-question-close-1",
+        "text": "？」",
+        "lexicalSenseId": null
+      },
+      {
+        "id": "p2-xiao-an-1",
+        "text": "小安",
+        "lexicalSenseId": "name-xiao-an"
+      },
+      {
+        "id": "p2-answer",
+        "text": "回答",
+        "lexicalSenseId": "answer"
+      },
+      {
+        "id": "p2-opening-quote-2",
+        "text": "：「",
+        "lexicalSenseId": null
+      },
+      {
+        "id": "p2-do-not-want",
+        "text": "不要",
+        "lexicalSenseId": "do-not-want"
+      },
+      {
+        "id": "p2-sugar",
+        "text": "糖",
+        "lexicalSenseId": "sugar"
+      },
+      {
+        "id": "p2-period-1",
+        "text": "。",
+        "lexicalSenseId": null
+      },
+      {
+        "id": "p2-excuse-me",
+        "text": "請問",
+        "lexicalSenseId": "excuse-me-ask"
+      },
+      {
+        "id": "p2-total",
+        "text": "一共",
+        "lexicalSenseId": "total"
+      },
+      {
+        "id": "p2-how-much",
+        "text": "多少錢",
+        "lexicalSenseId": "how-much"
+      },
+      {
+        "id": "p2-question-close-2",
+        "text": "？」",
+        "lexicalSenseId": null
+      },
+      {
+        "id": "p2-shop-owner-2",
+        "text": "老闆娘",
+        "lexicalSenseId": "female-shop-owner"
+      },
+      {
+        "id": "p2-say",
+        "text": "說",
+        "lexicalSenseId": "say"
+      },
+      {
+        "id": "p2-opening-quote-3",
+        "text": "：「",
+        "lexicalSenseId": null
+      },
+      {
+        "id": "p2-price",
+        "text": "六十五元",
+        "lexicalSenseId": "sixty-five-dollars"
+      },
+      {
+        "id": "p2-period-close",
+        "text": "。」",
+        "lexicalSenseId": null
+      },
+      {
+        "id": "p2-xiao-an-2",
+        "text": "小安",
+        "lexicalSenseId": "name-xiao-an"
+      },
+      {
+        "id": "p2-paid",
+        "text": "付了錢",
+        "lexicalSenseId": "paid-money"
+      },
+      {
+        "id": "p2-comma",
+        "text": "，",
+        "lexicalSenseId": null
+      },
+      {
+        "id": "p2-holding",
+        "text": "拿著",
+        "lexicalSenseId": "holding"
+      },
+      {
+        "id": "p2-breakfast",
+        "text": "早餐",
+        "lexicalSenseId": "breakfast"
+      },
+      {
+        "id": "p2-go",
+        "text": "去",
+        "lexicalSenseId": "go"
+      },
+      {
+        "id": "p2-work",
+        "text": "上班",
+        "lexicalSenseId": "go-to-work"
+      },
+      {
+        "id": "p2-period-2",
+        "text": "。",
+        "lexicalSenseId": null
+      }
+    ]
+  },
+  "lexicalSenses": [
+    {
+      "id": "morning",
+      "writtenForm": "早上",
+      "definition": "morning; in the morning",
+      "pronunciations": [
+        "ㄗㄠˇ ㄕㄤˋ"
+      ],
+      "example": "我早上七點起床。",
+      "audioFileName": null,
+      "characterIds": [
+        "早",
+        "上"
+      ]
+    },
+    {
+      "id": "seven-oclock",
+      "writtenForm": "七點",
+      "definition": "seven o'clock",
+      "pronunciations": [
+        "ㄑㄧ ㄉㄧㄢˇ"
+      ],
+      "example": "我們七點見。",
+      "audioFileName": null,
+      "characterIds": [
+        "七",
+        "點"
+      ]
+    },
+    {
+      "id": "enter-on-foot",
+      "writtenForm": "走進",
+      "definition": "to walk into; to enter on foot",
+      "pronunciations": [
+        "ㄗㄡˇ ㄐㄧㄣˋ"
+      ],
+      "example": "她走進教室。",
+      "audioFileName": null,
+      "characterIds": [
+        "走",
+        "進"
+      ]
+    },
+    {
+      "id": "breakfast-shop",
+      "writtenForm": "早餐店",
+      "definition": "breakfast shop",
+      "pronunciations": [
+        "ㄗㄠˇ ㄘㄢ ㄉㄧㄢˋ"
+      ],
+      "example": "這家早餐店很受歡迎。",
+      "audioFileName": null,
+      "characterIds": [
+        "早",
+        "餐",
+        "店"
+      ]
+    },
+    {
+      "id": "female-shop-owner",
+      "writtenForm": "老闆娘",
+      "definition": "female shop owner or manager",
+      "pronunciations": [
+        "ㄌㄠˇ ㄅㄢˇ ㄋㄧㄤˊ"
+      ],
+      "example": "老闆娘正在準備早餐。",
+      "audioFileName": null,
+      "characterIds": [
+        "老",
+        "闆",
+        "娘"
+      ]
+    },
+    {
+      "id": "smiling",
+      "writtenForm": "笑著",
+      "definition": "smiling; with a smile",
+      "pronunciations": [
+        "ㄒㄧㄠˋ ˙ㄓㄜ"
+      ],
+      "example": "他笑著跟我打招呼。",
+      "audioFileName": null,
+      "characterIds": [
+        "笑",
+        "著"
+      ]
+    },
+    {
+      "id": "say",
+      "writtenForm": "說",
+      "definition": "to say; to speak",
+      "pronunciations": [
+        "ㄕㄨㄛ"
+      ],
+      "example": "她說她明天會來。",
+      "audioFileName": null,
+      "characterIds": [
+        "說"
+      ]
+    },
+    {
+      "id": "good-morning",
+      "writtenForm": "早安",
+      "definition": "good morning",
+      "pronunciations": [
+        "ㄗㄠˇ ㄢ"
+      ],
+      "example": "老師，早安！",
+      "audioFileName": null,
+      "characterIds": [
+        "早",
+        "安"
+      ]
+    },
+    {
+      "id": "today",
+      "writtenForm": "今天",
+      "definition": "today",
+      "pronunciations": [
+        "ㄐㄧㄣ ㄊㄧㄢ"
+      ],
+      "example": "今天天氣很好。",
+      "audioFileName": null,
+      "characterIds": [
+        "今",
+        "天"
+      ]
+    },
+    {
+      "id": "want-to",
+      "writtenForm": "想",
+      "definition": "to want to; would like to",
+      "pronunciations": [
+        "ㄒㄧㄤˇ"
+      ],
+      "example": "我想喝熱茶。",
+      "audioFileName": null,
+      "characterIds": [
+        "想"
+      ]
+    },
+    {
+      "id": "eat",
+      "writtenForm": "吃",
+      "definition": "to eat",
+      "pronunciations": [
+        "ㄔ"
+      ],
+      "example": "你想吃什麼？",
+      "audioFileName": null,
+      "characterIds": [
+        "吃"
+      ]
+    },
+    {
+      "id": "what",
+      "writtenForm": "什麼",
+      "definition": "what",
+      "pronunciations": [
+        "ㄕㄣˊ ˙ㄇㄜ"
+      ],
+      "example": "這是什麼？",
+      "audioFileName": null,
+      "characterIds": [
+        "什",
+        "麼"
+      ]
+    },
+    {
+      "id": "i-me",
+      "writtenForm": "我",
+      "definition": "I; me",
+      "pronunciations": [
+        "ㄨㄛˇ"
+      ],
+      "example": "我是學生。",
+      "audioFileName": null,
+      "characterIds": [
+        "我"
+      ]
+    },
+    {
+      "id": "want-order",
+      "writtenForm": "要",
+      "definition": "to want; to order",
+      "pronunciations": [
+        "ㄧㄠˋ"
+      ],
+      "example": "我要一杯咖啡。",
+      "audioFileName": null,
+      "characterIds": [
+        "要"
+      ]
+    },
+    {
+      "id": "one-item",
+      "writtenForm": "一個",
+      "definition": "one; one item",
+      "pronunciations": [
+        "ㄧˊ ㄍㄜˋ"
+      ],
+      "example": "我買了一個飯糰。",
+      "audioFileName": null,
+      "characterIds": [
+        "一",
+        "個"
+      ]
+    },
+    {
+      "id": "egg-crepe",
+      "writtenForm": "蛋餅",
+      "definition": "Taiwanese egg crepe",
+      "pronunciations": [
+        "ㄉㄢˋ ㄅㄧㄥˇ"
+      ],
+      "example": "這家店的蛋餅很好吃。",
+      "audioFileName": null,
+      "characterIds": [
+        "蛋",
+        "餅"
+      ]
+    },
+    {
+      "id": "and-han4",
+      "writtenForm": "和",
+      "definition": "and",
+      "pronunciations": [
+        "ㄏㄢˋ"
+      ],
+      "example": "我點了蛋餅和豆漿。",
+      "audioFileName": null,
+      "characterIds": [
+        "和"
+      ]
+    },
+    {
+      "id": "one-cup",
+      "writtenForm": "一杯",
+      "definition": "one cup; one glass",
+      "pronunciations": [
+        "ㄧ ㄅㄟ"
+      ],
+      "example": "請給我一杯水。",
+      "audioFileName": null,
+      "characterIds": [
+        "一",
+        "杯"
+      ]
+    },
+    {
+      "id": "cold-soy-milk",
+      "writtenForm": "冰豆漿",
+      "definition": "cold soy milk",
+      "pronunciations": [
+        "ㄅㄧㄥ ㄉㄡˋ ㄐㄧㄤ"
+      ],
+      "example": "夏天喝冰豆漿很舒服。",
+      "audioFileName": null,
+      "characterIds": [
+        "冰",
+        "豆",
+        "漿"
+      ]
+    },
+    {
+      "id": "thank-you",
+      "writtenForm": "謝謝",
+      "definition": "thank you",
+      "pronunciations": [
+        "ㄒㄧㄝˋ ˙ㄒㄧㄝ"
+      ],
+      "example": "謝謝你的幫忙。",
+      "audioFileName": null,
+      "characterIds": [
+        "謝",
+        "謝"
+      ]
+    },
+    {
+      "id": "ask",
+      "writtenForm": "問",
+      "definition": "to ask",
+      "pronunciations": [
+        "ㄨㄣˋ"
+      ],
+      "example": "我想問一個問題。",
+      "audioFileName": null,
+      "characterIds": [
+        "問"
+      ]
+    },
+    {
+      "id": "soy-milk",
+      "writtenForm": "豆漿",
+      "definition": "soy milk",
+      "pronunciations": [
+        "ㄉㄡˋ ㄐㄧㄤ"
+      ],
+      "example": "早餐店有熱豆漿。",
+      "audioFileName": null,
+      "characterIds": [
+        "豆",
+        "漿"
+      ]
+    },
+    {
+      "id": "add-sugar",
+      "writtenForm": "加糖",
+      "definition": "to add sugar; with sugar",
+      "pronunciations": [
+        "ㄐㄧㄚ ㄊㄤˊ"
+      ],
+      "example": "我的咖啡不要加糖。",
+      "audioFileName": null,
+      "characterIds": [
+        "加",
+        "糖"
+      ]
+    },
+    {
+      "id": "question-particle-ma",
+      "writtenForm": "嗎",
+      "definition": "question particle",
+      "pronunciations": [
+        "˙ㄇㄚ"
+      ],
+      "example": "你是學生嗎？",
+      "audioFileName": null,
+      "characterIds": [
+        "嗎"
+      ]
+    },
+    {
+      "id": "answer",
+      "writtenForm": "回答",
+      "definition": "to answer; to reply",
+      "pronunciations": [
+        "ㄏㄨㄟˊ ㄉㄚˊ"
+      ],
+      "example": "請回答這個問題。",
+      "audioFileName": null,
+      "characterIds": [
+        "回",
+        "答"
+      ]
+    },
+    {
+      "id": "do-not-want",
+      "writtenForm": "不要",
+      "definition": "to not want; do not",
+      "pronunciations": [
+        "ㄅㄨˊ ㄧㄠˋ"
+      ],
+      "example": "我不要塑膠袋。",
+      "audioFileName": null,
+      "characterIds": [
+        "不",
+        "要"
+      ]
+    },
+    {
+      "id": "sugar",
+      "writtenForm": "糖",
+      "definition": "sugar",
+      "pronunciations": [
+        "ㄊㄤˊ"
+      ],
+      "example": "這杯茶沒有糖。",
+      "audioFileName": null,
+      "characterIds": [
+        "糖"
+      ]
+    },
+    {
+      "id": "excuse-me-ask",
+      "writtenForm": "請問",
+      "definition": "excuse me; may I ask",
+      "pronunciations": [
+        "ㄑㄧㄥˇ ㄨㄣˋ"
+      ],
+      "example": "請問，捷運站在哪裡？",
+      "audioFileName": null,
+      "characterIds": [
+        "請",
+        "問"
+      ]
+    },
+    {
+      "id": "total",
+      "writtenForm": "一共",
+      "definition": "altogether; in total",
+      "pronunciations": [
+        "ㄧˊ ㄍㄨㄥˋ"
+      ],
+      "example": "這些一共三百元。",
+      "audioFileName": null,
+      "characterIds": [
+        "一",
+        "共"
+      ]
+    },
+    {
+      "id": "how-much",
+      "writtenForm": "多少錢",
+      "definition": "how much money; how much does it cost",
+      "pronunciations": [
+        "ㄉㄨㄛ ㄕㄠˇ ㄑㄧㄢˊ"
+      ],
+      "example": "這個多少錢？",
+      "audioFileName": null,
+      "characterIds": [
+        "多",
+        "少",
+        "錢"
+      ]
+    },
+    {
+      "id": "sixty-five-dollars",
+      "writtenForm": "六十五元",
+      "definition": "sixty-five dollars",
+      "pronunciations": [
+        "ㄌㄧㄡˋ ㄕˊ ㄨˇ ㄩㄢˊ"
+      ],
+      "example": "午餐是六十五元。",
+      "audioFileName": null,
+      "characterIds": [
+        "六",
+        "十",
+        "五",
+        "元"
+      ]
+    },
+    {
+      "id": "paid-money",
+      "writtenForm": "付了錢",
+      "definition": "paid the money",
+      "pronunciations": [
+        "ㄈㄨˋ ˙ㄌㄜ ㄑㄧㄢˊ"
+      ],
+      "example": "他付了錢就離開了。",
+      "audioFileName": null,
+      "characterIds": [
+        "付",
+        "了",
+        "錢"
+      ]
+    },
+    {
+      "id": "holding",
+      "writtenForm": "拿著",
+      "definition": "to hold; to carry",
+      "pronunciations": [
+        "ㄋㄚˊ ˙ㄓㄜ"
+      ],
+      "example": "她手上拿著一杯茶。",
+      "audioFileName": null,
+      "characterIds": [
+        "拿",
+        "著"
+      ]
+    },
+    {
+      "id": "breakfast",
+      "writtenForm": "早餐",
+      "definition": "breakfast",
+      "pronunciations": [
+        "ㄗㄠˇ ㄘㄢ"
+      ],
+      "example": "我每天都吃早餐。",
+      "audioFileName": null,
+      "characterIds": [
+        "早",
+        "餐"
+      ]
+    },
+    {
+      "id": "go",
+      "writtenForm": "去",
+      "definition": "to go",
+      "pronunciations": [
+        "ㄑㄩˋ"
+      ],
+      "example": "我要去學校。",
+      "audioFileName": null,
+      "characterIds": [
+        "去"
+      ]
+    },
+    {
+      "id": "go-to-work",
+      "writtenForm": "上班",
+      "definition": "to go to work; to be at work",
+      "pronunciations": [
+        "ㄕㄤˋ ㄅㄢ"
+      ],
+      "example": "他八點去上班。",
+      "audioFileName": null,
+      "characterIds": [
+        "上",
+        "班"
+      ]
+    },
+    {
+      "id": "name-xiao-an",
+      "writtenForm": "小安",
+      "definition": "Xiao-an (a person's name)",
+      "pronunciations": [
+        "ㄒㄧㄠˇ ㄢ"
+      ],
+      "example": "小安每天早上去上班。",
+      "audioFileName": null,
+      "characterIds": [
+        "小",
+        "安"
+      ]
+    }
+  ],
+  "hanziCharacters": [
+    {
+      "id": "早",
+      "writtenForm": "早",
+      "readings": [
+        {
+          "pronunciations": "ㄗㄠˇ",
+          "meanings": [
+            "early",
+            "morning"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "上",
+      "writtenForm": "上",
+      "readings": [
+        {
+          "pronunciations": "ㄕㄤˋ",
+          "meanings": [
+            "up",
+            "on",
+            "above"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "七",
+      "writtenForm": "七",
+      "readings": [
+        {
+          "pronunciations": "ㄑㄧ",
+          "meanings": [
+            "seven"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "點",
+      "writtenForm": "點",
+      "readings": [
+        {
+          "pronunciations": "ㄉㄧㄢˇ",
+          "meanings": [
+            "point",
+            "dot",
+            "o'clock"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "走",
+      "writtenForm": "走",
+      "readings": [
+        {
+          "pronunciations": "ㄗㄡˇ",
+          "meanings": [
+            "to walk",
+            "to leave"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "進",
+      "writtenForm": "進",
+      "readings": [
+        {
+          "pronunciations": "ㄐㄧㄣˋ",
+          "meanings": [
+            "to enter",
+            "to advance"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "餐",
+      "writtenForm": "餐",
+      "readings": [
+        {
+          "pronunciations": "ㄘㄢ",
+          "meanings": [
+            "meal"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "店",
+      "writtenForm": "店",
+      "readings": [
+        {
+          "pronunciations": "ㄉㄧㄢˋ",
+          "meanings": [
+            "shop",
+            "store"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "老",
+      "writtenForm": "老",
+      "readings": [
+        {
+          "pronunciations": "ㄌㄠˇ",
+          "meanings": [
+            "old"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "闆",
+      "writtenForm": "闆",
+      "readings": [
+        {
+          "pronunciations": "ㄅㄢˇ",
+          "meanings": [
+            "boss",
+            "shopkeeper"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "娘",
+      "writtenForm": "娘",
+      "readings": [
+        {
+          "pronunciations": "ㄋㄧㄤˊ",
+          "meanings": [
+            "woman",
+            "mother"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "笑",
+      "writtenForm": "笑",
+      "readings": [
+        {
+          "pronunciations": "ㄒㄧㄠˋ",
+          "meanings": [
+            "to smile",
+            "to laugh"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "著",
+      "writtenForm": "著",
+      "readings": [
+        {
+          "pronunciations": "˙ㄓㄜ",
+          "meanings": [
+            "aspect particle indicating an ongoing state"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "說",
+      "writtenForm": "說",
+      "readings": [
+        {
+          "pronunciations": "ㄕㄨㄛ",
+          "meanings": [
+            "to say",
+            "to speak"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "安",
+      "writtenForm": "安",
+      "readings": [
+        {
+          "pronunciations": "ㄢ",
+          "meanings": [
+            "peaceful",
+            "safe"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "今",
+      "writtenForm": "今",
+      "readings": [
+        {
+          "pronunciations": "ㄐㄧㄣ",
+          "meanings": [
+            "today",
+            "present"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "天",
+      "writtenForm": "天",
+      "readings": [
+        {
+          "pronunciations": "ㄊㄧㄢ",
+          "meanings": [
+            "day",
+            "sky"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "想",
+      "writtenForm": "想",
+      "readings": [
+        {
+          "pronunciations": "ㄒㄧㄤˇ",
+          "meanings": [
+            "to think",
+            "to want"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "吃",
+      "writtenForm": "吃",
+      "readings": [
+        {
+          "pronunciations": "ㄔ",
+          "meanings": [
+            "to eat"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "什",
+      "writtenForm": "什",
+      "readings": [
+        {
+          "pronunciations": "ㄕㄣˊ",
+          "meanings": [
+            "what"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "麼",
+      "writtenForm": "麼",
+      "readings": [
+        {
+          "pronunciations": "˙ㄇㄜ",
+          "meanings": [
+            "interrogative suffix"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "我",
+      "writtenForm": "我",
+      "readings": [
+        {
+          "pronunciations": "ㄨㄛˇ",
+          "meanings": [
+            "I",
+            "me"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "要",
+      "writtenForm": "要",
+      "readings": [
+        {
+          "pronunciations": "ㄧㄠˋ",
+          "meanings": [
+            "to want",
+            "to need"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "一",
+      "writtenForm": "一",
+      "readings": [
+        {
+          "pronunciations": "ㄧ",
+          "meanings": [
+            "one"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "個",
+      "writtenForm": "個",
+      "readings": [
+        {
+          "pronunciations": "ㄍㄜˋ",
+          "meanings": [
+            "individual",
+            "general measure word"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "蛋",
+      "writtenForm": "蛋",
+      "readings": [
+        {
+          "pronunciations": "ㄉㄢˋ",
+          "meanings": [
+            "egg"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "餅",
+      "writtenForm": "餅",
+      "readings": [
+        {
+          "pronunciations": "ㄅㄧㄥˇ",
+          "meanings": [
+            "flat cake",
+            "pastry"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "和",
+      "writtenForm": "和",
+      "readings": [
+        {
+          "pronunciations": "ㄏㄢˋ",
+          "meanings": [
+            "and"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "杯",
+      "writtenForm": "杯",
+      "readings": [
+        {
+          "pronunciations": "ㄅㄟ",
+          "meanings": [
+            "cup",
+            "cup as a measure word"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "冰",
+      "writtenForm": "冰",
+      "readings": [
+        {
+          "pronunciations": "ㄅㄧㄥ",
+          "meanings": [
+            "ice",
+            "cold"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "豆",
+      "writtenForm": "豆",
+      "readings": [
+        {
+          "pronunciations": "ㄉㄡˋ",
+          "meanings": [
+            "bean"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "漿",
+      "writtenForm": "漿",
+      "readings": [
+        {
+          "pronunciations": "ㄐㄧㄤ",
+          "meanings": [
+            "thick liquid",
+            "pulp"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "謝",
+      "writtenForm": "謝",
+      "readings": [
+        {
+          "pronunciations": "ㄒㄧㄝˋ",
+          "meanings": [
+            "to thank"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "問",
+      "writtenForm": "問",
+      "readings": [
+        {
+          "pronunciations": "ㄨㄣˋ",
+          "meanings": [
+            "to ask"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "加",
+      "writtenForm": "加",
+      "readings": [
+        {
+          "pronunciations": "ㄐㄧㄚ",
+          "meanings": [
+            "to add"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "糖",
+      "writtenForm": "糖",
+      "readings": [
+        {
+          "pronunciations": "ㄊㄤˊ",
+          "meanings": [
+            "sugar",
+            "candy"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "嗎",
+      "writtenForm": "嗎",
+      "readings": [
+        {
+          "pronunciations": "˙ㄇㄚ",
+          "meanings": [
+            "question particle"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "回",
+      "writtenForm": "回",
+      "readings": [
+        {
+          "pronunciations": "ㄏㄨㄟˊ",
+          "meanings": [
+            "to return",
+            "to reply"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "答",
+      "writtenForm": "答",
+      "readings": [
+        {
+          "pronunciations": "ㄉㄚˊ",
+          "meanings": [
+            "to answer"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "不",
+      "writtenForm": "不",
+      "readings": [
+        {
+          "pronunciations": "ㄅㄨˋ",
+          "meanings": [
+            "not",
+            "no"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "請",
+      "writtenForm": "請",
+      "readings": [
+        {
+          "pronunciations": "ㄑㄧㄥˇ",
+          "meanings": [
+            "please",
+            "to request"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "共",
+      "writtenForm": "共",
+      "readings": [
+        {
+          "pronunciations": "ㄍㄨㄥˋ",
+          "meanings": [
+            "altogether",
+            "in common"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "多",
+      "writtenForm": "多",
+      "readings": [
+        {
+          "pronunciations": "ㄉㄨㄛ",
+          "meanings": [
+            "many",
+            "much"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "少",
+      "writtenForm": "少",
+      "readings": [
+        {
+          "pronunciations": "ㄕㄠˇ",
+          "meanings": [
+            "few",
+            "little"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "錢",
+      "writtenForm": "錢",
+      "readings": [
+        {
+          "pronunciations": "ㄑㄧㄢˊ",
+          "meanings": [
+            "money"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "六",
+      "writtenForm": "六",
+      "readings": [
+        {
+          "pronunciations": "ㄌㄧㄡˋ",
+          "meanings": [
+            "six"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "十",
+      "writtenForm": "十",
+      "readings": [
+        {
+          "pronunciations": "ㄕˊ",
+          "meanings": [
+            "ten"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "五",
+      "writtenForm": "五",
+      "readings": [
+        {
+          "pronunciations": "ㄨˇ",
+          "meanings": [
+            "five"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "元",
+      "writtenForm": "元",
+      "readings": [
+        {
+          "pronunciations": "ㄩㄢˊ",
+          "meanings": [
+            "unit",
+            "dollar"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "付",
+      "writtenForm": "付",
+      "readings": [
+        {
+          "pronunciations": "ㄈㄨˋ",
+          "meanings": [
+            "to pay",
+            "to hand over"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "了",
+      "writtenForm": "了",
+      "readings": [
+        {
+          "pronunciations": "˙ㄌㄜ",
+          "meanings": [
+            "completed-action particle"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "拿",
+      "writtenForm": "拿",
+      "readings": [
+        {
+          "pronunciations": "ㄋㄚˊ",
+          "meanings": [
+            "to take",
+            "to hold"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "去",
+      "writtenForm": "去",
+      "readings": [
+        {
+          "pronunciations": "ㄑㄩˋ",
+          "meanings": [
+            "to go",
+            "to leave"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "班",
+      "writtenForm": "班",
+      "readings": [
+        {
+          "pronunciations": "ㄅㄢ",
+          "meanings": [
+            "work shift",
+            "class"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "小",
+      "writtenForm": "小",
+      "readings": [
+        {
+          "pronunciations": "ㄒㄧㄠˇ",
+          "meanings": [
+            "small",
+            "young"
+          ]
+        }
+      ]
+    }
+  ],
+  "recommendedLexicalSenseIds": [
+    "good-morning",
+    "egg-crepe",
+    "cold-soy-milk",
+    "add-sugar",
+    "how-much",
+    "go-to-work"
+  ]
+}

@@ -7,9 +7,13 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
 builder.Services.AddSingleton<ZhuyinSymbolCatalog>();
 builder.Services.AddSingleton<Lexicon>();
-builder.Services.AddScoped<StoryCatalog>();
-builder.Services.AddTransient<ExampleLexiconSeeder>();
-builder.Services.AddTransient<ExampleStorySeeder>();
+builder.Services.AddSingleton<StoryCatalog>();
+builder.Services.AddScoped(_ => new HttpClient
+{
+    BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
+});
+builder.Services.AddSingleton<LessonPackageValidator>();
+builder.Services.AddScoped<LessonPackageLoader>();
 builder.Services.AddFSRS(options =>
 {
     options.DesiredRetention = 0.9;
@@ -18,7 +22,8 @@ builder.Services.AddFSRS(options =>
 builder.Services.AddScoped<LexicalSenseReviewStateService>();
 
 var host = builder.Build();
-host.Services.GetRequiredService<ExampleLexiconSeeder>().Seed();
-host.Services.GetRequiredService<ExampleStorySeeder>().Seed();
+await host.Services
+    .GetRequiredService<LessonPackageLoader>()
+    .LoadIntoCatalogsAsync("content/breakfast-shop-morning.json");
 
 await host.RunAsync();

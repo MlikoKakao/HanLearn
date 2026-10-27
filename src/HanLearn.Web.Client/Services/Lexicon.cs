@@ -5,29 +5,52 @@ namespace HanLearn.Web.Client.Services;
 
 public class Lexicon
 {
-	private readonly List<LexicalSense> _senses = [];
-	private readonly List<HanziCharacter> _characters = [];
+	private readonly Dictionary<string, LexicalSense> _senses = [];
+	private readonly Dictionary<string, HanziCharacter> _characters = [];
 
-	public IReadOnlyList<LexicalSense> Senses => _senses;
-	public IReadOnlyList<HanziCharacter> Characters => _characters;
+	public IReadOnlyDictionary<string, LexicalSense> Senses => _senses;
+	public IReadOnlyDictionary<string, HanziCharacter> Characters => _characters;
+
+	public LexicalSense? FindSense(string id) =>
+		_senses.GetValueOrDefault(id);
+
+	public HanziCharacter? FindCharacter(string id) =>
+		_characters.GetValueOrDefault(id);
+
+	public bool ContainsSense(string id) => _senses.ContainsKey(id);
+
+	public bool ContainsCharacter(string id) => _characters.ContainsKey(id);
+
+	public void AddCharacter(HanziCharacter character)
+	{
+		if (!_characters.TryAdd(character.Id, character))
+		{
+			throw new InvalidOperationException(
+				$"A Hanzi character with the ID '{character.Id}' already exists.");
+		}
+	}
 
 	public void AddCharacter(
 		string id,
 		string writtenForm,
 		List<CharacterReading> readings)
 	{
-		if (_characters.Any(character => character.Id == id))
-		{
-			throw new InvalidOperationException($"A character entry with the ID '{id}' already exists.");
-		}
-
 		HanziCharacter character = new()
 		{
 			Id = id,
 			WrittenForm = writtenForm,
 			Readings = readings
 		};
-		_characters.Add(character);
+		AddCharacter(character);
+	}
+
+	public void AddSense(LexicalSense sense)
+	{
+		if (!_senses.TryAdd(sense.Id, sense))
+		{
+			throw new InvalidOperationException(
+				$"A lexical sense with the ID '{sense.Id}' already exists.");
+		}
 	}
 
 	public void AddSense(
@@ -39,11 +62,6 @@ public class Lexicon
 		string? audioFileName,
 		List<string> characterIds)
 	{
-		if (_senses.Any(sense => sense.Id == id))
-		{
-			throw new InvalidOperationException($"A lexical sense with the ID '{id}' already exists.");
-		}
-
 		LexicalSense sense = new()
 		{
 			Id = id,
@@ -54,6 +72,6 @@ public class Lexicon
 			AudioFileName = audioFileName,
 			CharacterIds = characterIds
 		};
-		_senses.Add(sense);
+		AddSense(sense);
 	}
 }

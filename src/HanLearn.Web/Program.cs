@@ -1,19 +1,6 @@
 using HanLearn.Web.Components;
-using HanLearn.Web.Client.Services;
-using FSRS.Core.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddSingleton<ZhuyinSymbolCatalog>();
-builder.Services.AddSingleton<Lexicon>();
-builder.Services.AddScoped<StoryCatalog>();
-builder.Services.AddFSRS(options =>
-{
-    options.DesiredRetention = 0.9;
-    options.MaximumInterval = 365;
-});
-
-builder.Services.AddScoped<LexicalSenseReviewStateService>();
 
 // Add services to the container.
 builder.Services.AddRazorComponents()

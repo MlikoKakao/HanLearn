@@ -1,6 +1,6 @@
 # HanLearn Content Model Notes
 
-This document records the current direction for representing stories, vocabulary, characters, and review items. It is a design note rather than a finalized schema.
+This document records the current direction for representing stories, vocabulary, characters, and review items. Authored lesson content currently uses versioned JSON `LessonPackage` files under `src/HanLearn.Web.Client/wwwroot/content`.
 
 ## Terminology
 

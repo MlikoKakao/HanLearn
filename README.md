@@ -35,6 +35,14 @@ HanLearn teaches Taiwan Mandarin with Traditional characters and Zhuyin by defau
 
 The full product agreement is in [MVP-SPEC.md](MVP-SPEC.md).
 
+## Lesson content
+
+Authored lessons are JSON packages under
+`src/HanLearn.Web.Client/wwwroot/content`. A package contains one story, its
+lexical senses, the referenced Hanzi character records, recommended review
+items, and a schema version. The WebAssembly client validates the complete
+package before adding any of its content to the runtime catalogs.
+
 ## Contributing
 
 Contributions and corrections are welcome. Learning content is version-controlled, and the maintainer retains final editorial authority for learner-facing material. Unreviewed lessons must be clearly labelled.

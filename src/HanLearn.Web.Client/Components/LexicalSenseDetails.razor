@@ -86,7 +86,7 @@
 
     private HanziCharacter? FindCharacter(string id)
     {
-        return Lexicon.Characters.FirstOrDefault(character => character.Id == id);
+        return Lexicon.FindCharacter(id);
     }
 
     private void ShowCharacter(int index)

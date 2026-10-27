@@ -68,8 +68,9 @@
     private void ShowLexicalSense(StoryOccurrence occurrence)
     {
         _activeOccurrenceId = occurrence.Id;
-        _selectedSense = Lexicon.Senses.FirstOrDefault(
-            sense => sense.Id == occurrence.LexicalSenseId);
+        _selectedSense = occurrence.LexicalSenseId is string senseId
+            ? Lexicon.FindSense(senseId)
+            : null;
     }
 
     private void HideLexicalSense(StoryOccurrence occurrence)
@@ -85,16 +86,17 @@
     {
         _selectedOccurrenceId = _selectedOccurrenceId == occurrence.Id ? null : occurrence.Id;
         _activeOccurrenceId = _selectedOccurrenceId ?? occurrence.Id;
-        _selectedSense = Lexicon.Senses.FirstOrDefault(
-            sense => sense.Id == occurrence.LexicalSenseId);
+        _selectedSense = occurrence.LexicalSenseId is string senseId
+            ? Lexicon.FindSense(senseId)
+            : null;
     }
 
     private LexicalSense? FindSelectedSense()
     {
         return _story?.Occurrences
             .FirstOrDefault(occurrence => occurrence.Id == _selectedOccurrenceId)
-            ?.LexicalSenseId is string entryId
-                ? Lexicon.Senses.FirstOrDefault(sense => sense.Id == entryId)
+            ?.LexicalSenseId is string senseId
+                ? Lexicon.FindSense(senseId)
                 : null;
     }
 

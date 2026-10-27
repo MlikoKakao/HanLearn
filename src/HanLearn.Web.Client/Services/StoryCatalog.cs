@@ -8,13 +8,21 @@ public class StoryCatalog
 
     public IReadOnlyList<Story> Stories => _stories;
 
-    public void AddStory(string id, string title, string text, StoryOccurrence[] occurrences)
+    public bool ContainsStory(string id) =>
+        _stories.Any(story => story.Id == id);
+
+    public void AddStory(Story story)
     {
-        if (_stories.Any(story => story.Id == id))
+        if (ContainsStory(story.Id))
         {
-            throw new InvalidOperationException($"A story with the ID '{id}' already exists.");
+            throw new InvalidOperationException($"A story with the ID '{story.Id}' already exists.");
         }
 
+        _stories.Add(story);
+    }
+
+    public void AddStory(string id, string title, string text, StoryOccurrence[] occurrences)
+    {
         Story newStory = new ()
         {
             Id = id,
@@ -22,6 +30,6 @@ public class StoryCatalog
             Text = text,
             Occurrences = occurrences
         };
-        _stories.Add(newStory);
+        AddStory(newStory);
     }
 }

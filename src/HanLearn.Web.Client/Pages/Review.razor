@@ -57,8 +57,7 @@ else
     private LexicalSense? CurrentLexicalSense =>
         _currentReviewState is null
             ? null
-            : Lexicon.Senses.FirstOrDefault(
-                sense => sense.Id == _currentReviewState.LexicalSenseId);
+            : Lexicon.FindSense(_currentReviewState.LexicalSenseId);
 
     private bool _isLoading = true;
     private async Task RatingSelected(Rating rating)
