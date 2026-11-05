@@ -1,5 +1,7 @@
 # HanLearn MVP Specification
 
+> **Status:** This is the target product agreement, not a description of completed functionality. The repository currently implements one structured reading with contextual word/character lookup, learner-selected FSRS review, browser-local review persistence, and backup export/import. See [PROJECT-CONTEXT.md](PROJECT-CONTEXT.md) for the current implementation inventory.
+
 ## Problem Statement
 
 Serious learners of Taiwan Mandarin currently assemble a fragmented study workflow. While reading, they may need separate tools for Traditional-character lookup, Zhuyin, Taiwan-specific vocabulary, example usage, and spaced-repetition review. Mainstream resources often prioritize Mainland Chinese conventions and Pinyin, leaving Zhuyin treated as an obstacle instead of a useful default.

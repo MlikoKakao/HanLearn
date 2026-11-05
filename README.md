@@ -1,56 +1,67 @@
 # HanLearn
 
-HanLearn is a focused web application for serious learners of Taiwan Mandarin. It brings Traditional-character reading, Zhuyin-first support, contextual vocabulary lookup, and spaced-repetition review into one workflow.
+HanLearn is an early-stage web application for learning Taiwan Mandarin through Traditional-character reading, Zhuyin, contextual vocabulary lookup, and spaced-repetition review.
 
-The current MVP begins with short, practical dialogues and a small Zhuyin foundation. It is deliberately laptop-first and responsive, with a clear English interface. Pinyin is planned as an opt-in aid rather than the default notation.
+The repository currently contains a working development slice: one JSON-authored reading, word- and character-level lookup, learner-selected vocabulary cards, FSRS scheduling, browser-local review persistence, and review backup export/import. The Zhuyin area currently provides a keyboard-shaped audio reference and a small six-symbol cycling exercise; it is not yet a complete lesson.
+
+The product direction is broader than the current implementation. See [MVP-SPEC.md](MVP-SPEC.md) for the product agreement and [PROJECT-CONTEXT.md](PROJECT-CONTEXT.md) for an implementation-status handoff.
 
 ## Technology
 
-- ASP.NET Core and Blazor WebAssembly
 - .NET 10
-- C#
+- ASP.NET Core Blazor Web App
+- Interactive Blazor WebAssembly client
+- [FSRS.Core](https://www.nuget.org/packages/FSRS.Core) for review scheduling
 
-The solution has two projects:
+The solution contains:
 
-- `src/HanLearn.Web` — ASP.NET Core host application.
-- `src/HanLearn.Web.Client` — interactive Blazor WebAssembly user interface.
+- `src/HanLearn.Web` — ASP.NET Core host and shared static assets.
+- `src/HanLearn.Web.Client` — WebAssembly UI, client-side services, data models, and authored lesson content.
 
 ## Run locally
 
-Install the .NET 10 SDK, then from the repository root run:
+Install the .NET 10 SDK, then run from the repository root:
 
 ```bash
 dotnet run --project src/HanLearn.Web
 ```
 
-Use the local URL printed by the application. To build the full solution without running it:
+Open the local URL printed by the application. To build without running:
 
 ```bash
 dotnet build HanLearn.slnx
 ```
 
-## Project direction
+There is currently no automated test project.
 
-HanLearn teaches Taiwan Mandarin with Traditional characters and Zhuyin by default. The intended first vertical slice includes one Zhuyin mini-lesson, one dialogue, contextual word lookup, learner-selected vocabulary review, and local progress export/import.
+## Current routes
 
-The full product agreement is in [MVP-SPEC.md](MVP-SPEC.md).
+- `/` — minimal home page.
+- `/zhuyin` — Zhuyin keyboard/audio reference.
+- `/zhuyinTest` — basic symbol-cycling exercise.
+- `/dialogues` — available reading list.
+- `/dialogues/breakfast-shop-morning` — the first authored reading.
+- `/review` — due-card review and review-data backup/restore.
+- `/author/stories` — placeholder only; no authoring workflow is implemented.
 
 ## Lesson content
 
-Authored lessons are JSON packages under
-`src/HanLearn.Web.Client/wwwroot/content`. A package contains one story, its
-lexical senses, the referenced Hanzi character records, recommended review
-items, and a schema version. The WebAssembly client validates the complete
-package before adding any of its content to the runtime catalogs.
+Authored content is stored as versioned JSON under `src/HanLearn.Web.Client/wwwroot/content`. On client startup, `LessonPackageLoader` deserializes and validates `breakfast-shop-morning.json` before adding its story, lexical senses, and Hanzi records to in-memory catalogs.
+
+The validator currently checks schema version, required values, duplicate IDs, story reconstruction, and internal references. Invalid content prevents client startup. Although packages contain recommended lexical-sense IDs and optional audio filenames, recommendations and story/vocabulary audio are not yet connected to the UI.
+
+See [CONTENT-MODEL.md](CONTENT-MODEL.md) for the implemented schema and remaining model decisions.
+
+## Learner data
+
+Review state is stored in browser `localStorage` under `hanlearn.vocabulary-review-states`. The Review page can export that state as JSON and replace it from a JSON backup of up to 500 KB. There are no accounts, server-side learner records, or cross-device synchronization.
 
 ## Contributing
 
 Contributions and corrections are welcome. Learning content is version-controlled, and the maintainer retains final editorial authority for learner-facing material. Unreviewed lessons must be clearly labelled.
 
-Please include source and licence information for every externally sourced asset.
+Include source and licence information for every externally sourced asset.
 
 ## Licence
 
-Source code is licensed under the [MIT License](LICENSE).
-
-Authored learning content and reusable lesson assets are licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), unless a specific asset records a compatible alternative licence. Third-party assets retain their own licences.
+The intended licensing is MIT for source code and CC BY-SA 4.0 for authored learning content and reusable lesson assets, unless an asset records a compatible alternative. A repository `LICENSE` file has not yet been added.

@@ -1,6 +1,30 @@
 # HanLearn Content Model Notes
 
-This document records the current direction for representing stories, vocabulary, characters, and review items. Authored lesson content currently uses versioned JSON `LessonPackage` files under `src/HanLearn.Web.Client/wwwroot/content`.
+This document records both the implemented version 1 lesson-package model and the remaining design direction for stories, vocabulary, characters, and review items. Authored lesson content uses versioned JSON `LessonPackage` files under `src/HanLearn.Web.Client/wwwroot/content`.
+
+## Implemented package boundary
+
+A version 1 `LessonPackage` contains:
+
+- One `Story`, including canonical `Text` and an ordered array of `StoryOccurrence` records.
+- The `LexicalSense` records referenced by that story.
+- The `HanziCharacter` records referenced by those lexical senses.
+- A list of recommended lexical-sense IDs.
+
+At WebAssembly startup, `LessonPackageLoader` strictly deserializes the package, asks `LessonPackageValidator` to check it, checks for conflicts with already-loaded catalog records, and then adds the complete package to the in-memory catalogs. The current application loads only `breakfast-shop-morning.json`.
+
+Validation currently enforces:
+
+- Schema version 1.
+- Required package collections and core text fields.
+- Unique story-occurrence, lexical-sense, and Hanzi-character IDs within a package.
+- Exact reconstruction of `Story.Text` by concatenating occurrence text.
+- At least one pronunciation and character reference per lexical sense.
+- At least one reading and meaning per Hanzi character.
+- Valid occurrence-to-sense, sense-to-character, and recommendation-to-sense references.
+- No conflicting reusable sense or character records and no duplicate story ID across loaded packages.
+
+The package is an atomic loading boundary: validation finishes before catalogs are changed. There is no persisted content database or authoring UI.
 
 ## Terminology
 
@@ -23,7 +47,7 @@ Story
             └─ Lexical-sense ID
 ```
 
-When the learner selects a story, the client should load the senses referenced by that story. Each selectable occurrence should reference a specific lexical sense by a stable ID rather than finding content by matching its displayed text.
+The client currently loads each package's story and senses together at application startup. Each selectable occurrence references a specific lexical sense by a stable ID rather than finding content by matching its displayed text. Loading content on story selection is a possible future optimization, not current behavior.
 
 ## Word and character information
 
@@ -78,7 +102,7 @@ For example, `好` can be studied either as:
 
 A reviewable item must explicitly distinguish a character from a word. This distinction may be represented by separate types or by a type discriminator; it must not be inferred from the written form's length.
 
-A reviewable item needs the following concepts:
+The target reviewable-item model needs the following concepts:
 
 - A stable ID.
 - Its explicit item type.
@@ -108,8 +132,12 @@ Authored content describes the written form, pronunciation, lexical sense, examp
 
 Learner review state should reference the ID of its authored lexical sense rather than duplicate the authored educational content.
 
+The current implementation does this for lexical senses only. `LexicalSenseReviewState` contains a lexical-sense ID and an FSRS card. It is serialized through storage-specific DTOs to browser local storage and JSON backups. Character review, source occurrence/context, review history, and a backup schema version are not implemented.
+
+Recommended lexical-sense IDs are present and validated in lesson packages but are not yet consumed by the learner interface.
+
 ## Authoring workflow
 
 The eventual authoring workflow should provide a user-friendly way for story writers to create stories, segment their text, select the intended meanings, and add new meanings where required.
 
-Building that UI should wait until the content schema has been exercised with at least two or three real stories. For the initial vertical slice, content can be authored manually as structured, version-controlled data, such as JSON. This follows the MVP decision that a content-management system is outside the initial scope.
+Building that UI should wait until the content schema has been exercised with at least two or three real stories. Content is currently authored manually as structured, version-controlled JSON. The `/author/stories` page is only a placeholder and should not be treated as an authoring workflow. This follows the MVP decision that a content-management system is outside the initial scope.
