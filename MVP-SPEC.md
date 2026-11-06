@@ -1,6 +1,6 @@
 # HanLearn MVP Specification
 
-> **Status:** This is the target product agreement, not a description of completed functionality. The repository currently implements one structured reading with contextual word/character lookup, learner-selected FSRS review, browser-local review persistence, and backup export/import. See [PROJECT-CONTEXT.md](PROJECT-CONTEXT.md) for the current implementation inventory.
+> **Status:** This document defines the target MVP, not completed functionality. The current repository implements one structured reading with contextual word/character lookup, learner-selected FSRS review, browser-local review persistence, and backup export/import. See [README.md](README.md) for the current feature inventory.
 
 ## Problem Statement
 
