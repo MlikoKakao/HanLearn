@@ -21,12 +21,24 @@ public class StoryCatalog
         _stories.Add(story);
     }
 
-    public void AddStory(string id, string title, string text, StoryOccurrence[] occurrences)
+    public void AddStory(
+        string id,
+        string title,
+        string summary,
+        string difficulty,
+        int estimatedReadingMinutes,
+        string imagePath,
+        string text,
+        StoryOccurrence[] occurrences)
     {
         Story newStory = new ()
         {
             Id = id,
             Title = title,
+            Summary = summary,
+            Difficulty = difficulty,
+            EstimatedReadingMinutes = estimatedReadingMinutes,
+            ImagePath = imagePath,
             Text = text,
             Occurrences = occurrences
         };

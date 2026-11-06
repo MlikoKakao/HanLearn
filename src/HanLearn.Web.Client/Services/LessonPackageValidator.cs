@@ -4,7 +4,7 @@ namespace HanLearn.Web.Client.Services;
 
 public sealed class LessonPackageValidator
 {
-    public const int SupportedVersion = 1;
+    public const int SupportedVersion = 2;
 
     public IReadOnlyList<string> Validate(LessonPackage package)
     {
@@ -52,6 +52,14 @@ public sealed class LessonPackageValidator
     {
         RequireText(story.Id, "Story.Id", errors);
         RequireText(story.Title, "Story.Title", errors);
+        RequireText(story.Summary, "Story.Summary", errors);
+        RequireText(story.Difficulty, "Story.Difficulty", errors);
+        RequireText(story.ImagePath, "Story.ImagePath", errors);
+
+        if (story.EstimatedReadingMinutes <= 0)
+        {
+            errors.Add("Story.EstimatedReadingMinutes must be greater than zero.");
+        }
 
         if (story.Text is null)
         {

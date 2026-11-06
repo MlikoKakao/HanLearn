@@ -1,8 +1,12 @@
 {
-  "version": 1,
+  "version": 2,
   "story": {
     "id": "breakfast-shop-morning",
     "title": "早餐店的早晨",
+    "summary": "Order a Taiwanese breakfast, answer a question about sugar, and pay before work.",
+    "difficulty": "Beginner",
+    "estimatedReadingMinutes": 4,
+    "imagePath": "images/dialogues/breakfast-shop-morning.webp",
     "text": "早上七點，小安走進早餐店。老闆娘笑著說：「早安！今天想吃什麼？」小安說：「我要一個蛋餅和一杯冰豆漿，謝謝。」\n\n老闆娘問：「豆漿要加糖嗎？」小安回答：「不要糖。請問一共多少錢？」老闆娘說：「六十五元。」小安付了錢，拿著早餐去上班。",
     "occurrences": [
       {

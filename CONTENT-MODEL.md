@@ -1,16 +1,17 @@
 # HanLearn Content Model Notes
 
-This document records both the implemented version 1 lesson-package model and future model decisions. Authored lesson content uses versioned JSON `LessonPackage` files under `src/HanLearn.Web.Client/wwwroot/content`.
+This document records both the implemented version 2 lesson-package model and future model decisions. Authored lesson content uses versioned JSON `LessonPackage` files under `src/HanLearn.Web.Client/wwwroot/content`.
 
 ## Implemented package model
 
-A version 1 `LessonPackage` contains one `Story`, the `LexicalSense` records used by its occurrences, the referenced `HanziCharacter` records, and recommended lexical-sense IDs.
+A version 2 `LessonPackage` contains one `Story`, the `LexicalSense` records used by its occurrences, the referenced `HanziCharacter` records, and recommended lexical-sense IDs. A story includes selection-page metadata: a summary, difficulty label, estimated reading time in minutes, and image path.
 
 At WebAssembly startup, `LessonPackageLoader` strictly deserializes `breakfast-shop-morning.json`, validates the complete package, checks it against already-loaded catalog records, and then adds it to in-memory story and lexicon catalogs. There is currently no content database or working authoring UI.
 
 Validation currently checks:
 
-- Schema version 1 and required package collections.
+- Schema version 2 and required package collections.
+- Required story summary, difficulty, and image path, plus a positive estimated reading time.
 - Required IDs and core text fields.
 - Duplicate occurrence, lexical-sense, Hanzi-character, and recommendation IDs.
 - Exact reconstruction of `Story.Text` from ordered occurrence text.
