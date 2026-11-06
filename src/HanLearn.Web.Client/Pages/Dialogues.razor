@@ -1,20 +1,66 @@
-
 @page "/dialogues"
 @using HanLearn.Web.Client.Data
 @using HanLearn.Web.Client.Services
 @inject StoryCatalog StoryCatalog
 
-<PageTitle>Dialogues</PageTitle>
+<PageTitle>Dialogues | HanLearn</PageTitle>
 
-<h1>Dialogues</h1>
+<div class="dialogues-page">
+    <header class="page-heading">
+        <p class="eyebrow">Learn through context</p>
+        <h1>Dialogues</h1>
+        <p>
+            Read short Taiwan-Mandarin scenes, inspect vocabulary in context, and save the words you want to review.
+        </p>
+    </header>
 
-@foreach (Story story in StoryCatalog.Stories)
-{
-    <a href=@($"/dialogues/{story.Id}")"">@story.Title</a>
-    <br />
-}
+    <section class="dialogue-library" aria-labelledby="library-heading">
+        <div class="library-heading">
+            <div>
+                <p class="section-label">Reading library</p>
+                <h2 id="library-heading">Choose a dialogue</h2>
+            </div>
+            <span class="dialogue-count">@StoryCatalog.Stories.Count @(StoryCatalog.Stories.Count == 1 ? "dialogue" : "dialogues")</span>
+        </div>
 
+        <div class="dialogue-table" aria-label="Available dialogues">
+            <div class="table-header" aria-hidden="true">
+                <span>Dialogue</span>
+                <span>Level</span>
+                <span>Reading time</span>
+                <span></span>
+            </div>
 
-@code {
-
-}
+            <div class="dialogue-rows">
+                @foreach (Story story in StoryCatalog.Stories)
+                {
+                    <a class="dialogue-row"
+                       href="@($"dialogues/{story.Id}")"
+                       aria-label="Open @story.Title, @story.Difficulty, about @story.EstimatedReadingMinutes minutes">
+                        <span class="dialogue-overview">
+                            <span class="image-frame">
+                                <img src="@story.ImagePath" alt="Illustration for @story.Title" />
+                            </span>
+                            <span class="dialogue-copy">
+                                <span class="dialogue-title" lang="zh-Hant">@story.Title</span>
+                                <span class="dialogue-summary">@story.Summary</span>
+                            </span>
+                        </span>
+                        <span class="metadata-cell">
+                            <span class="mobile-label">Level</span>
+                            <span class="difficulty-badge">@story.Difficulty</span>
+                        </span>
+                        <span class="metadata-cell reading-time">
+                            <span class="mobile-label">Reading time</span>
+                            <span>@story.EstimatedReadingMinutes min</span>
+                        </span>
+                        <span class="open-cell">
+                            <span>Read dialogue</span>
+                            <span class="open-arrow" aria-hidden="true">→</span>
+                        </span>
+                    </a>
+                }
+            </div>
+        </div>
+    </section>
+</div>

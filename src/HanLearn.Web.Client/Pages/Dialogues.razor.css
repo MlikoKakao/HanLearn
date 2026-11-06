@@ -1,0 +1,179 @@
+.dialogues-page { color: #17231d; }
+
+.page-heading {
+    max-width: 780px;
+    padding: clamp(1.5rem, 5vw, 4rem) 0 clamp(2.5rem, 6vw, 4.5rem);
+}
+
+.eyebrow, .section-label {
+    margin: 0 0 0.7rem;
+    color: #28634a;
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+}
+
+.page-heading h1 {
+    margin: 0;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: clamp(3rem, 8vw, 5.5rem);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.045em;
+}
+
+.page-heading > p:last-child {
+    max-width: 680px;
+    margin: 1.3rem 0 0;
+    color: #536057;
+    font-size: 1.12rem;
+    line-height: 1.65;
+}
+
+.library-heading {
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.library-heading h2 {
+    margin: 0;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 500;
+}
+
+.dialogue-count { color: #647068; font-size: 0.9rem; }
+
+.dialogue-table {
+    overflow: hidden;
+    border: 1px solid #d8d3c8;
+    border-radius: 1rem;
+    background: #fffdf8;
+}
+
+.table-header, .dialogue-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 8rem 9rem 9rem;
+    gap: 1rem;
+    align-items: center;
+}
+
+.table-header {
+    padding: 0.85rem 1.25rem;
+    color: #727b75;
+    background: #f0eee8;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+}
+
+.dialogue-row {
+    min-height: 160px;
+    padding: 1rem 1.25rem;
+    color: #17231d;
+    text-decoration: none;
+    transition: background-color 160ms ease, box-shadow 160ms ease;
+}
+
+.dialogue-row + .dialogue-row { border-top: 1px solid #e0ddd5; }
+
+.dialogue-row:hover {
+    color: #17231d;
+    background: #f3f7f4;
+    box-shadow: inset 4px 0 0 #28634a;
+}
+
+.dialogue-row:focus-visible {
+    position: relative;
+    outline: 3px solid #d08a38;
+    outline-offset: -3px;
+}
+
+.dialogue-overview {
+    min-width: 0;
+    display: grid;
+    grid-template-columns: 190px minmax(0, 1fr);
+    gap: 1.25rem;
+    align-items: center;
+}
+
+.image-frame {
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    display: block;
+    border-radius: 0.75rem;
+    background: #e3eee7;
+}
+
+.image-frame img { width: 100%; height: 100%; display: block; object-fit: cover; }
+
+.dialogue-copy {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+}
+
+.dialogue-title {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: clamp(1.4rem, 3vw, 1.8rem);
+    font-weight: 600;
+}
+
+.dialogue-summary { max-width: 520px; color: #5a655e; line-height: 1.5; }
+.metadata-cell { color: #4e5b53; font-size: 0.92rem; }
+
+.difficulty-badge {
+    display: inline-flex;
+    padding: 0.4rem 0.65rem;
+    border-radius: 999px;
+    color: #24523f;
+    background: #dfece5;
+    font-size: 0.82rem;
+    font-weight: 750;
+}
+
+.open-cell {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+    color: #28634a;
+    font-size: 0.9rem;
+    font-weight: 750;
+}
+
+.open-arrow { font-size: 1.3rem; transition: transform 160ms ease; }
+.dialogue-row:hover .open-arrow { transform: translateX(3px); }
+.mobile-label { display: none; }
+
+@media (max-width: 900px) {
+    .table-header, .dialogue-row { grid-template-columns: minmax(0, 1fr) 7rem 7rem; }
+    .table-header > span:last-child, .open-cell { display: none; }
+    .dialogue-overview { grid-template-columns: 150px minmax(0, 1fr); }
+}
+
+@media (max-width: 680px) {
+    .table-header { display: none; }
+    .dialogue-row { padding: 1rem; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .dialogue-overview { grid-column: 1 / -1; grid-template-columns: 1fr; }
+    .image-frame { aspect-ratio: 16 / 8; }
+    .metadata-cell { display: flex; flex-direction: column; gap: 0.4rem; }
+    .mobile-label {
+        display: inline;
+        color: #7a827d;
+        font-size: 0.68rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dialogue-row, .open-arrow { transition: none; }
+}
