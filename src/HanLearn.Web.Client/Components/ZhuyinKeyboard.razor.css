@@ -1,28 +1,73 @@
 .zhuyin {
-	font-size: 2.5rem;
-	inline-size: 4rem;
-	aspect-ratio: 1;
+    inline-size: clamp(3.35rem, 6vw, 4.25rem);
+    aspect-ratio: 1;
+    border: 1px solid #d3d8d2;
+    border-radius: 0.75rem;
+    color: #183d2e;
+    background: #fff;
+    box-shadow: 0 2px 0 #c7cec9;
+    font-family: 'Noto Sans Bopomofo', 'Microsoft JhengHei', sans-serif;
+    font-size: clamp(1.65rem, 3vw, 2.3rem);
+    line-height: 1;
+    transition: transform 120ms ease, background-color 120ms ease, box-shadow 120ms ease;
 }
 
 .zhuyin-keyboard {
-	display: flex;
-	flex-direction: column;
-	row-gap: 0.5rem;
+    width: max-content;
+    min-width: 100%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.65rem;
 }
 
 .key-row {
-	display: flex;
-	gap: .4rem;
+    display: flex;
+    gap: 0.5rem;
 }
 
 .row-2 {
-	padding-inline-start: 1rem;
+    padding-inline-start: 1rem;
 }
 
 .row-3 {
-	padding-inline-start: 2rem;
+    padding-inline-start: 2rem;
 }
 
 .row-4 {
-	padding-inline-start: 3rem;
+    padding-inline-start: 3rem;
+}
+
+.zhuyin:hover {
+    background: #edf3ef;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 0 #b9c5bd;
+}
+
+.zhuyin:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 0 #b9c5bd;
+}
+
+.zhuyin:focus-visible {
+    outline: 3px solid #d08a38;
+    outline-offset: 3px;
+}
+
+.tone {
+    color: #725425;
+    background: #f8f0e2;
+    border-color: #ded0b8;
+}
+
+@media (max-width: 700px) {
+    .zhuyin {
+        inline-size: 3.25rem;
+        font-size: 1.65rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .zhuyin {
+        transition: none;
+    }
 }

@@ -1,8 +1,37 @@
 ﻿@page "/zhuyin"
 @using HanLearn.Web.Client.Components
 
-<PageTitle>Zhuyin</PageTitle>
+<PageTitle>Zhuyin | HanLearn</PageTitle>
 
-<h1>Zhuyin</h1>
-<ZhuyinKeyboard />
-<a href="zhuyinTest"><button type="submit" autofocus>Test Zhuyin</button></a>
+<div class="zhuyin-page">
+    <header class="page-heading">
+        <p class="eyebrow">Pronunciation foundation</p>
+        <h1>Zhuyin</h1>
+        <p class="page-introduction">
+            Select a symbol to hear its sound, or use the existing exercise to cycle through the first symbols.
+        </p>
+    </header>
+
+    <section class="keyboard-section" aria-labelledby="keyboard-heading">
+        <div class="section-heading">
+            <div>
+                <p class="section-label">Sound reference</p>
+                <h2 id="keyboard-heading">Zhuyin keyboard</h2>
+            </div>
+            <span class="section-note">Select a key to listen</span>
+        </div>
+
+        <div class="keyboard-frame">
+            <ZhuyinKeyboard />
+        </div>
+    </section>
+
+    <section class="practice-callout" aria-labelledby="practice-heading">
+        <div>
+            <p class="section-label">Quick practice</p>
+            <h2 id="practice-heading">Test the symbols</h2>
+            <p>Cycle through the symbols currently included in the exercise.</p>
+        </div>
+        <a class="practice-link" href="zhuyinTest">Open exercise <span aria-hidden="true">→</span></a>
+    </section>
+</div>
