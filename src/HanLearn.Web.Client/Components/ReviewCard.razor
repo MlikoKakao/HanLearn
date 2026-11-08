@@ -1,46 +1,138 @@
-@using FSRS.Core.Models
 @using FSRS.Core.Enums
-
 @using HanLearn.Web.Client.Data
-<div class="border border-primary rounded p-3 shadow-sm">
-    @Sense.WrittenForm
-		@if (_showAnswer)
-		{
-			<p>@Sense.Example</p>
-			<p>@string.Join("、", Sense.Pronunciations)</p>
-			<p>@Sense.Definition</p>
-			<button @onclick="() => OnRatingSelected.InvokeAsync(Rating.Again)">Again</button>
-		<button @onclick="() => OnRatingSelected.InvokeAsync(Rating.Hard)">Hard</button	>
-		<button @onclick="() => OnRatingSelected.InvokeAsync(Rating.Good)">Good</button>
-		<button @onclick="() => OnRatingSelected.InvokeAsync(Rating.Easy)">Easy</button>
-	}
 
+<article class="review-card" @onkeydown="HandleKeyDown">
+    <div class="card-prompt">
+        <p class="prompt-label">Recall this word</p>
+        <p class="written-form" lang="zh-Hant">@Sense.WrittenForm</p>
+        @if (!_showAnswer)
+        {
+            <p class="recall-instruction">Say the pronunciation and meaning before revealing the answer.</p>
+        }
+    </div>
 
+    @if (_showAnswer)
+    {
+        <div class="answer" aria-live="polite">
+            <div class="answer-section pronunciation-section">
+                <span class="answer-label">Pronunciation</span>
+                <strong lang="zh-Bopo">@string.Join("、", Sense.Pronunciations)</strong>
+            </div>
 
-	<button @onclick="ToggleAnswer">Show answer</button>
-</div>
+            <div class="answer-section">
+                <span class="answer-label">Meaning</span>
+                <p>@Sense.Definition</p>
+            </div>
 
+            @if (!string.IsNullOrWhiteSpace(Sense.Example))
+            {
+                <div class="answer-section example-section">
+                    <span class="answer-label">Example</span>
+                    <p lang="zh-Hant">@Sense.Example</p>
+                </div>
+            }
 
+            <div class="rating-section">
+                <div class="rating-heading">
+                    <span class="answer-label">How did it feel?</span>
+                    <span>Press 1–4 or choose an answer</span>
+                </div>
+                <div class="rating-grid">
+                    <button type="button" class="rating-button again" aria-keyshortcuts="1" @onclick="() => RateAsync(Rating.Again)">
+                        <span class="key-hint" aria-hidden="true">1</span><span>Again</span><small>Forgot</small>
+                    </button>
+                    <button type="button" class="rating-button hard" aria-keyshortcuts="2" @onclick="() => RateAsync(Rating.Hard)">
+                        <span class="key-hint" aria-hidden="true">2</span><span>Hard</span><small>Struggled</small>
+                    </button>
+                    <button type="button" class="rating-button good" aria-keyshortcuts="3" @onclick="() => RateAsync(Rating.Good)">
+                        <span class="key-hint" aria-hidden="true">3</span><span>Good</span><small>Recalled</small>
+                    </button>
+                    <button type="button" class="rating-button easy" aria-keyshortcuts="4" @onclick="() => RateAsync(Rating.Easy)">
+                        <span class="key-hint" aria-hidden="true">4</span><span>Easy</span><small>Immediate</small>
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
 
-
+    <button type="button"
+            class="reveal-button"
+            autofocus
+            @ref="_revealButton"
+            @onclick="ToggleAnswer">
+        @(_showAnswer ? "Hide answer" : "Show answer")
+        <span aria-hidden="true">@(_showAnswer ? "↑" : "↓")</span>
+    </button>
+</article>
 
 @code
 {
-	[Parameter]
-	public required LexicalSense Sense { get; set; }
-	[Parameter]
-	public EventCallback<Rating> OnRatingSelected { get; set; }
+    [Parameter]
+    public required LexicalSense Sense { get; set; }
 
-	private bool _showAnswer;
-	private string? _previousSenseId;
-	private void ToggleAnswer() => _showAnswer = !_showAnswer;
+    [Parameter]
+    public EventCallback<Rating> OnRatingSelected { get; set; }
 
-	protected override void OnParametersSet()
-	{
-		if (Sense.Id != _previousSenseId)
-		{
-			_showAnswer = false;
-			_previousSenseId = Sense.Id;
-		}
-	}
+    private bool _showAnswer;
+    private bool _shouldFocusReveal;
+    private bool _isSubmittingRating;
+    private string? _previousSenseId;
+    private ElementReference _revealButton;
+
+    private void ToggleAnswer() => _showAnswer = !_showAnswer;
+
+    protected override void OnParametersSet()
+    {
+        if (Sense.Id != _previousSenseId)
+        {
+            _showAnswer = false;
+            _shouldFocusReveal = true;
+            _isSubmittingRating = false;
+            _previousSenseId = Sense.Id;
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!_shouldFocusReveal)
+        {
+            return;
+        }
+
+        _shouldFocusReveal = false;
+        await _revealButton.FocusAsync();
+    }
+
+    private async Task HandleKeyDown(KeyboardEventArgs eventArgs)
+    {
+        if (!_showAnswer)
+        {
+            return;
+        }
+
+        Rating? rating = eventArgs.Key switch
+        {
+            "1" => Rating.Again,
+            "2" => Rating.Hard,
+            "3" => Rating.Good,
+            "4" => Rating.Easy,
+            _ => null
+        };
+
+        if (rating is Rating selectedRating)
+        {
+            await RateAsync(selectedRating);
+        }
+    }
+
+    private async Task RateAsync(Rating rating)
+    {
+        if (_isSubmittingRating)
+        {
+            return;
+        }
+
+        _isSubmittingRating = true;
+        await OnRatingSelected.InvokeAsync(rating);
+    }
 }

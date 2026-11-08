@@ -8,44 +8,86 @@
 @inject LexicalSenseReviewStateService ReviewStateService
 @inject IJSRuntime JS
 
-<PageTitle>Review</PageTitle>
+<PageTitle>Review | HanLearn</PageTitle>
 
-<h1>Review</h1>
+    <header>
+        <p>Recall each word before revealing the answer, then rate how well you remembered it.</p>
+    </header>
 
-<button @onclick="ExportAsync">Export</button>
+    <div class="review-layout">
+        <section class="review-workspace" aria-labelledby="queue-heading">
+            <div class="workspace-heading">
+                <div>
+                    <p class="section-label">Today's queue</p>
+                    <h2 id="queue-heading">Vocabulary review</h2>
+                </div>
+                @if (!_isLoading)
+                {
+                    <span class="due-count">@_reviewStates.Count @(_reviewStates.Count == 1 ? "card" : "cards") due</span>
+                }
+            </div>
 
-<label for="review-backup-file" class="btn btn-primary">
-    Restore backup
-</label>
+            @if (_isLoading)
+            {
+                <div class="review-status loading-status" role="status">
+                    <span class="status-symbol" aria-hidden="true">···</span>
+                    <h3>Loading your reviews</h3>
+                    <p>Checking the cards stored in this browser.</p>
+                </div>
+            }
+            else if (_currentReviewState is null)
+            {
+                <div class="review-status empty-status">
+                    <span class="status-symbol" lang="zh-Hant" aria-hidden="true">好</span>
+                    <h3>You're caught up</h3>
+                    <p>No vocabulary cards are due right now. Read a dialogue to discover and save more words.</p>
+                    <a href="dialogues">Browse dialogues <span aria-hidden="true">→</span></a>
+                </div>
+            }
+            else if (CurrentLexicalSense is LexicalSense sense)
+            {
+                <ReviewCard Sense="@sense" OnRatingSelected="@RatingSelected" />
+            }
+            else
+            {
+                <div class="review-status error-status" role="alert">
+                    <span class="status-symbol" aria-hidden="true">!</span>
+                    <h3>Card content unavailable</h3>
+                    <p>The vocabulary entry referenced by this review card could not be found.</p>
+                </div>
+            }
+        </section>
 
-<InputFile id="review-backup-file"
-           class="visually-hidden"
-           accept=".json,application/json"
-           OnChange="ImportAsync" />
+        <aside class="backup-panel" aria-labelledby="backup-heading">
+            <p class="section-label">Local data</p>
+            <h2 id="backup-heading">Review backup</h2>
+            <p>Your review schedule is stored in this browser. Export a copy before clearing browser data or moving devices.</p>
 
-@if (_importError is not null)
-{
-    <p class="text-danger" role="alert">@_importError</p>
-}
+            <div class="backup-actions">
+                <button type="button" class="export-button" @onclick="ExportAsync">
+                    <span aria-hidden="true">↓</span>
+                    Export backup
+                </button>
 
-@if (_isLoading)
-{
-    <p>Loading reviews...</p>
-}
-else if (_currentReviewState is null)
-{
-	<span>You have no cards to review!</span>
-}
-else if (CurrentLexicalSense is LexicalSense sense)
-{
-    <ReviewCard Sense="@sense" OnRatingSelected="@RatingSelected" />
-}
-else
-{
-    <p>The lexical sense for this review card could not be found.</p>
-}
+                <label for="review-backup-file" class="restore-button">
+                    <span aria-hidden="true">↑</span>
+                    Restore backup
+                </label>
 
+                <InputFile id="review-backup-file"
+                           class="visually-hidden"
+                           accept=".json,application/json"
+                           OnChange="ImportAsync" />
+            </div>
 
+            <p class="backup-note">Restoring replaces the review schedule currently stored in this browser.</p>
+
+            @if (_importError is not null)
+            {
+                <p class="import-error" role="alert">@_importError</p>
+            }
+        </aside>
+    </div>
 
 @code {
     private LexicalSenseReviewState? _currentReviewState;
@@ -60,6 +102,7 @@ else
             : Lexicon.FindSense(_currentReviewState.LexicalSenseId);
 
     private bool _isLoading = true;
+
     private async Task RatingSelected(Rating rating)
     {
         if (_currentReviewState is not null)
@@ -104,11 +147,11 @@ else
         using var fileStream = new MemoryStream(bytes);
         using var streamReference = new DotNetStreamReference(fileStream);
 
-        await JS.InvokeVoidAsync("downloadFileFromStream",
-        "hanlearn-review-data.json",
-        streamReference);
+        await JS.InvokeVoidAsync(
+            "downloadFileFromStream",
+            "hanlearn-review-data.json",
+            streamReference);
     }
-
 
     private async Task ImportAsync(InputFileChangeEventArgs e)
     {
@@ -137,7 +180,5 @@ else
         {
             _importError = "HanLearn couldn't read the selected file.";
         }
-
     }
-
 }
