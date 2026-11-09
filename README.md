@@ -11,10 +11,11 @@ The repository currently contains one structured reading with contextual word an
 - C#
 - FSRS.Core for review scheduling
 
-The solution has two projects:
+The solution has three projects:
 
 - `src/HanLearn.Web` — ASP.NET Core host application.
 - `src/HanLearn.Web.Client` — interactive Blazor WebAssembly user interface.
+- `tests/HanLearn.Tests` — xUnit service tests and bUnit component tests.
 
 ## Run locally
 
@@ -30,6 +31,24 @@ Use the local URL printed by the application. To build the full solution without
 dotnet build HanLearn.slnx
 ```
 
+## Tests
+
+Run the automated suite from the repository root:
+
+```bash
+dotnet test HanLearn.slnx
+```
+
+The suite covers lesson validation, catalog loading (including rejection without
+partial changes), review persistence and backup import, and review-card reveal
+and rating interactions. Tests use synthetic lessons, fake HTTP responses, and
+in-memory browser storage; they do not access learner data or external services.
+FSRS tests use a fixed review time and disable scheduling fuzzing.
+
+Component tests use bUnit and emulate JavaScript interop. They do not verify
+actual browser focus, audio playback, or persistence across browser reloads;
+those behaviors still need browser verification.
+
 ## Project direction
 
 HanLearn teaches Taiwan Mandarin with Traditional characters and Zhuyin by default. The intended first vertical slice includes one Zhuyin mini-lesson, one dialogue, contextual word lookup, learner-selected vocabulary review, and local progress export/import.
@@ -44,7 +63,7 @@ The full product agreement is in [MVP-SPEC.md](MVP-SPEC.md).
 - Review state is stored in browser `localStorage` and can be exported or replaced from a JSON backup.
 - `/zhuyin` presents the keyboard/audio reference and read-only symbol-family examples, `/zhuyin/info` explains the Zhuyin-first approach, and `/zhuyinTest` currently cycles through six symbols.
 
-The home page and `/author/stories` route remain placeholders. Recommended lesson vocabulary, story and vocabulary audio, lesson completion, personal pasted text, Pinyin settings, progress reporting, accounts, synchronization, analytics, and automated tests are not implemented.
+The home page and `/author/stories` route remain placeholders. Recommended lesson vocabulary, story and vocabulary audio, lesson completion, personal pasted text, Pinyin settings, progress reporting, accounts, synchronization, and analytics are not implemented.
 
 ## Lesson content
 

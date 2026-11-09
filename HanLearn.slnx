@@ -3,4 +3,7 @@
     <Project Path="src/HanLearn.Web.Client/HanLearn.Web.Client.csproj" />
     <Project Path="src/HanLearn.Web/HanLearn.Web.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/HanLearn.Tests/HanLearn.Tests.csproj" />
+  </Folder>
 </Solution>
