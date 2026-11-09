@@ -49,6 +49,24 @@ Component tests use bUnit and emulate JavaScript interop. They do not verify
 actual browser focus, audio playback, or persistence across browser reloads;
 those behaviors still need browser verification.
 
+## Continuous integration
+
+[GitHub Actions](.github/workflows/ci.yml) restores dependencies, builds the full
+solution in Release mode, and runs tests on every push and pull request. You can
+also start it manually from the Actions tab. Test results (TRX) and coverage
+(Cobertura) are available as workflow artifacts for 14 days, including test
+results from failed runs.
+
+After successful default-branch push checks, the workflow publishes the ASP.NET
+Core host and uploads a `hanlearn-web-<commit>` artifact. Automatic deployment
+is not configured because the project has no selected hosting environment.
+
+To enforce passing tests before merging, configure a GitHub branch ruleset for
+the default branch: require a pull request and the `Build and test` status check,
+with the branch up to date before merging. The check becomes selectable after
+its first run. This setting is managed on GitHub; the workflow file alone does
+not block direct pushes. Repository rules were not changed by adding this file.
+
 ## Project direction
 
 HanLearn teaches Taiwan Mandarin with Traditional characters and Zhuyin by default. The intended first vertical slice includes one Zhuyin mini-lesson, one dialogue, contextual word lookup, learner-selected vocabulary review, and local progress export/import.
