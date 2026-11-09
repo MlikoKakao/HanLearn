@@ -2,54 +2,63 @@
 @using HanLearn.Web.Client.Components
 @using HanLearn.Web.Client.Data
 @using HanLearn.Web.Client.Services
-@using System.Text.Json
 @inject StoryCatalog StoryCatalog
 @inject Lexicon Lexicon
-@inject IJSRuntime JS
 
 
-@if (_story != null)
-{
-    <PageTitle>@_story.Title</PageTitle>
-    <h1>@_story.Title</h1>
+<div class="reader-page">
+    <nav class="reader-navigation" aria-label="Reader navigation">
+        <a href="dialogues"><span aria-hidden="true">←</span> All dialogues</a>
+    </nav>
 
-    <article class="story-body" aria-label="Story text">
-    @foreach (StoryOccurrence occurrence in _story.Occurrences)
+    @if (_story is not null)
     {
-        @if (occurrence.Text == "\n\n")
-        {
-            <br />
-            <br />
-        }
-        else if (occurrence.LexicalSenseId is not null)
-        {
-            <div class="story-word-anchor"
-                 @onmouseenter="() => ShowLexicalSense(occurrence)"
-                 @onmouseleave="() => HideLexicalSense(occurrence)">
-                <span
-                    class="story-text @(occurrence.Id == _selectedOccurrenceId ? "selected-word" : null)"
-                    @onclick="() => SelectOccurrence(occurrence)"
-                    @onfocus="() => ShowLexicalSense(occurrence)"
-                    tabindex="0">
-                    @occurrence.Text
-                </span>
-
-                @if (_activeOccurrenceId == occurrence.Id && _selectedSense is not null)
+        <PageTitle>@_story.Title | HanLearn</PageTitle>
+        <h1 lang="zh-Hant">@_story.Title</h1>
+        <article class="story-body" lang="zh-Hant" aria-label="Story text" @onkeydown="HandleReaderKeyDown">
+                @foreach (StoryOccurrence occurrence in _story.Occurrences)
                 {
-                    <div class="word-popover">
-                        <LexicalSenseDetails Sense="_selectedSense" />
-                    </div>
+                    @if (occurrence.LexicalSenseId is not null)
+                    {
+                        <div class="story-word-anchor"
+                              @onmouseenter="() => ShowLexicalSense(occurrence)"
+                              @onmouseleave="() => HideLexicalSense(occurrence)">
+                            <button type="button"
+                                    class="story-text @(occurrence.Id == _selectedOccurrenceId ? "selected-word" : null)"
+                                    aria-expanded="@(_activeOccurrenceId == occurrence.Id ? "true" : "false")"
+                                    aria-controls="@($"gloss-{occurrence.Id}")"
+                                    @onclick="() => SelectOccurrence(occurrence)"
+                                    @onfocus="() => ShowLexicalSense(occurrence)">@occurrence.Text</button>
+                            @if (_activeOccurrenceId == occurrence.Id && _selectedSense is not null)
+                            {
+                                <div class="word-popover" id="@($"gloss-{occurrence.Id}")" lang="en"
+                                      role="region" aria-label="Word details for @occurrence.Text">
+                                    <span class="popover-heading">
+                                        <span>Word in context</span>
+                                        <button type="button" aria-label="Close word details" @onclick="ClearSelection">×</button>
+                                    </span>
+                                    <LexicalSenseDetails Sense="_selectedSense" />
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        @occurrence.Text
+                    }
                 }
-            </div>
-        }
-        else
-        {
-            @occurrence.Text
-        }
+            </article>
     }
-    </article>
-    <button @onclick="ExportAsync">Export story</button>
-}
+    else
+    {
+        <PageTitle>Dialogue not found | HanLearn</PageTitle>
+        <section class="missing-story">
+            <h1>Dialogue not found</h1>
+            <p>This dialogue isn’t available. Choose a reading from the library to continue.</p>
+            <a href="dialogues">Browse dialogues →</a>
+        </section>
+    }
+</div>
 
 @code
 {
@@ -60,8 +69,15 @@
     private LexicalSense? _selectedSense;
     private string? _activeOccurrenceId;
     private string? _selectedOccurrenceId;
+    private string? _previousStoryId;
+
     protected override void OnParametersSet()
     {
+        if (_previousStoryId != StoryId)
+        {
+            ClearSelection();
+            _previousStoryId = StoryId;
+        }
         _story = StoryCatalog.Stories.FirstOrDefault(story => story.Id == StoryId);
     }
 
@@ -84,11 +100,28 @@
 
     private void SelectOccurrence(StoryOccurrence occurrence)
     {
-        _selectedOccurrenceId = _selectedOccurrenceId == occurrence.Id ? null : occurrence.Id;
-        _activeOccurrenceId = _selectedOccurrenceId ?? occurrence.Id;
-        _selectedSense = occurrence.LexicalSenseId is string senseId
-            ? Lexicon.FindSense(senseId)
-            : null;
+        if (_selectedOccurrenceId == occurrence.Id)
+        {
+            ClearSelection();
+            return;
+        }
+        _selectedOccurrenceId = occurrence.Id;
+        ShowLexicalSense(occurrence);
+    }
+
+    private void ClearSelection()
+    {
+        _selectedOccurrenceId = null;
+        _activeOccurrenceId = null;
+        _selectedSense = null;
+    }
+
+    private void HandleReaderKeyDown(KeyboardEventArgs args)
+    {
+        if (args.Key == "Escape")
+        {
+            ClearSelection();
+        }
     }
 
     private LexicalSense? FindSelectedSense()
@@ -100,18 +133,4 @@
                 : null;
     }
 
-    private async Task ExportAsync()
-    {
-        if (_story is null) { return; }
-        string jsonStory = JsonSerializer.Serialize(_story);
-        byte[] bytes = System.Text.Encoding.UTF8.GetBytes(jsonStory);
-
-        using var fileStream = new MemoryStream(bytes);
-        using var streamReference = new DotNetStreamReference(fileStream);
-
-        await JS.InvokeVoidAsync("downloadFileFromStream",
-        "hanlearn-story.json",
-        streamReference);
-
-    }
 }
