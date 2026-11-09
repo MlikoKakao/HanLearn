@@ -79,7 +79,7 @@ The full product agreement is in [MVP-SPEC.md](MVP-SPEC.md).
 - Hovering, focusing, or clicking a word opens its contextual lexical sense; character buttons expose reusable Hanzi readings and meanings.
 - A lexical sense can be added to review once. Due cards use recall-before-reveal and Again, Hard, Good, and Easy ratings.
 - Review state is stored in browser `localStorage` and can be exported or replaced from a JSON backup.
-- `/zhuyin` presents the keyboard/audio reference and read-only symbol-family examples, `/zhuyin/info` explains the Zhuyin-first approach, and `/zhuyinTest` currently cycles through six symbols.
+- `/zhuyin` presents the keyboard/audio reference and read-only symbol-family examples, `/zhuyin/info` explains the Zhuyin-first approach, and `/zhuyinTest` cycles through all 37 Zhuyin symbols in a review-style practice card.
 
 The home page and `/author/stories` route remain placeholders. Recommended lesson vocabulary, story and vocabulary audio, lesson completion, personal pasted text, Pinyin settings, progress reporting, accounts, synchronization, and analytics are not implemented.
 

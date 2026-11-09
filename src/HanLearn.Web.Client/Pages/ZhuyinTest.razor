@@ -3,19 +3,64 @@
 @using HanLearn.Web.Client.Data
 @inject ZhuyinSymbolCatalog SymbolCatalog
 
-@if (_symbols.Count > 0)
-{
-	<div class="card bg-light mt-3">
-		@CurrentSymbol.WrittenForm
-	</div>
-	<button @onclick="ShowNextSymbol">
-		Next
-	</button>
-}
+<PageTitle>Test Zhuyin | HanLearn</PageTitle>
+
+<header>
+    <p>Say each symbol aloud, reveal the answer to check your pronunciation, then move on to the next.</p>
+</header>
+
+<div class="practice-layout">
+    <section class="practice-workspace" aria-labelledby="practice-heading">
+        <div class="workspace-heading">
+            <div>
+                <p class="section-label">Symbol practice</p>
+                <h2 id="practice-heading">Test Zhuyin</h2>
+            </div>
+            <span class="symbol-count" role="status">Symbol @(_symbolIndex + 1) of @_symbols.Count</span>
+        </div>
+
+        @if (_symbols.Count > 0)
+        {
+            <article class="practice-card">
+                <div class="card-prompt">
+                    <p class="prompt-label">Recall this sound</p>
+                    <p class="written-form" lang="zh-Bopo" aria-live="polite">@CurrentSymbol.WrittenForm</p>
+                    @if (!_showAnswer)
+                    {
+                        <p class="recall-instruction">Say the sound before revealing the answer.</p>
+                    }
+                </div>
+                @if (_showAnswer)
+                {
+                    <div id="symbol-answer" class="answer" aria-live="polite">
+                        <span class="answer-label">Pronunciation (Pinyin)</span>
+                        <strong>@CurrentSymbol.Pronunciation</strong>
+                    </div>
+                    <button type="button" class="next-button" @onclick="ShowNextSymbol">
+                        Next symbol <span aria-hidden="true">→</span>
+                    </button>
+                }
+                <button type="button" class="reveal-button" aria-expanded="@_showAnswer" aria-controls="symbol-answer" @onclick="ToggleAnswer">
+                    @(_showAnswer ? "Hide answer" : "Show answer")
+                    <span aria-hidden="true">@(_showAnswer ? "↑" : "↓")</span>
+                </button>
+            </article>
+        }
+    </section>
+
+    <aside class="practice-panel" aria-labelledby="reference-heading">
+        <p class="section-label">Need a reminder?</p>
+        <h2 id="reference-heading">Symbol reference</h2>
+        <p>Visit the Zhuyin guide to hear each sound and see it used in a word.</p>
+        <a href="zhuyin">Open Zhuyin guide <span aria-hidden="true">→</span></a>
+        <p class="practice-note">After the last symbol, the exercise starts again from the beginning.</p>
+    </aside>
+</div>
 
 @code {
 	private IReadOnlyList<ZhuyinSymbol> _symbols = [];
 	private int _symbolIndex;
+    private bool _showAnswer;
 
 	private ZhuyinSymbol CurrentSymbol => _symbols[_symbolIndex];
 
@@ -24,8 +69,12 @@
 		_symbols = SymbolCatalog.Symbols;
 	}
 
+    private void ToggleAnswer() => _showAnswer = !_showAnswer;
+
 	private void ShowNextSymbol()
 	{
+        if (!_showAnswer) { return; }
+        _showAnswer = false;
 		if (_symbolIndex < _symbols.Count - 1)
 		{
 			_symbolIndex++;

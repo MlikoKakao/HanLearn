@@ -1,3 +1,3 @@
 namespace HanLearn.Web.Client.Data;
 
-public record ZhuyinSymbol(string WrittenForm, string AudioName);
+public record ZhuyinSymbol(string WrittenForm, string AudioName, string Pronunciation);
