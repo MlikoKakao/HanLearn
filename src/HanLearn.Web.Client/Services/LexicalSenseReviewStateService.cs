@@ -23,21 +23,32 @@ public class LexicalSenseReviewStateService
         _scheduler = scheduler;
         _jsRuntime = js;
     }
-    public async Task AddToReviewAsync(string lexicalSenseId)
+    public Task AddToReviewAsync(string lexicalSenseId) =>
+        AddManyToReviewAsync([lexicalSenseId]);
+
+    public async Task AddManyToReviewAsync(IEnumerable<string> lexicalSenseIds)
     {
         await LoadAsync();
-        if (_reviewStates.Any(state => state.LexicalSenseId == lexicalSenseId))
+        var existingIds = _reviewStates.Select(state => state.LexicalSenseId).ToHashSet();
+        var additions = lexicalSenseIds.Distinct()
+            .Where(id => !existingIds.Contains(id))
+            .Select(id => new LexicalSenseReviewState { LexicalSenseId = id, Card = new Card() })
+            .ToList();
+        if (additions.Count == 0)
         {
             return;
         }
-        LexicalSenseReviewState reviewState = new()
-        {
-            LexicalSenseId = lexicalSenseId,
-            Card = new Card()
-        };
 
-        _reviewStates.Add(reviewState);
-        await SaveAsync();
+        _reviewStates.AddRange(additions);
+        try
+        {
+            await SaveAsync();
+        }
+        catch
+        {
+            foreach (var addition in additions) _reviewStates.Remove(addition);
+            throw;
+        }
     }
 
     public async Task ReviewAsync(string lexicalSenseId, Rating rating, DateTime reviewDateTime)

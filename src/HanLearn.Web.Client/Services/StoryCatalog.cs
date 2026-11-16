@@ -5,13 +5,17 @@ namespace HanLearn.Web.Client.Services;
 public class StoryCatalog
 {
     private readonly List<Story> _stories = [];
+    private readonly Dictionary<string, IReadOnlyList<string>> _recommendations = [];
 
     public IReadOnlyList<Story> Stories => _stories;
 
     public bool ContainsStory(string id) =>
         _stories.Any(story => story.Id == id);
 
-    public void AddStory(Story story)
+    public IReadOnlyList<string> GetRecommendedLexicalSenseIds(string storyId) =>
+        _recommendations.GetValueOrDefault(storyId) ?? [];
+
+    public void AddStory(Story story, IReadOnlyList<string>? recommendedLexicalSenseIds = null)
     {
         if (ContainsStory(story.Id))
         {
@@ -19,6 +23,7 @@ public class StoryCatalog
         }
 
         _stories.Add(story);
+        _recommendations.Add(story.Id, recommendedLexicalSenseIds?.ToArray() ?? []);
     }
 
     public void AddStory(

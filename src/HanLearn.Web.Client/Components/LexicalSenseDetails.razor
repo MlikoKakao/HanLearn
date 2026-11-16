@@ -68,6 +68,9 @@
     [Parameter]
     public required LexicalSense Sense { get; set; }
 
+    [Parameter]
+    public EventCallback OnReviewAdded { get; set; }
+
     private int? _activeCharacterIndex;
     private int? _pinnedCharacterIndex;
     private string? _previousSenseId;
@@ -111,5 +114,6 @@
     private async Task AddToReview()
     {
         await ReviewStateService.AddToReviewAsync(Sense.Id);
+        await OnReviewAdded.InvokeAsync();
     }
 }

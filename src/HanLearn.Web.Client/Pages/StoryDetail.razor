@@ -2,8 +2,11 @@
 @using HanLearn.Web.Client.Components
 @using HanLearn.Web.Client.Data
 @using HanLearn.Web.Client.Services
+@using System.Text.Json
+@using Microsoft.JSInterop
 @inject StoryCatalog StoryCatalog
 @inject Lexicon Lexicon
+@inject LexicalSenseReviewStateService ReviewStateService
 
 
 <div class="reader-page">
@@ -37,7 +40,7 @@
                                         <span>Word in context</span>
                                         <button type="button" aria-label="Close word details" @onclick="ClearSelection">×</button>
                                     </span>
-                                    <LexicalSenseDetails Sense="_selectedSense" />
+                                    <LexicalSenseDetails Sense="_selectedSense" OnReviewAdded="RefreshReviewSelection" />
                                 </div>
                             }
                         </div>
@@ -48,6 +51,54 @@
                     }
                 }
             </article>
+        @if (_recommendedSenses.Count > 0)
+        {
+            <section class="review-selection" aria-labelledby="review-selection-heading">
+                <h2 id="review-selection-heading">Choose words to review</h2>
+                <p>These are the lesson’s recommended words. Uncheck any you don’t want to add.</p>
+                @if (!_reviewLoaded && _reviewError is null)
+                {
+                    <p role="status">Loading your review words…</p>
+                }
+                <fieldset disabled="@(!_reviewLoaded || _savingReview)">
+                    <legend class="visually-hidden">Recommended vocabulary</legend>
+                    @foreach (var sense in _recommendedSenses)
+                    {
+                        var alreadyAdded = IsInReview(sense.Id);
+                        <label class="review-word" @key="sense.Id">
+                            <input type="checkbox" value="@sense.Id"
+                                   checked="@(!alreadyAdded && _selectedReviewIds.Contains(sense.Id))"
+                                   disabled="@alreadyAdded"
+                                   @onchange="args => SetReviewSelection(sense.Id, args.Value is true)" />
+                            <span class="review-word-details">
+                                <strong lang="zh-Hant">@sense.WrittenForm</strong>
+                                <span lang="zh-Bopo">@string.Join("、", sense.Pronunciations)</span>
+                                <span>@sense.Definition</span>
+                            </span>
+                            @if (alreadyAdded)
+                            {
+                                <span class="review-word-status">Already in review</span>
+                            }
+                        </label>
+                    }
+                </fieldset>
+                <div class="review-selection-actions">
+                    <button type="button" class="add-selected" disabled="@(!_reviewLoaded || _savingReview || PendingReviewIds.Count == 0)" @onclick="AddSelectedToReviewAsync">
+                        @(_savingReview ? "Saving…" : $"Add selected words to review ({PendingReviewIds.Count})")
+                    </button>
+                    <a href="review">Go to review →</a>
+                </div>
+                <p class="review-selection-message" role="status">@_reviewMessage</p>
+                @if (_reviewError is not null)
+                {
+                    <p role="alert">@_reviewError</p>
+                    @if (!_reviewLoaded)
+                    {
+                        <button type="button" @onclick="LoadReviewStateAsync">Try again</button>
+                    }
+                }
+            </section>
+        }
     }
     else
     {
@@ -70,15 +121,86 @@
     private string? _activeOccurrenceId;
     private string? _selectedOccurrenceId;
     private string? _previousStoryId;
+    private List<LexicalSense> _recommendedSenses = [];
+    private readonly HashSet<string> _selectedReviewIds = [];
+    private bool _reviewLoaded;
+    private bool _savingReview;
+    private string? _reviewMessage;
+    private string? _reviewError;
 
-    protected override void OnParametersSet()
+    private bool IsInReview(string id) =>
+        ReviewStateService.ReviewStates.Any(state => state.LexicalSenseId == id);
+
+    private List<string> PendingReviewIds => _recommendedSenses
+        .Where(sense => _selectedReviewIds.Contains(sense.Id) && !IsInReview(sense.Id))
+        .Select(sense => sense.Id).ToList();
+
+    protected override async Task OnParametersSetAsync()
     {
         if (_previousStoryId != StoryId)
         {
             ClearSelection();
             _previousStoryId = StoryId;
+            _recommendedSenses = StoryCatalog.GetRecommendedLexicalSenseIds(StoryId)
+                .Select(id => Lexicon.FindSense(id))
+                .OfType<LexicalSense>().ToList();
+            _selectedReviewIds.Clear();
+            _selectedReviewIds.UnionWith(_recommendedSenses.Select(sense => sense.Id));
+            _reviewMessage = null;
+            _reviewError = null;
         }
         _story = StoryCatalog.Stories.FirstOrDefault(story => story.Id == StoryId);
+        if (_recommendedSenses.Count > 0 && !_reviewLoaded)
+        {
+            await LoadReviewStateAsync();
+        }
+    }
+
+    private async Task LoadReviewStateAsync()
+    {
+        _reviewError = null;
+        try
+        {
+            await ReviewStateService.LoadAsync();
+            _reviewLoaded = true;
+        }
+        catch (Exception error) when (error is JSException or JsonException)
+        {
+            _reviewError = "Your saved review words couldn’t be loaded. No words have been added. Try again before selecting vocabulary.";
+        }
+    }
+
+    private void SetReviewSelection(string id, bool selected)
+    {
+        if (selected) _selectedReviewIds.Add(id);
+        else _selectedReviewIds.Remove(id);
+        _reviewMessage = null;
+    }
+
+    private void RefreshReviewSelection() => _reviewMessage = null;
+
+    private async Task AddSelectedToReviewAsync()
+    {
+        if (!_reviewLoaded || _savingReview) return;
+        var ids = PendingReviewIds;
+        if (ids.Count == 0) return;
+        _savingReview = true;
+        _reviewError = null;
+        _reviewMessage = null;
+        try
+        {
+            await ReviewStateService.AddManyToReviewAsync(ids);
+            _selectedReviewIds.ExceptWith(ids);
+            _reviewMessage = $"Added {ids.Count} {(ids.Count == 1 ? "word" : "words")} to review.";
+        }
+        catch (JSException)
+        {
+            _reviewError = "Your selected words couldn’t be saved. Please try adding them again.";
+        }
+        finally
+        {
+            _savingReview = false;
+        }
     }
 
     private void ShowLexicalSense(StoryOccurrence occurrence)

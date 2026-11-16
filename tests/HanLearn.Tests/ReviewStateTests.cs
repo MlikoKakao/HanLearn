@@ -28,6 +28,30 @@ public class ReviewStateTests
     }
 
     [Fact]
+    public async Task AddingSelectionSavesNewWordsTogetherAndPreservesExistingSchedule()
+    {
+        using var services = CreateServices();
+        var storage = new MemoryStorage();
+        var service = CreateService(services, storage);
+        await service.AddToReviewAsync("tea");
+        await service.ReviewAsync("tea", Rating.Good, DateTime.UtcNow);
+        var existing = service.Serialize();
+        var writesBefore = storage.Writes;
+
+        await service.AddManyToReviewAsync(["tea", "milk-tea", "breakfast", "milk-tea"]);
+
+        Assert.Equal(3, service.ReviewStates.Count);
+        Assert.Equal(writesBefore + 1, storage.Writes);
+        var stored = JsonSerializer.Deserialize<List<StoredLexicalSenseReviewState>>(storage.Json!)!;
+        Assert.Equal(
+            Assert.Single(JsonSerializer.Deserialize<List<StoredLexicalSenseReviewState>>(existing)!),
+            stored.Single(state => state.LexicalSenseId == "tea"));
+        var reloaded = CreateService(services, storage);
+        await reloaded.LoadAsync();
+        Assert.Equal(service.Serialize(), reloaded.Serialize());
+    }
+
+    [Fact]
     public async Task SaveReloadAndBackupImportPreserveEveryStoredCardField()
     {
         using var services = CreateServices();

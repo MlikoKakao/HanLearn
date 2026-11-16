@@ -68,7 +68,7 @@ public sealed class LessonPackageLoader
             }
         }
 
-        _storyCatalog.AddStory(package.Story);
+        _storyCatalog.AddStory(package.Story, package.RecommendedLexicalSenseIds);
         return package;
     }
 

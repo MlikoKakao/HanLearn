@@ -21,6 +21,7 @@ public class LessonPackageLoaderTests
         Assert.Equal("tea", Assert.Single(lexicon.Senses).Value.Id);
         Assert.Equal("茶", Assert.Single(lexicon.Characters).Value.Id);
         Assert.Equal(package.Story.Text, Assert.Single(stories.Stories).Text);
+        Assert.Equal(package.RecommendedLexicalSenseIds, stories.GetRecommendedLexicalSenseIds(package.Story.Id));
     }
 
     [Theory]

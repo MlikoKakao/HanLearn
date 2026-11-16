@@ -126,7 +126,7 @@ Authored content describes the written form, pronunciation, lexical sense, examp
 
 Learner review state should reference the ID of its authored lexical sense rather than duplicate the authored educational content.
 
-The current implementation supports lexical-sense review only. `LexicalSenseReviewState` stores a lexical-sense ID and an FSRS card, which are persisted through storage-specific DTOs in browser local storage and JSON backups. Character review, source occurrence/context, review history, and a versioned backup envelope are not implemented. Recommended lexical-sense IDs are validated but not consumed by the UI.
+The current implementation supports lexical-sense review only. `LexicalSenseReviewState` stores a lexical-sense ID and an FSRS card, which are persisted through storage-specific DTOs in browser local storage and JSON backups. Character review, source occurrence/context, review history, and a versioned backup envelope are not implemented. Recommended lexical-sense IDs are retained per story in `StoryCatalog` and populate the editable checklist below the dialogue. Selected new words are saved together; words already in review keep their existing cards and schedules.
 
 ## Authoring workflow
 
