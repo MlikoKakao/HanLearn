@@ -13,6 +13,7 @@ builder.Services.AddScoped(_ => new HttpClient
     BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
 });
 builder.Services.AddSingleton<LessonPackageValidator>();
+builder.Services.AddSingleton<LessonPackageCatalog>();
 builder.Services.AddScoped<LessonPackageLoader>();
 builder.Services.AddFSRS(options =>
 {
@@ -24,6 +25,6 @@ builder.Services.AddScoped<LexicalSenseReviewStateService>();
 var host = builder.Build();
 await host.Services
     .GetRequiredService<LessonPackageLoader>()
-    .LoadIntoCatalogsAsync("content/breakfast-shop-morning.json");
+    .LoadPublishedLessonsAsync();
 
 await host.RunAsync();

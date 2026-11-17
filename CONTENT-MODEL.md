@@ -1,12 +1,16 @@
 # HanLearn Content Model Notes
 
-This document records both the implemented version 2 lesson-package model and future model decisions. Authored lesson content uses versioned JSON `LessonPackage` files under `src/HanLearn.Web.Client/wwwroot/content`.
+This document records both the implemented version 2 lesson-package model and future model decisions. Authored lesson content uses versioned JSON `LessonPackage` files under `src/HanLearn.Web/Content/Lessons`.
 
 ## Implemented package model
 
 A version 2 `LessonPackage` contains one `Story`, the `LexicalSense` records used by its occurrences, the referenced `HanziCharacter` records, and recommended lexical-sense IDs. A story includes selection-page metadata: a summary, difficulty label, estimated reading time in minutes, and image path.
 
-At WebAssembly startup, `LessonPackageLoader` strictly deserializes `breakfast-shop-morning.json`, validates the complete package, checks it against already-loaded catalog records, and then adds it to in-memory story and lexicon catalogs. There is currently no content database or working authoring UI.
+At host startup, `PublishedLessonCatalog` strictly deserializes all JSON packages in `Content/Lessons`, relative to the host content root. `LessonPackageCatalog` validates each complete package and checks it against already-loaded records. Invalid content or a missing directory prevents startup; an existing empty directory is allowed. Only a completely validated catalog is published in memory. Files are included in build and publish output, and changes require a restart or redeployment.
+
+`GET /api/lessons` returns lesson summaries (ID, title, summary, difficulty, estimated reading time, and image path). `GET /api/lessons/{id}` returns the full version 2 package or a JSON `404`. IDs are looked up in the catalog and are not used as filesystem paths.
+
+At WebAssembly startup, `LessonPackageLoader` discovers the published lessons through the list endpoint and downloads their packages. It uses the same strict deserialization and `LessonPackageCatalog` validation rules to populate the browser's story and lexicon catalogs. Content models and validation remain in the client assembly, which is already referenced by the host. There is currently no content database or working authoring UI.
 
 Validation currently checks:
 

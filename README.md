@@ -40,7 +40,7 @@ dotnet test HanLearn.slnx
 ```
 
 The suite covers lesson validation, catalog loading (including rejection without
-partial changes), review persistence and backup import, and review-card reveal
+partial changes), HTTP lesson endpoints and client loading through them, review persistence and backup import, and review-card reveal
 and rating interactions. Tests use synthetic lessons, fake HTTP responses, and
 in-memory browser storage; they do not access learner data or external services.
 FSRS tests use a fixed review time and disable scheduling fuzzing.
@@ -76,6 +76,7 @@ The full product agreement is in [MVP-SPEC.md](MVP-SPEC.md).
 ## Current functionality
 
 - `/dialogues` lists the loaded lesson, and `/dialogues/breakfast-shop-morning` renders it as selectable occurrences.
+- `GET /api/lessons` returns published lesson summaries; `GET /api/lessons/{id}` returns the complete lesson package, or a JSON `404` for an unknown ID.
 - Hovering, focusing, or clicking a word opens its contextual lexical sense; character buttons expose reusable Hanzi readings and meanings.
 - A lexical sense can be added to review once. Due cards use recall-before-reveal and Again, Hard, Good, and Easy ratings.
 - Below each dialogue, learners can edit a checklist of recommended vocabulary and add selected words to review together. Existing review words are labelled and keep their schedules.
@@ -87,11 +88,24 @@ The home page and `/author/stories` route remain placeholders. Story and vocabul
 ## Lesson content
 
 Authored lessons are JSON packages under
-`src/HanLearn.Web.Client/wwwroot/content`. A package contains one story, its
+`src/HanLearn.Web/Content/Lessons`. A package contains one story, its
 lexical senses, the referenced Hanzi character records, recommended review
-items, and a schema version. The WebAssembly client validates the complete
-package before adding any of its content to the runtime catalogs. The current
-client loads `breakfast-shop-morning.json` at startup. Recommended lexical-sense
+items, and a schema version. The host loads all `*.json` packages from this directory
+at startup, validates them and cross-lesson references, and serves them from an
+in-memory catalog. A missing directory, malformed package, duplicate story ID, or
+conflicting shared lexical record prevents startup with a diagnostic identifying
+the file. An existing empty directory produces an empty lesson list.
+
+The directory is resolved against the host's content root, and its JSON files are
+copied into build and publish output. Add new lesson packages there and restart or
+redeploy the host to publish them. The packages are served through the API rather
+than as static files. Images remain public static assets.
+
+The WebAssembly client discovers all lessons through `/api/lessons`, then loads
+and validates their complete packages before adding them to its reader catalogs
+at startup. Lesson content and validation types remain in the client project,
+which the host already references. Learner progress stays in browser storage.
+Recommended lexical-sense
 IDs populate the vocabulary checklist below the dialogue. Optional audio filenames
 are represented and validated but are not yet used by the interface.
 

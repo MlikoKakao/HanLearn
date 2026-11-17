@@ -14,7 +14,7 @@ public class LessonPackageLoaderTests
         var lexicon = new Lexicon();
         var stories = new StoryCatalog();
         using var http = CreateHttp(package);
-        var loader = new LessonPackageLoader(http, new(), lexicon, stories);
+        var loader = new LessonPackageLoader(http, new LessonPackageCatalog(new(), lexicon, stories));
 
         await loader.LoadIntoCatalogsAsync("lesson.json");
 
@@ -47,7 +47,7 @@ public class LessonPackageLoaderTests
         var charactersBefore = lexicon.Characters.ToArray();
         var storiesBefore = stories.Stories.ToArray();
         using var http = CreateHttp(package);
-        var loader = new LessonPackageLoader(http, new(), lexicon, stories);
+        var loader = new LessonPackageLoader(http, new LessonPackageCatalog(new(), lexicon, stories));
 
         await Assert.ThrowsAsync<LessonPackageValidationException>(() => loader.LoadIntoCatalogsAsync("lesson.json"));
 
@@ -66,7 +66,7 @@ public class LessonPackageLoaderTests
         lexicon.AddCharacter(package.HanziCharacters[0]);
         var stories = new StoryCatalog();
         using var http = CreateHttp(package);
-        var loader = new LessonPackageLoader(http, new(), lexicon, stories);
+        var loader = new LessonPackageLoader(http, new LessonPackageCatalog(new(), lexicon, stories));
 
         await loader.LoadIntoCatalogsAsync("lesson.json");
 
